@@ -10,6 +10,9 @@ use Predis\Client;
 use Symfony\Component\HttpFoundation\RequestStack;
 use UserBundle\Entity\User;
 
+/**
+ *
+ */
 class KickExtension extends \Twig_Extension
 {
     private $requestStack;
@@ -17,8 +20,13 @@ class KickExtension extends \Twig_Extension
     private $authService;
     private $redis;
     private $videoEmbedder;
-
     private $linkClass;
+
+    /**
+     * Defines detected href target
+     *
+     * @var string
+     */
     private $target = "_blank";
 
     /**
@@ -83,6 +91,8 @@ class KickExtension extends \Twig_Extension
     }
 
     /**
+     * Left block renderer - used in base.html.twig
+     *
      * @param \Twig_Environment $twig
      * @return mixed
      */
@@ -103,6 +113,8 @@ class KickExtension extends \Twig_Extension
     }
 
     /**
+     * Compares current group to route prefix
+     *
      * @param $groupRoute
      */
     public function isGroupActive($groupRoute)
@@ -116,6 +128,8 @@ class KickExtension extends \Twig_Extension
     }
 
     /**
+     * * Compares current route to given route name
+     *
      * @param $route
      */
     public function isRouteActive($route)
@@ -134,26 +148,47 @@ class KickExtension extends \Twig_Extension
         return $this->em->getRepository("AppBundle:Link")->findBestRated($days);
     }
 
+    /**
+     * @param $commentsNumber
+     * @return mixed
+     */
     public function lastComments($commentsNumber)
     {
         return $this->em->getRepository("AppBundle:Comment")->findLastComments($commentsNumber);
     }
 
+    /**
+     * @param $string
+     */
     public function countBR($string)
     {
         return substr_count($string, "\n");
     }
 
+    /**
+     * @param $object
+     */
     public function getClass($object)
     {
         return (new \ReflectionClass($object))->getShortName();
     }
 
+    /**
+     * @param LinkGroup $group
+     * @return mixed
+     */
     public function moderationToolsAccess(LinkGroup $group)
     {
         return $this->authService->haveModerationToolsAccess($group);
     }
 
+    /**
+     * Checks for any user mentioned by "@"
+     *
+     * @TODO this must be in UserBundle
+     *
+     * @param $content
+     */
     public function findUsers($content)
     {
         preg_match_all("/\@[a-ż0-9\_\-]+/i", $content, $result);
@@ -194,6 +229,10 @@ class KickExtension extends \Twig_Extension
         return $stringFiltered;
     }
 
+    /**
+     * @param $matches
+     * @return mixed
+     */
     public function callbackReplace($matches)
     {
         if ($matches[1] !== '') {

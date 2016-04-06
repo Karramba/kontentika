@@ -2,10 +2,22 @@
 
 namespace AppBundle\Media;
 
+/**
+ * Helper class for video embedding
+ * Original source code: https://sourceforge.net/p/kawf/git/ci/95c5adb1788da088099b04b0746045286582c853/tree/user/embed-media.inc.php
+ * Reformatted for PSR
+ */
 class VideoEmbedder
 {
+    /**
+     * @var array
+     */
     private $video_embedders = array('redtube', 'vimeo', 'youtube', 'html5', 'vine');
 
+    /**
+     * @param $query
+     * @return mixed
+     */
     public function explodeQuery($query)
     {
         $queryParts = explode('&', $query);
@@ -19,6 +31,10 @@ class VideoEmbedder
         return $params;
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public function embedRedtubeVideo($url)
     {
         if (preg_match("#^http://(\w+\.)*redtube\.com/([0-9]+)#", $url, $regs)) {
@@ -38,6 +54,10 @@ class VideoEmbedder
         return $this->tagMedia($out, "RedTube ", $url, $tag, "redtube");
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public function embedVimeoVideo($url)
     {
         if (preg_match("#^http://(\w+\.)*vimeo\.com/([0-9]+)#", $url, $regs)) {
@@ -54,6 +74,10 @@ class VideoEmbedder
         return $this->tagMedia($out, "Vimeo ", $url, $tag, "vimeo");
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public function embedYoutubeVideo($url)
     {
         $tag = null;
@@ -101,6 +125,10 @@ class VideoEmbedder
         return $this->tagMedia($out, "YouTube ", "http://youtu.be/$tag", $tag, "youtube");
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public function getVineVideoFromUrl($url)
     {
         $ch = curl_init($url);
@@ -110,6 +138,10 @@ class VideoEmbedder
         return $output[1];
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public function embedVineVideo($url)
     {
         $u = parse_url(html_entity_decode($url));
@@ -137,6 +169,10 @@ class VideoEmbedder
 
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public function embedHtml5Video($url)
     {
         $u = parse_url(html_entity_decode($url));
@@ -157,6 +193,15 @@ class VideoEmbedder
         return $this->tagMedia($out, "", $url, "HTML5", "html5");
     }
 
+    /**
+     * @param $out
+     * @param $prefix
+     * @param $url
+     * @param $text
+     * @param $class
+     * @param $redirect
+     * @return string
+     */
     public function tagMedia($out, $prefix, $url, $text, $class, $redirect = false)
     {
         // if ($redirect) {
@@ -169,6 +214,10 @@ class VideoEmbedder
         return $out;
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public function embedVideo($url)
     {
         // $url = normalize_url_scheme($url);
@@ -185,6 +234,10 @@ class VideoEmbedder
         // return "'$url' is not a supported video type. Must be YouTube/Vimeo link or ogg/mp4/WebM<p>\n";
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public function embedImage($url)
     {
         $out = "<img src=\"$url\" alt=\"$url\">\n";

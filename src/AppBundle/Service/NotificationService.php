@@ -6,12 +6,31 @@ use AppBundle\Entity\Notification;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+/**
+ * Notifications service
+ *
+ * @TODO - notifications builder
+ */
 class NotificationService
 {
+    /**
+     * @var EntityManager
+     */
     private $em;
+    /**
+     * @var mixed
+     */
     private $translator;
+    /**
+     * @var User
+     */
     private $user;
 
+    /**
+     * @param EntityManager $em
+     * @param $translator
+     * @param TokenStorageInterface $tokenStorage
+     */
     public function __construct(EntityManager $em, $translator, TokenStorageInterface $tokenStorage)
     {
         $this->em = $em;
@@ -23,6 +42,13 @@ class NotificationService
         }
     }
 
+    /**
+     * Creates notification for comment/entry reply
+     *
+     * @param $content
+     * @param $message
+     * @param array $params
+     */
     public function addReplyNotification($content, $message, array $params = array())
     {
         $notification = new Notification();

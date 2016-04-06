@@ -4,6 +4,9 @@ namespace AppBundle\Parser;
 
 use Knp\Bundle\MarkdownBundle\Parser\MarkdownParser;
 
+/**
+ * Custom Markdown Parser
+ */
 class KontentikaParser extends MarkdownParser
 {
     /**
@@ -31,6 +34,9 @@ class KontentikaParser extends MarkdownParser
         'no_html' => false,
     );
 
+    /**
+     * @param $text
+     */
     public function transformMarkdown($text)
     {
         // var_dump($text);
