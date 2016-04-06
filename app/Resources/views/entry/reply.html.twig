@@ -1,0 +1,15 @@
+{% block body %}
+    <div class="form well bs-component">
+        {{ form_start(form) }}
+            <fieldset>
+                <legend>{% trans %}entry.new_reply{% endtrans %}</legend>
+                {{ form_widget(form) }}
+                <div class="buttons">
+                    <a href="#" class="btn btn-primary entry-reply-cancel" tabindex="-1">{% trans %}cancel{% endtrans %}</a>
+                    <button type="submit" class="btn btn-primary" >{% trans %}entry.add_reply{% endtrans %}</button>
+                </div>
+                <div class="clearfix"></div>
+            </fieldset>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,45 @@
+<div class="col-md-1 col-xs-1">
+    {%- include '::vote/buttons.html.twig' with {'content': link, 'contentType': 'link'} only -%}
+</div>
+<div class="col-md-2 col-xs-4">
+    <div class="thumbnail">
+    <a href="{{ path('link_show', {'uniqueId': link.uniqueId, 'slug': link.slug}) }}">
+        {% if link.thumbnail is not null %}
+            <img src="{{ link.thumbnailWebPath | imagine_filter('main_thumb') }}" title="{{ link.title }}" />
+        {% else %}
+            <img src="{{ asset('bundles/app/images/link/default.png') }}" />
+        {% endif %}
+    </a>
+    </div>
+</div>
+
+<div class="col-md-9 col-xs-6 content">
+    <h1 class="title">
+        <a href="{{ link.url }}" rel="nofollow" target="_blank">{{ link.title }}</a>
+        <span class="domain">({{ link.domain }})</span>
+    </h1>
+
+    <div class="description">
+        {{- link.description[0:180] -}}
+    </div>
+    <div class="options">
+        <span class="option">
+            <i class="fa fa-commenting-o"></i>
+            <a href="{{ path('link_show', {'uniqueId': link.uniqueId, 'slug': link.slug }) }}">
+                {% set commentsNumber = link.comments|length %}
+                {%- transchoice commentsNumber with {'commentsNumber': commentsNumber} %}
+                    link.comments_transchoice
+                {% endtranschoice -%}
+            </a>
+        </span>
+        <span class="option">
+            <i class="fa fa-hashtag"></i> <a href="{{ path('link_group_show', {'title': link.group.title}) }}"> {{ link.group }}</a>
+        </span>
+        <span class="option" title="{{ link.added | date("Y-m-d H:i:s") }}">
+            <i class="fa fa-clock-o"></i> {{ link.added | ago }}
+        </span>
+        <br>
+    </div>
+</div>
+
+<div class="clearfix"></div>

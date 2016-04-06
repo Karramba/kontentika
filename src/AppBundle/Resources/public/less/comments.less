@@ -1,0 +1,83 @@
+@comment-bg-color: rgba(200, 200, 200, 0.05);
+
+.link {
+    &.box {
+        .comments-box {
+            padding: 10px;
+            .comments {
+                list-style: none;
+                padding-left: 10px;
+                .children {
+                    padding-left: 50px;
+                }
+                .comment {
+                    &.avatar {
+                        margin-top: 7px;
+                    }
+                    .main  {
+                        background-color: @comment-bg-color;
+                    }
+                    .child {
+                        background-color: @comment-bg-color;
+                    }
+                    .author {
+                        padding: 0 0 0 10px;
+                        .time-added {
+                            padding: 2px;
+                            font-size: 14px;
+                            color: rgba(100, 100, 100, 0.5);
+                        }
+                    }
+
+                    .vote-buttons {
+                        display: inline-block;
+                        text-align: center;
+                        padding: 0 0 2px 0;
+                        .btn-vote {
+                            padding: 0 4px 0 4px;
+                            line-height: 18px;
+                        }
+                    }
+
+
+                    padding: 5px 0px;
+                    .author {
+                        // border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                    }
+                    .comment-content {
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                        padding: 0 0 0 10px;
+                        position: relative;
+                        word-wrap: break-word;
+                        .content {
+                            max-height: 140px;
+                            overflow: hidden;
+                            width: 100%;
+                            &.full {
+                                max-height: 100% !important;
+                            }
+                        }
+                        .options {
+                            text-align: right;
+                            bottom: 0;
+                            right: 0;
+                            opacity: 0.5;
+                            padding: 2px;
+                            a {
+                                color: rgba(100, 100, 100, 0.6);
+                                padding: 2px;
+                            }
+                            a:hover {
+                                color: rgba(50, 50, 50, 1);
+                                text-decoration: none;
+                            }
+                        }
+                        .options:hover {
+                            opacity: 0.8;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

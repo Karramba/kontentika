@@ -1,0 +1,23 @@
+<div class="row link box best-rated">
+    <div class="col-md-3">
+        <a href="{{ path('link_show', {'uniqueId': link.uniqueId, 'slug': link.slug}) }}">
+            {% if link.thumbnail is not null %}
+                <img src="{{ link.thumbnailWebPath | imagine_filter('best_rated_thumb') }}" title="{{ link.title }}" />
+            {% else %}
+                <img src="{{ asset('bundles/app/images/link/default.png' | imagine_filter('best_rated_thumb')) }}" />
+            {% endif %}
+        </a>
+    </div>
+    <div class="col-md-9">
+        <div class="title">
+            <a href="{{ path('link_show', {'uniqueId': link.uniqueId, 'slug': link.slug}) }}">
+                {{ link.title }}
+            </a>
+        </div>
+        <div class="info">
+            <i class="fa fa-arrow-up"></i> <span class="upvotes">{{- link.totalUpvotes -}}</span>
+            <i class="fa fa-arrow-down"></i> <span class="downvotes">{{- link.totalDownvotes -}}</span>
+        </div>
+    </div>
+</div>
+

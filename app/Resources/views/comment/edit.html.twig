@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+ <div class="form well bs-component">
+                        {{ form_start(edit_form) }}
+                            <fieldset>
+                                <legend>{% trans %}comment.edit{% endtrans %}</legend>
+                                {{ form_widget(edit_form) }}
+                                <div class="buttons">
+                                    <button type="submit" class="btn btn-primary">{% trans %}save{% endtrans %}</button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </fieldset>
+                        {{ form_end(edit_form) }}
+                    </div>
+{% endblock %}

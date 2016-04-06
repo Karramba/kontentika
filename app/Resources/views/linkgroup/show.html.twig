@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>LinkGroup</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ linkGroup.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ linkGroup.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ linkGroup.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

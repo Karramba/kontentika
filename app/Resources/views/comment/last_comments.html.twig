@@ -1,0 +1,8 @@
+<div class="row">
+    <div class="col-md-12">
+        {{ comment.user }}:
+        <a href="{{ path('link_show', {'uniqueId': comment.link.uniqueId, 'slug': comment.link.slug}) }}#{{ comment.uniqueId }}">
+            {{ comment.content[0:50] }}
+        </a>
+    </div>
+</div>

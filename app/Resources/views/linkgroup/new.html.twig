@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="linkgroup">
+        <div class="form well bs-component">
+            {{ form_start(form) }}
+                <fieldset>
+                    <legend>{% trans %}linkgroup.add_new{% endtrans %}</legend>
+                    {{ form_widget(form) }}
+                    <div class="messages col-md-offset-2">
+                        *{% trans %}linkgroup.name_requirements{% endtrans %}
+                    </div>
+                    <div class="buttons">
+                        <a href="{{ path('linkgroup_index') }}" class="btn btn-primary">{% trans %}cancel{% endtrans %}</a>
+                        <button type="submit" class="btn btn-primary">{% trans %}linkgroup.save{% endtrans %}</button>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </fieldset>
+            {{ form_end(form) }}
+        </div>
+
+    </div>
+{% endblock %}

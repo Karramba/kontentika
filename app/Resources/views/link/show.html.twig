@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %} - {{ link.title }}{% endblock %}
+    
+{% block body %}
+    <div id="links">
+        <div class="row link box">
+            {% include '::link/box.html.twig' with {'link': link} %}
+        </div>
+        <div class="row link box">
+            <div class="comments-box" id="comments">
+                <h5>{% trans %}link.comments{% endtrans %}:</h5>
+                <ul class="comments">
+                    {% for comment in comments %}
+                        <li class="comment">
+                            <div class="main">{% include '::comment/box.html.twig' with {'comment': comment} %}</div>
+                            {% if comment.children | length > 0 %}
+                                <ul class="comments children">
+                                    {% for child in comment.children %}
+                                        <li class="comment child">
+                                            {% include '::comment/box.html.twig' with {'comment': child} %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </li>
+
+                    {% else %}
+                        <i>{% trans %}link.no_comments{% endtrans %}</i>
+                    {% endfor %}
+                </ul>
+                <hr>
+                {% if app.user is defined and app.user is not null %}
+                    <div class="form well bs-component">
+                        {{ form_start(comment_form) }}
+                            <fieldset>
+                                <legend>{% trans %}comment.add_new{% endtrans %}</legend>
+                                {{ form_widget(comment_form) }}
+                                <div class="buttons">
+                                    <button type="submit" class="btn btn-primary">{% trans %}comment.add{% endtrans %}</button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </fieldset>
+                        {{ form_end(comment_form) }}
+                    </div>
+                {% endif %}
+                
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{#% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@AppBundle/Resources/public/js/comment-reply.js' filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %#}

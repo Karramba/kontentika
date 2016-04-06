@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="link">
+        <div class="form well bs-component">
+            {#<h1>{% trans %}link.edit{% endtrans %}</h1>#}
+
+            {{ form_start(edit_form) }}
+                {{ form_errors(edit_form) }}
+                {{ form_row(edit_form.description) }}
+                <div class="form-group">
+                    
+                    <label class="col-sm-3 control-label">{% trans %}linkgroup.current_moderators{% endtrans %}</label>
+                    <div class="col-sm-9">
+                        <ul class="list-group" id="moderators-list" data-prototype="{{ form_widget(edit_form.moderators.vars.prototype)|e }}">
+                            {% for moderator in edit_form.moderators %}
+                                <li>
+                                    {{ form_errors(moderator) }}
+                                    <div class="input-group">
+                                        {{ form_widget(moderator) }}
+                                        <a href="#" class="btn btn-warning input-group-addon remove-moderator">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+                                    </div>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <span class="help-block"><i>{% trans %}linkgroup.no_moderators{% endtrans %}</i></span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <a href="#" id="add-moderator" class="btn btn-xs btn-primary">
+                            <i class="fa fa-plus-square-o"></i> {% trans %}linkgroup.add_moderator{% endtrans %}
+                        </a>
+                    </div>
+                </div>
+                <div class="form-group">
+
+                </div>
+
+                    <div class="buttons">
+                        <a href="{{ path('link_group_show', {'title': linkGroup.title}) }}" class="btn btn-primary">{% trans %}cancel{% endtrans %}</a>
+                        <button type="submit" class="btn btn-primary">{% trans %}link.save{% endtrans %}</button>
+                    </div>
+
+                <div class="clearfix"></div>
+                {{ form_rest(edit_form) }}
+            {{ form_end(edit_form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@AppBundle/Resources/public/js/vendor/jquery-autocomplet.min.js' filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+    var moderatorsCount = '{{ edit_form.moderators|length }}';
+
+
+    jQuery(document).ready(function() {
+        jQuery('#add-moderator').click(function(e) {
+            e.preventDefault();
+            var moderatorsList = jQuery('#moderators-list');
+
+            var newWidget = moderatorsList.attr('data-prototype');
+            newWidget = newWidget.replace(/__name__/g, moderatorsCount);
+            moderatorsCount++;
+
+
+            var deleteButton = '<a href="#" class="btn btn-warning input-group-addon remove-moderator"><i class="fa fa-trash-o"></i></a>';
+
+            var newLi = jQuery('<li></li>').html('<div class="input-group">' + newWidget + deleteButton +'</div>');
+            newLi.appendTo(moderatorsList);
+        });
+        
+        $("#moderators-list").on('click', '.remove-moderator', function(event) {
+            var $btn = $(this);
+            bootbox.confirm("Czy na pewno chcesz usunąć?", function(result) {
+                if (result) {
+                    $btn.closest('li').remove();
+                }
+            });
+            event.preventDefault();
+            /* Act on the event */
+        });
+        $(document).on('keydown.autocomplete', '.user-autocompleter', function() {
+            $(this).autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: "/u/json",
+                        dataType: "json",
+                        type: 'POST',
+                        data: {
+                            username: request.term
+                        },
+                        success: function(data) {
+                            response(data);
+                        }
+                    });
+                },
+                minLength: 2,
+                select: function(event, ui) {
+                },
+                open: function() {
+                    $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+                },
+                close: function() {
+                    $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+                }
+            });
+        });
+
+        
+    })
+</script>
+{% endblock %}

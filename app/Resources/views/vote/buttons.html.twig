@@ -1,0 +1,29 @@
+
+{% set upvoted = false %}
+{% set downvoted = false %}
+
+{% if app.user is defined and app.user is not null %}
+    {# check if link was upvoted by current user #}
+    {% for uv in content.upvotes %}
+        {% if uv.user == app.user %}
+            {% set upvoted = true %}
+        {% endif %}
+    {% endfor %}
+    {# check for downvotes (if there was no upvote) #}
+    {% if upvoted == false %}
+        {% for dv in content.downvotes %}
+            {% if dv.user == app.user %}
+                {% set downvoted = true %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endif %}
+
+<div class="vote-buttons" id="{{ content.uniqueId }}">
+    <a href="#" class="btn btn-default btn-vote btn-vote-up {% if upvoted %}btn-primary{% endif %}" data-id="{{ content.uniqueId }}" data-votetype="up" data-votefor="{{ contentType }}" data-id="{{ content.uniqueId }}">
+        <i class="fa fa-arrow-up"></i> <span class="upvotes">{{- content.totalUpvotes -}}</span>
+    </a>
+    <a href="#" class="btn btn-default btn-vote btn-vote-down {% if downvoted %}btn-danger{% endif %}" data-id="{{ content.uniqueId }}" data-votetype="down" data-votefor="{{ contentType }}" data-id="{{ content.uniqueId }}">
+        <i class="fa fa-arrow-down"></i> <span class="downvotes">{{- content.totalDownvotes -}}</span>
+    </a>
+</div>

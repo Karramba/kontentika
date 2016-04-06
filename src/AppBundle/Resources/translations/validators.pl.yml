@@ -1,0 +1,5 @@
+linkgroup:
+    name_too_short: Nazwa grupy jest za krótka (min. 3 znaki)
+    name_too_long: Nazwa grupy jest za długa (maks. 16 znaków)
+    name_invalid: Nazwa grupy jest nieprawidłowa, akceptowane są tylko znaki a-z (również wielkie), liczby i podkreślenie (_)
+    name_restricted: Grupa z tą nazwą nie może być utworzona. 

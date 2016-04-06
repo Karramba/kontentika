@@ -1,0 +1,53 @@
+<div class="list-group leftblock">
+    {% if app.request.get('_route') == "link_group_show" %}
+        {% set linkGroup = app.request.attributes.get('linkGroup') %}
+        <a href="{{ path('link_new_with_linkgroup', {'groupTitle': linkGroup.title}) }}" class="list-group-item active list-group-item-success"><i class="fa fa-share-alt"></i> {% trans %}link.add_new{% endtrans %}</a>
+        {% if app.user is not null and linkGroup.owner == app.user %}
+            <a href="{{ path('linkgroup_edit', {'title': linkGroup.title}) }}" class="list-group-item active list-group-item-info"><i class="fa fa-cog"></i> {% trans %}linkgroup.group_settings{% endtrans %}</a>
+        {% endif %}
+        <div class="admin list-group-item">
+            {% trans %}linkgroup.admin{% endtrans %}: <br>
+            <ul class="without-dots">
+                <li>
+                    <i class="fa fa-user"></i>  <a href="{{ path('user_show', {'username': linkgroup.owner.username}) }}">
+                    {{ linkgroup.owner.username }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+        {% if linkGroup.moderators|length > 0 %}
+            <div class="moderators list-group-item">
+                {% trans %}linkgroup.moderators{% endtrans %}:
+                <ul class="without-dots">
+                    {% for moderator in linkGroup.moderators %}
+                        <li>
+                            <i class="fa fa-user"></i> <a href="{{ path('user_show', {'username': moderator.username}) }}">{{ moderator.username }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% else %}
+        <a href="{{ path('link_new') }}" class="list-group-item active list-group-item-success"><i class="fa fa-share-alt"></i> {% trans %}link.add_new{% endtrans %}</a>
+    {% endif %}
+</div>
+
+
+
+
+<div class="list-group leftblock"> 
+    <div class="list-group-item">{% trans %}link.show_content_by{% endtrans %}:</div>
+    <a href="{{ path('link_index') }}" class="list-group-item {% if route == 'link_index' or route == 'link_index_page' %}active{% endif %}">
+        <i class="fa fa-fire"></i> {% trans %}link.best{% endtrans %}
+    </a>
+    <a href="{{ path('link_newest') }}" class="list-group-item {% if route == 'link_newest' or route == 'link_newest_page' %}active{% endif %}">
+        <i class="fa fa-list"></i> {% trans %}link.newest{% endtrans %}
+    </a>
+    <a href="{{ path('link_rising') }}" class="list-group-item {% if route == 'link_rising' or route == 'link_rising_page' %}active{% endif %}">
+        <i class="fa fa-list"></i> {% trans %}link.rising{% endtrans %}
+    </a>
+    {#<a href="{{ path('link_newest') }}" class="list-group-item {% if route == 'link_most_comments' %}active{% endif %}">
+        <i class="fa fa-commenting-o"></i> {% trans %}link.most_comments{% endtrans %}
+    </a>#}
+</div>
+

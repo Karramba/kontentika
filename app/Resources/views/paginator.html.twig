@@ -1,0 +1,29 @@
+{% if route_params is not defined %}
+    {% set route_params = {} %}
+{% endif %}
+<div class="col-xs-12 text-center">
+    <nav>
+        <ul class="pagination pagination-sm">
+            {% if pages > 1 %} 
+                    <li {% if page == 1 %}class="disabled"{% endif %}>
+                        <a href="{{ path(url, {'page': page - 1}|merge(route_params)) }}">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                {% for pageLoop in 1..pages %}
+                    {% if loop.index != page %}
+                        <li><a href="{{ path(url, {'page': loop.index}|merge(route_params)) }}">{{ loop.index }}</a>    
+                    {% else %}
+                        <li class="active"><a href="{{ path(url, {'page': loop.index}|merge(route_params)) }}">{{ loop.index }}</a>    
+                    {% endif %}
+                {% endfor %}
+                    <li {% if page == pages %}class="disabled"{% endif %}>
+                        <a href="{{ path(url, {'page': page + 1}|merge(route_params)) }}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+        <div class="entry-form">
+            <div class="form well bs-component">
+                {{ form_start(edit_form) }}
+                <fieldset>
+                    <legend>{% trans %}entry.edit{% endtrans %}</legend>
+                    {{ form_widget(edit_form) }}
+                    <div class="buttons">
+                        <a href="{{ path('entry_index') }}" class="btn btn-primary">{% trans %}cancel{% endtrans %}</a>
+                    <button type="submit" class="btn btn-primary">{% trans %}entry.save{% endtrans %}</button>
+                </div>
+                <div class="clearfix"></div>
+            </fieldset>
+            {{ form_end(edit_form) }}
+        </div>
+    </div>
+{% endblock %}

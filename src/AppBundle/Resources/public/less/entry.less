@@ -1,0 +1,73 @@
+.entries {
+    .entry {
+        &.avatar {
+            margin-top: 30px;
+        }
+        word-wrap: break-word;
+        margin: 20px 0 0 0;
+        .entry-title {
+            width: 100%;
+            padding: 5px;
+            .user {
+                padding: 2px;
+            }
+            .group, .time-added {
+                padding: 2px;
+                font-size: 14px;
+            }
+            .time-added {
+                color: rgba(100, 100, 100, 0.5);
+            }
+            .vote-buttons {
+                display: inline-block;
+                text-align: center;
+                padding: 0 2px 0 2px;
+                .btn-vote {
+                    padding: 0 4px 0 4px;
+                    line-height: 18px;
+                }
+            }
+        }
+        .entry-content {
+            padding: 5px 5px 5px 10px;
+            position: relative;
+
+            .content {
+                max-height: 200px;
+                overflow: hidden;                
+                &.full {
+                    max-height: 100% !important;
+                }
+            }
+
+            .options {
+                // position: absolute;
+                text-align: right;
+                bottom: 0;
+                right: 0;
+                opacity: 0.5;
+                padding: 2px;
+                a {
+                    color: rgba(100, 100, 100, 0.6);
+                    padding: 2px;
+                }
+                a:hover {
+                    color: rgba(50, 50, 50, 1);
+                    text-decoration: none;
+                }
+            }
+            .options:hover {
+                opacity: 0.8;
+            }
+        }
+
+    }
+    .children {
+        .entry {
+            margin: 0;
+            &.avatar {
+                margin-top: 10px;
+            }
+        }
+    }
+}

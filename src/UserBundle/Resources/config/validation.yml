@@ -1,0 +1,5 @@
+UserBundle\Entity\User:
+    properties:
+        username:
+            - Length:
+                min: 3

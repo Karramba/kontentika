@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %} - {% trans %}menu.entries{% endtrans %}{% endblock %}
+
+{% block body %}
+    <div class="entries row">
+        {% include '::entry/entry.html.twig' with {'entry': entry} only %}
+    </div>
+{% endblock %}

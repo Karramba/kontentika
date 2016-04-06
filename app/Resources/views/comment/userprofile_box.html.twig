@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col-xs-2 col-sm-2 col-md-1">
+        <a href="{{ path('user_show', {'username': comment.user}) }}">
+            <div class="comment avatar">
+                {% if comment.user.avatar is not null %}
+                    <img src="{{ comment.user.avatar | imagine_filter('profile_thumb') }}" />
+                {% else %}
+                    <img src="{{ asset('bundles/app/images/link/default.png' | imagine_filter('profile_thumb')) }}" />
+                {% endif %}
+            </div>
+        </a>
+        <div class="clearfix"></div>
+    </div>
+    <div class="col-xs-10 col-sm-10 col-md-11">
+
+        <div class="author">
+                <span class="user"><a href="{{ path('user_show', {'username': comment.user}) }}">{{ comment.user }}</a></span>
+                <div class="pull-right">
+                    <span class="time-added"><i class="fa fa-clock-o"></i> {{ comment.added | ago }}</span>
+                    {% if comment.deletedAt is null %}
+                        {% include "::vote/buttons.html.twig" with {'content': comment, 'contentType': 'comment'} only %}
+                    {% endif %}
+                </div>
+        </div>
+        <div class="comment-content" id="comment-{{ comment.uniqueId }}">
+            {% if comment.deletedAt is not null %}
+                <i>{% trans %}comment.deleted{% endtrans %}</i>
+            {% else %}
+                <div class="content">
+                    {{ comment.content|markdown|findUsers|createUrls }}
+                </div>
+                {% if countBR(comment.content) > 5 or comment.content|length > 500 %}
+                    <div class="more">
+                        <button class="btn btn-default btn-xs btn-show" data-contentid="comment-{{ comment.uniqueId }}">{% trans %}show_all{% endtrans %}</button>
+                    </div>
+                {% endif %}
+                {# <div class="options">
+                    <a href="{{ path('link_show', {'uniqueId': comment.link.uniqueId, 'slug': comment.link.slug}) }}#comment-{{ comment.uniqueId }}"><i class="fa fa-link"></i> {% trans %}hreflink{% endtrans %}</a>
+                </div> #}
+            {% endif %}
+
+        </div>
+    </div>
+</div>

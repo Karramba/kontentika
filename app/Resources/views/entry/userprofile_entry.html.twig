@@ -1,0 +1,56 @@
+<div class="col-md-1">
+    <div class="entry avatar">
+        <a href="{{ path('user_show', {'username': entry.user}) }}">
+            {% if entry.user.avatar is not null %}
+                <img src="{{ entry.user.avatar | imagine_filter('profile_thumb') }}" />
+            {% else %}
+                <img src="{{ asset('bundles/app/images/link/default.png' | imagine_filter('profile_thumb')) }}" />
+            {% endif %}
+        </a>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="col-md-11">
+    <div class="panel panel-default entry">
+        <div class="panel-heading entry-title">
+            <h3 class="panel-title">
+                <span class="user"><a href="{{ path('user_show', {'username': entry.user}) }}">{{ entry.user }}</a></span>
+                <div class="pull-right">
+                    <span class="time-added"><i class="fa fa-clock-o"></i> {{ entry.added | ago }}</span>
+                    {% if entry.group is not null %}
+                        <span class="group"><a href="#">g/{{ entry.group }}</a></span>
+                    {% endif %}
+                    {% if entry.deletedAt is null %}
+                        {% include "::vote/buttons.html.twig" with {'content': entry, 'contentType': 'entry'} only %}
+                    {% endif %}
+                </div>
+            </h3>
+                    
+        </div>
+        <div class="panel-body entry-content" id="entry-{{ entry.uniqueId }}">
+            {% if entry.deletedAt is not null %}
+                <i>{% trans %}entry.deleted{% endtrans %}</i>
+            {% else %}
+                <div class="content">
+                    {{ entry.content|markdown|findUsers|createUrls }}
+                </div>
+                {% if countBR(entry.content) > 5 or entry.content|length > 500 %}
+                    <div class="more">
+                        <button class="btn btn-default btn-xs btn-show" data-contentid="entry-{{ entry.uniqueId }}">{% trans %}show_all{% endtrans %}</button>
+                    </div>
+                {% endif %}
+                    <div class="options">
+                        {#% if entry.parent is not null %}
+                            {% set uniqueId = entry.parent.uniqueId %}
+                        {% else %}
+                            {% set uniqueId = entry.uniqueId %}
+                        {% endif %#}
+                        {#<a href="{{ path('entry_show', {'uniqueId': uniqueId}) }}#entry-{{ entry.uniqueId }}">
+                            <i class="fa fa-link"></i> {% trans %}hreflink{% endtrans %}
+                        </a>#}
+                        
+                    </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

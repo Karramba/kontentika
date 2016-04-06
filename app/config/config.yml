@@ -1,0 +1,174 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+    - { resource: "@UserBundle/Resources/config/services.yml" }
+    - { resource: "@AppBundle/Resources/config/services.yml" }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: pl
+
+framework:
+    #esi:             ~
+    #translator:      { fallbacks: ["%locale%"] }
+    translator:      ~
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    #serializer:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        cookie_lifetime: 7776000
+        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id:  session.handler.native_file
+        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+        # handler_id: snc_redis.session.handler
+    fragments:       ~
+    http_method_override: true
+    assets: ~
+
+# Twig Configuration
+twig:
+    form_themes: ['::Form/kick_bootstrap.html.twig']
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    globals:
+        site_name: "%site_name%"
+
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   pdo_mysql
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #     path:     "%database_path%"
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+        filters:
+            softdeleteable:
+                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+                enabled: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    encryption: "%mailer_encryption%"
+    spool:     { type: memory }
+
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: UserBundle\Entity\User
+    profile:
+        form:
+            type: UserBundle\Form\ProfileFormType
+
+
+
+stof_doctrine_extensions:
+    default_locale: %locale%
+    orm:
+        default:
+            softdeleteable: true
+            sluggable: true
+            timestampable: true
+
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
+        less:
+            node: /usr/bin/node
+            node_paths: [/usr/lib/node_modules]
+            bin: /usr/bin/lessc
+        uglifyjs2:
+            # the path to the uglifyjs executable
+            bin: /usr/bin/uglifyjs
+
+liip_imagine:
+    default_image: 'bundles/app/images/link/default.png'
+    resolvers:
+       default:
+          web_path: ~
+
+    filter_sets:
+        cache: ~
+        main_thumb:
+            quality: 90
+            filters:
+                thumbnail: { size: [90, 90], mode: outbound }
+                background: { size: [90, 90], color: '#ffffff' }
+        best_rated_thumb:
+            quality: 90
+            filters:
+                thumbnail: { size: [50, 50], mode: outbound }
+                background: { size: [50, 50], color: '#ffffff' }
+        profile_thumb:
+            quality: 90
+            animated: true
+            filters:
+                thumbnail: { size: [48, 48], mode: outbound }
+                background: { size: [48, 48], color: '#ffffff' }
+
+
+knp_markdown:
+    parser:
+        service: kontentika.markdown.parser
+
+
+snc_redis:
+    clients:
+        default:
+            type: predis
+            alias: default
+            dsn: redis://%redis_host%
+        cache:
+            type: predis
+            alias: cache
+            dsn: redis://%redis_host%/1
+            options:
+                profile: 2.2
+                connection_timeout: 10
+                read_write_timeout: 30
+    doctrine:
+        metadata_cache:
+            client: cache
+            entity_manager: default          # the name of your entity_manager connection
+            document_manager: default        # the name of your document_manager connection
+        result_cache:
+            client: cache
+            entity_manager: [default]  # you may specify multiple entity_managers
+        query_cache:
+            client: cache
+            entity_manager: default
+        second_level_cache:
+            client: cache
+            entity_manager: default

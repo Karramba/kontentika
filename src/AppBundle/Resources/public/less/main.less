@@ -1,0 +1,80 @@
+.panel-body.panel-best-rated {
+    padding: 0 15px 0 15px;
+}
+
+.popover {
+    max-width: 100%; 
+}
+
+.btn-show {
+    width: 100%;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+ul.without-dots {
+    list-style: none;
+    padding-left: 10px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.notifications {
+    .notifications-number {
+        background-color: red;
+        color: white;
+        padding: 0 4px 0 4px;
+        border-radius: 5px;
+        font-size: 12px;
+        position: absolute;
+        top: 5px;
+        right: 8px;
+        line-height: 1.5;
+        font-weight: bold;
+        &.zero {
+            visibility: hidden;
+        }
+    }
+    .notification.unread {
+        // background-color: rgba(50, 50, 50, 0.2);
+        background-color: #f0f0f0;
+    }
+}
+@media (min-width: 768px) {
+    nav.navbar {
+        font-size: 16px;
+        min-height: 48px;
+        max-height: 48px;
+    }
+
+    .navbar-form {
+        margin-bottom: 0px;
+        margin-top: 0px;
+        padding: 6px 25px;
+    }
+
+    .top-news {
+        margin-top: 0;
+    }
+    .navbar-nav>li>a {
+        padding-top: 12.5px;
+        padding-bottom: 12.5px;
+    }
+
+    .navbar-brand {
+        padding: 12.5px;
+        height: 48px; 
+    }
+
+}
+@media (max-width: 768px) {
+/*    .navbar-nav>li>a {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }*/
+}

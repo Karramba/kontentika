@@ -1,0 +1,23 @@
+services:
+    kick.twig_extension:
+        class: AppBundle\Twig\KickExtension
+        arguments: 
+            - "@request_stack"
+            - "@doctrine.orm.entity_manager"
+            - "@auth.service"
+            - "@snc_redis.default"
+        tags:
+            - { name: twig.extension }
+    auth.service:
+        class:     AppBundle\Service\AuthService
+        arguments: ['@security.token_storage']
+    kontentika.markdown.parser:
+        class:  AppBundle\Parser\KontentikaParser
+        public: false
+    notification.service:
+        class:  AppBundle\Service\NotificationService
+        arguments: 
+            - '@doctrine.orm.entity_manager'
+            - '@translator'
+            - '@security.token_storage'
+

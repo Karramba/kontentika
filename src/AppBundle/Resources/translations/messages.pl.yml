@@ -1,0 +1,119 @@
+edit: Edytuj
+save: Zapisz
+cancel: Anuluj
+delete: Usuń
+hreflink: Link
+options: Opcje
+show_all: Pokaż całość
+
+menu:
+    contents: Treści
+    groups: Grupy
+    entries: Wpisy
+    profile: Profil
+    comments: Komentarze
+    search: Szukaj
+    issues: Zgłoszenia
+    profile_edit: Edycja profilu
+
+link:
+    best: Najlepsze
+    new: Nowy
+    add_new: Dodaj nowy link
+    edit: Edytuj
+    save: Zapisz
+    comments_transchoice: '{0}Brak komentarzy|{1}commentsNumber komentarz|{2,3,4}commentsNumber komentarze|]4,Inf[commentsNumber komentarzy'
+    comments: Komentarze
+    newest: Najnowsze
+    rising: Wschodzące
+    add_new: Dodaj link
+    most_commented: Najczęściej komentowane
+    most_comments: Najwięcej komentarzy
+    best_rated: Najlepiej oceniane
+    show_content_by: Pokaż linki
+    no_comments: Brak komentarzy
+    added_flash: Treśc dodana pomyślnie
+    edited_and_saved: Treść została zapisana
+    deleted: Treść została usunięta
+    edition_impossible: Przepraszamy. Edycja treści nie jest już możliwa.
+    adult_content: Treść +18 lat
+
+linkgroup:
+    new: Nowa grupa
+    add_new: Utwórz nową grupę
+    save: Zapisz
+    create: Utwórz
+    name: Nazwa grupy*
+    name_requirements: Nazwa grupy wymaga minimalnie 3, maksymalnie 32 znaków. Nazwa może składać się tylko z liter, liczb oraz podkreślenia (_)
+    newest: Najnowsze
+    order_by: Pokaż grupy
+    created: Utworzona
+    created %datetime% by: utworzona %datetime% przez
+    created_flash: Grupa została utworzona
+    no_description: Brak opisu
+    add_moderator: Dodaj moderatora
+    current_moderators: Moderatorzy grupy
+    no_moderators: Brak moderatorów
+    group_settings: Ustawienia grupy
+    groupowner_as_moderator_forbidden: Nie możesz dodać się jako moderator własnej grupy
+    moderators: Moderatorzy grupy
+    admin: Administrator grupy
+    settings_saved: Ustawienia zostały zapisane
+
+    
+entry:
+    add: Dodaj wpis
+    add_new: Dodaj nowy wpis
+    save: Zapisz
+    reply: Odpowiedz
+    edit: Edytuj wpis
+    edited_and_saved: Treść wpisu została zapisana
+    deleted: Wpis został usunięty
+    new_reply: Odpowiedz na wpis
+    add_reply: Dodaj odpowiedź
+    error_adding: Wystąpił błąd w dodawaniu odpowiedzi
+    added_successfully: Odpowiedź dodana pomyślnie
+    cannot_add_entry_deleted: Nie można odpowiadać na usunięty wpis
+
+entries:
+    last: Najnowsze wpisy
+
+comments:
+    last: Najnowsze komentarze
+
+comment:
+    add: Dodaj komentarz
+    add_new: Dodaj nowy komentarz
+    edited_and_saved: Komentarz został wyedytowany
+    edit: Edytuj komentarz
+    reply: Odpowiedz
+    deleted: Komentarz został usunięty
+    new: Nowy komentarz
+    new_reply: Odpowiedz na komentarz
+    add_reply: Dodaj odpowiedź
+    error_adding: Wystąpił błąd w dodawaniu odpowiedzi
+    added_successfully: Odpowiedź dodana pomyślnie
+
+alert:
+    success: Sukces
+    danger: Błąd
+    warning: Uwaga
+
+Title: Tytuł
+Description: Opis
+Url: Adres URL
+Group: Grupa
+Content: Treść
+
+notification:
+    no_notifications: Brak nieprzeczytanych powiadomień 
+    comment_deleted: usunął Twój komentarz
+    entry_deleted: usunął Twój wpis
+    link_deleted: usunął Twoją treść
+    mark_as_read: Oznacz jako przeczytane
+    entry_replied: odpowiedział(a) na Twój wpis
+    comment_replied: odpowiedział(a) na Twój komentarz
+
+
+
+

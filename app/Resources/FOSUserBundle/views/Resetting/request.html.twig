@@ -1,0 +1,9 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block fos_user_content %}
+    <div class="link">
+        <div class="form well bs-component">
+            {% include "FOSUserBundle:Resetting:request_content.html.twig" %}
+        </div>
+    </div>
+{% endblock fos_user_content %}

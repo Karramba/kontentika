@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{%- block subtitle %}
+    {% if subtitle is defined and subtitle is not null %}
+        - {{ subtitle|trans }}
+    {% endif %}
+    {% if linkgroup is defined and linkgroup is not null %}
+        - {{ linkgroup.title }}
+    {% endif %}
+{% endblock -%}
+
+{% block body %}
+    <div id="links"> 
+        {% for link in links %}
+            <div class="row link box">
+                {% include '::link/box.html.twig' with {'link': link} %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="paginator">
+        {% include '::paginator.html.twig' with {'url': paginationRoute, 'page': page, 'pages': pages} %}
+    </div>
+{% endblock %}

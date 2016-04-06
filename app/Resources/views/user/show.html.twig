@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for content in contents %}
+            {% if class(content) == "Link" %}
+                <div class="row link box">
+                    {% include '::link/userprofile_box.html.twig' with {'link': content} %}
+                </div>
+            {% elseif class(content) == "Entry" %}
+                <div class="entries">
+                    <div class="row link box">
+                        {% include '::entry/userprofile_entry.html.twig' with {'entry': content} %}
+                    </div>
+                </div>
+            {% elseif class(content) == "Comment" %}
+                <div class="row link box">
+                    <div class="comments-box">
+                        <ul class="comments">
+                            <li class="comment">
+                                <div class="main">
+                                    {% include '::comment/userprofile_box.html.twig' with {'comment': content} %}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+    {% endfor %}
+    <div id="paginator">
+        {% include '::paginator.html.twig' with {'url': paginationRoute, 'page': page, 'pages': pages, 
+            'route_params': {'username': user.username}
+        } %}
+    </div>
+{% endblock %}
