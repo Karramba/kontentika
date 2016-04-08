@@ -66,7 +66,7 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
     {
         $this->query->andWhere("l.mainpageAt is null");
         $this->query->andWhere("l.added > :newestExpirationTime")
-            ->setParameter("newestExpirationTime", new \DateTime('-1 day'));
+            ->setParameter("newestExpirationTime", new \DateTime('-52 hours'));
 
         return $this->getResult($page, $linksPerPage);
     }
@@ -99,7 +99,7 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
         $this->query->addSelect("(l.totalUpvotes - l.totalDownvotes) as HIDDEN _total_votes");
         $this->query->andWhere("l.mainpageAt is null");
         $this->query->andWhere("l.added > :newestExpirationTime")
-            ->setParameter("newestExpirationTime", new \DateTime('-1 day'));
+            ->setParameter("newestExpirationTime", new \DateTime('-3 days'));
         $this->query->orderBy("_total_votes", "DESC");
 
         return $this->getResult($page, $linksPerPage);
