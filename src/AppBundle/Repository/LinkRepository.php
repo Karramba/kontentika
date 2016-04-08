@@ -64,6 +64,8 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
      */
     public function findNewestLinks($user, $page, $linksPerPage)
     {
+        $this->query->andWhere("l.mainpageAt is null");
+
         return $this->getResult($page, $linksPerPage);
     }
 
@@ -120,7 +122,8 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
             ->leftjoin("l.downvotes", "dv")
             ->orderBy('l.id', 'DESC')
             ->where("(l.totalUpvotes - l.totalDownvotes) > -5")
-            ->andWhere("l.group = :linkGroup")->setParameter("linkGroup", $linkGroup);
+            ->andWhere("l.group = :linkGroup")->setParameter("linkGroup", $linkGroup)
+        ;
 
         $result = $query->setFirstResult(($page - 1) * $linksPerPage)
             ->setMaxResults($linksPerPage);
