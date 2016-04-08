@@ -39,11 +39,6 @@
                 <div class="content">
                     {{ entry.content|markdown|findUsers|createUrls }}
                 </div>
-                {#% if countBR(entry.content) > 5 or entry.content|length > 500 %}
-                    <div class="more">
-                        <button class="btn btn-default btn-xs btn-show" data-contentid="entry-{{ entry.uniqueId }}">{% trans %}show_all{% endtrans %}</button>
-                    </div>
-                {% endif %#}
                 <div class="options">
                     {% if app.user == entry.user %}
                         <a href="{{ path('entry_edit', {'uniqueId': entry.uniqueId}) }}">
