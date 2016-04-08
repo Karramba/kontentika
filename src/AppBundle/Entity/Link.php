@@ -119,6 +119,11 @@ class Link extends AbstractUniqueContent
      */
     private $adult;
 
+    /**
+     * @ORM\Column(name="image_only", type="boolean", nullable=true)
+     */
+    private $imageOnly;
+
     public function __construct()
     {
         parent::__construct();
@@ -584,5 +589,29 @@ class Link extends AbstractUniqueContent
     public function getAdult()
     {
         return $this->adult;
+    }
+
+    /**
+     * Set imageOnly
+     *
+     * @param boolean $imageOnly
+     *
+     * @return Link
+     */
+    public function setImageOnly($imageOnly)
+    {
+        $this->imageOnly = $imageOnly;
+
+        return $this;
+    }
+
+    /**
+     * Get imageOnly
+     *
+     * @return boolean
+     */
+    public function getImageOnly()
+    {
+        return $this->imageOnly;
     }
 }
