@@ -31,9 +31,9 @@ framework:
     session:
         cookie_lifetime: 7776000
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
-        handler_id:  session.handler.native_file
-        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
-        # handler_id: snc_redis.session.handler
+        # handler_id:  session.handler.native_file
+        # save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+        handler_id: snc_redis.session.handler
     fragments:       ~
     http_method_override: true
     assets: ~
@@ -114,7 +114,7 @@ assetic:
             bin: /usr/bin/uglifyjs
 
 liip_imagine:
-    default_image: 'bundles/app/images/link/default.png'
+    default_image: '/bundles/app/images/link/default.png'
     resolvers:
        default:
           web_path: ~
@@ -172,3 +172,6 @@ snc_redis:
         second_level_cache:
             client: cache
             entity_manager: default
+    session:
+        client: default
+        ttl: 7776000
