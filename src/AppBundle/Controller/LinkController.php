@@ -208,6 +208,20 @@ class LinkController extends Controller
     /**
      * Finds and displays a Link entity.
      *
+     * @Route("/l/{uniqueId}", name="link_short")
+     * @Method("GET")
+     */
+    public function shortLinkAction(Link $link)
+    {
+        return $this->redirectToRoute('link_show', array(
+            'uniqueId' => $link->getUniqueId(),
+            'slug' => $link->getSlug(),
+        ));
+    }
+
+    /**
+     * Finds and displays a Link entity.
+     *
      * @Route("/l/{uniqueId}/{slug}", name="link_show")
      * @Method("GET")
      */
