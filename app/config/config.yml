@@ -45,7 +45,7 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
         site_name: "%site_name%"
-
+        repository_url: "%repository_url%"
 
 # Doctrine Configuration
 doctrine:

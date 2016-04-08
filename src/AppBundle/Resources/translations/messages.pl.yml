@@ -114,6 +114,7 @@ notification:
     entry_replied: odpowiedział(a) na Twój wpis
     comment_replied: odpowiedział(a) na Twój komentarz
 
-
+code:
+    repository: Repozytorium
 
 
