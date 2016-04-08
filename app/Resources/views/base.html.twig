@@ -147,6 +147,12 @@
                 <div class="col-md-3">
                     {% block rightblock %}
                         <div class="panel panel-default">
+                            <div class="panel-body">
+                                <i class="fa fa-github"></i> 
+                                <a href="{{ repository_url }}" target="_blank">{% trans %}code.repository{% endtrans %} {{ site_name }}</a>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
                           <div class="panel-heading">{% trans %}link.best_rated{% endtrans %}</div>
                           <div class="panel-body panel-best-rated">
                             {% for link in bestRated(30) %}
