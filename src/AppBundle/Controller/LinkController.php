@@ -142,6 +142,14 @@ class LinkController extends Controller
             $link->setDomain($this->findDomain($link->getUrl()));
             $this->downloadAndSaveImage($link);
 
+            $headers = @get_headers($link->getUrl(), 1);
+
+            if (isset($headers['Content-Type'])) {
+                if (strpos($headers['Content-Type'], 'image/') !== false) {
+                    $link->setImageOnly(true);
+                }
+            }
+
             $this->getUser()->addLink($link);
 
             $em->persist($link);

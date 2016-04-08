@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use UserBundle\Entity\User;
 
 /**
- *
+ * Twig extension
  */
 class KickExtension extends \Twig_Extension
 {

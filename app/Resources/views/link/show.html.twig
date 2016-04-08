@@ -7,6 +7,11 @@
         <div class="row link box">
             {% include '::link/box.html.twig' with {'link': link} %}
         </div>
+        {% if link.imageOnly == true %}
+            <div class="row link box thumbnail">
+                <img src="{{ link.url }}">
+            </div>
+        {% endif %}
         <div class="row link box">
             <div class="comments-box" id="comments">
                 <h5>{% trans %}link.comments{% endtrans %}:</h5>
