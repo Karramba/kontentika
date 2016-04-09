@@ -186,7 +186,7 @@ class VideoEmbedder
         }
 
         $out =
-            "<video src=\"$url\" controls=\"controls\">\n" .
+            "<video src=\"$url\" controls=\"controls\" style=\"width:100%\">\n" .
             "Your browser <a href=\"http://en.wikipedia.org/wiki/HTML5_video#Browser_support\">does not support HTML5 and/or this codec</a>.\n" .
             "</video><br>\n";
 
