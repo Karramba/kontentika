@@ -192,7 +192,7 @@ class KickExtension extends \Twig_Extension
     {
         $embedCode = $this->videoEmbedder->embedVideo($url);
         if (!is_null($embedCode)) {
-            return '<div class="thumbnail">' . $embedCode . '</div>';
+            return '<div class="row link box thumbnail">' . $embedCode . '</div>';
         }
         return false;
     }
