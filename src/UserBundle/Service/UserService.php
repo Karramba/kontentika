@@ -34,8 +34,7 @@ class UserService
     {
         $foundUsers = array();
 
-        foreach ($users as $mentionedUser) {
-            $username = substr($mentionedUser, 1); // username without "@"
+        foreach ($users as $username) {
             $user = $this->redis->get('user:' . $username);
 
             if (!$user) {
@@ -48,5 +47,19 @@ class UserService
             }
         }
         return $foundUsers;
+    }
+
+    public function findMentions($content)
+    {
+        $users = array();
+        preg_match_all("/\@[a-ż0-9\_\-]+/i", $content, $result);
+
+        if (isset($result[0]) && sizeof($result[0]) > 0) {
+            $users = array_unique($result[0]);
+            foreach ($users as $key => &$user) {
+                $user = substr($user, 1); // username without "@"
+            }
+        }
+        return $users;
     }
 }

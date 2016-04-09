@@ -113,6 +113,7 @@ notification:
     mark_as_read: Oznacz jako przeczytane
     entry_replied: odpowiedział(a) na Twój wpis
     comment_replied: odpowiedział(a) na Twój komentarz
+    entry_mention: wspomniał(a) o Tobie we wpisie
 
 code:
     repository: Repozytorium

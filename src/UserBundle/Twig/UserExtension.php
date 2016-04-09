@@ -49,15 +49,11 @@ class UserExtension extends \Twig_Extension
      */
     public function findUsers($content)
     {
-        preg_match_all("/\@[a-ż0-9\_\-]+/i", $content, $result);
+        $mentions = $this->userService->findMentions($content);
+        $foundUsernames = $this->userService->findMentionedUsers($mentions);
 
-        if (isset($result[0]) && sizeof($result[0]) > 0) {
-            $users = array_unique($result[0]);
-            $foundUsernames = $this->userService->findMentionedUsers($users);
-            foreach ($foundUsernames as $username) {
-                $content = str_replace($username, "<a href=/u/" . $username . ">{$username}</a>", $content);
-            }
-
+        foreach ($foundUsernames as $username) {
+            $content = str_replace($username, "<a href=/u/" . $username . ">{$username}</a>", $content);
         }
         return $content;
     }
