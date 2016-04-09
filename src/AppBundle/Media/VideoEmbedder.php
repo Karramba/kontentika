@@ -12,7 +12,7 @@ class VideoEmbedder
     /**
      * @var array
      */
-    private $video_embedders = array('redtube', 'vimeo', 'youtube', 'html5', 'vine');
+    private $video_embedders = array('redtube', 'vimeo', 'youtube', 'html5', 'vine', 'gfy');
 
     /**
      * @param $query
@@ -193,6 +193,19 @@ class VideoEmbedder
         return $this->tagMedia($out, "", $url, "HTML5", "html5");
     }
 
+    public function embedGfyVideo($url)
+    {
+        $u = parse_url(html_entity_decode($url));
+        if ($u == null) {
+            return null;
+        }
+
+        if ($u['host'] == "gfycat.com") {
+            $path = substr($u['path'], 1);
+            return "<img class=\"gfyitem\" data-id=\"{$path}\" data-title=true data-autoplay=false data-controls=true data-expand=false />";
+        }
+    }
+
     /**
      * @param $out
      * @param $prefix
@@ -226,7 +239,7 @@ class VideoEmbedder
             $f = "embed" . ucfirst($embedder) . "Video";
             $out = $this->$f($url);
             if (!is_null($out)) {
-                return $out;
+                return "<div class=\"embeddedVideo\">$out</div>";
             }
 
         }
