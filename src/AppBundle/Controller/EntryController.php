@@ -101,6 +101,8 @@ class EntryController extends Controller
 
             $this->addFlash('success', 'entry.edited_and_saved');
 
+            $this->get('notification.service')->addMentionNotification($entry, "entry_edited");
+
             if ($entry->getParent()) {
                 $uniqueId = $entry->getParent()->getUniqueId();
             } else {
@@ -185,7 +187,7 @@ class EntryController extends Controller
                     if ($entry->getUser() != $this->getUser()) {
                         $this->get('notification.service')->addReplyNotification($entry, "entry_replied");
                     }
-                    $this->get('notification.service')->addMentionNotification($entry, "entry_mention");
+                    $this->get('notification.service')->addMentionNotification($reply, "entry_mention");
 
                 } else {
                     $this->addFlash('danger', 'entry.cannot_add_entry_deleted');

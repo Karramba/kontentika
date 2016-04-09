@@ -80,6 +80,14 @@ class Entry extends AbstractUniqueContent
      */
     private $totalDownvotes;
 
+    /**
+     * @var \DateTime $updated
+     *
+     * @Gedmo\Timestampable(on="change", field={"content"})
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updated;
+
     public function __construct()
     {
         parent::__construct();
@@ -381,5 +389,29 @@ class Entry extends AbstractUniqueContent
     public function getDownvotes()
     {
         return $this->downvotes;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     *
+     * @return Entry
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
     }
 }

@@ -34,6 +34,9 @@
                     </div>
                 {% endif %#}
                 <div class="options">
+                    {% if comment.updated is not null %}
+                        <span>*{% trans %}edited{% endtrans %}: {{ comment.updated|ago}}</span>
+                    {% endif %}
                     {% if app.user == comment.user %}
                         <a href="{{ path('comment_edit', {'uniqueId': comment.uniqueId}) }}">
                             <i class="fa fa-pencil-square-o"></i> {% trans %}edit{% endtrans %}

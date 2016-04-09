@@ -28,6 +28,7 @@ class NotificationService
     private $user;
 
     private $userService;
+    private $repliedTo;
 
     /**
      * @param EntityManager $em
@@ -69,6 +70,7 @@ class NotificationService
     public function addReplyNotification($content, $message, array $params = array())
     {
         $notification = $this->buildNotification($content->getUser(), $content, $message, $params);
+        $this->repliedTo = $content->getUser();
 
         $this->em->persist($notification);
         $this->em->flush();
@@ -84,7 +86,7 @@ class NotificationService
              * We have to check that current user didn't mention himself.
              * Content owner is mentioned by addReplyNotification.
              */
-            if ($user != $this->user && $user != $content->getUser()) {
+            if ($user != $this->user && $user != $content->getUser() && $user != $this->repliedTo) {
                 $notification = $this->buildNotification($user, $content, $message, $params);
                 $this->em->persist($notification);
             }

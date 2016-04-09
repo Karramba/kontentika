@@ -80,6 +80,14 @@ class Comment extends AbstractUniqueContent
      */
     private $children;
 
+    /**
+     * @var \DateTime $updated
+     *
+     * @Gedmo\Timestampable(on="change", field={"content"})
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updated;
+
     public function __construct()
     {
         parent::__construct();
@@ -380,5 +388,29 @@ class Comment extends AbstractUniqueContent
     public function getChildren()
     {
         return $this->children;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     *
+     * @return Comment
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
     }
 }

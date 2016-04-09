@@ -5,6 +5,7 @@ delete: Usuń
 hreflink: Link
 options: Opcje
 show_all: Pokaż całość
+edited: Edytowano
 
 menu:
     contents: Treści
@@ -114,7 +115,9 @@ notification:
     entry_replied: odpowiedział(a) na Twój wpis
     comment_replied: odpowiedział(a) na Twój komentarz
     entry_mention: wspomniał(a) o Tobie we wpisie
+    entry_edited: wyedytował(a) swój wpis
     comment_mention: wspomiał(a) o Tobie w komentarzu
+    comment_edited: wyedytował(a) swój komentarz
 
 code:
     repository: Repozytorium
