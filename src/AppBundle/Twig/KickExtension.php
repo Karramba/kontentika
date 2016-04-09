@@ -190,7 +190,11 @@ class KickExtension extends \Twig_Extension
 
     public function embedVideo($url)
     {
-        return '<div class="thumbnail">' . $this->videoEmbedder->embedVideo($url) . '</div>';
+        $embedCode = $this->videoEmbedder->embedVideo($url);
+        if (!is_null($embedCode)) {
+            return '<div class="thumbnail">' . $embedCode . '</div>';
+        }
+        return false;
     }
 
     /**
