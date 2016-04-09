@@ -101,6 +101,8 @@ class EntryController extends Controller
 
             $this->addFlash('success', 'entry.edited_and_saved');
 
+            $this->get('notification.service')->addMentionNotification($entry, "entry_edited");
+
             if ($entry->getParent()) {
                 $uniqueId = $entry->getParent()->getUniqueId();
             } else {

@@ -88,6 +88,8 @@ class CommentController extends Controller
             $em->persist($comment);
             $em->flush();
 
+            $this->get('notification.service')->addMentionNotification($comment, "comment_edited");
+
             $this->addFlash('success', 'comment.edited_and_saved');
 
             $link = $comment->getLink();
