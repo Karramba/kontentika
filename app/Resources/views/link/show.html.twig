@@ -11,6 +11,8 @@
             <div class="row link box thumbnail">
                 <img src="{{ link.url }}">
             </div>
+        {% else  %}
+            {{ link.url|embedIfVideo }}
         {% endif %}
         <div class="row link box">
             <div class="comments-box" id="comments">

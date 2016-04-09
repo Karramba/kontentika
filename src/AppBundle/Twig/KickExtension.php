@@ -57,6 +57,14 @@ class KickExtension extends \Twig_Extension
                     'is_safe' => array('html'),
                 )
             ),
+            new \Twig_SimpleFilter(
+                'embedIfVideo',
+                array($this, 'embedVideo'),
+                array(
+                    'pre_escape' => 'html',
+                    'is_safe' => array('html'),
+                )
+            ),
         );
     }
 
@@ -180,6 +188,11 @@ class KickExtension extends \Twig_Extension
         return $this->authService->haveModerationToolsAccess($group);
     }
 
+    public function embedVideo($url)
+    {
+        return $this->videoEmbedder->embedVideo($url);
+    }
+
     /**
      * method that finds different occurrences of urls or email addresses in a string.
      *
@@ -206,6 +219,7 @@ class KickExtension extends \Twig_Extension
         $url = $matches[2];
 
         $video = $this->videoEmbedder->embedVideo($url);
+
         if (!is_null($video)) {
             return $video;
         }
