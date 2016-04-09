@@ -283,6 +283,7 @@ class LinkController extends Controller
             'comments' => $comments,
             'delete_form' => $deleteFormView,
             'comment_form' => $comment_form->createView(),
+            'link_details' => true,
         ));
     }
 
