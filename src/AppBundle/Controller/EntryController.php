@@ -37,8 +37,11 @@ class EntryController extends Controller
 
         if ($this->getUser() instanceof User && $form->isSubmitted() && $form->isValid()) {
             $this->getUser()->addEntry($entry);
+
             $em->persist($entry);
             $em->flush();
+
+            $this->get('notification.service')->addMentionNotification($entry, "entry_mention");
 
             return $this->redirectToRoute('entry_index');
         }
@@ -182,6 +185,7 @@ class EntryController extends Controller
                     if ($entry->getUser() != $this->getUser()) {
                         $this->get('notification.service')->addReplyNotification($entry, "entry_replied");
                     }
+                    $this->get('notification.service')->addMentionNotification($entry, "entry_mention");
 
                 } else {
                     $this->addFlash('danger', 'entry.cannot_add_entry_deleted');

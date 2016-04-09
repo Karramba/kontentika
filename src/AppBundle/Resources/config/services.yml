@@ -20,4 +20,5 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@translator'
             - '@security.token_storage'
+            - '@user.service'
 

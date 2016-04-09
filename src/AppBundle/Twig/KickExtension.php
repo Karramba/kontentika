@@ -8,7 +8,6 @@ use AppBundle\Service\AuthService;
 use Doctrine\ORM\EntityManager;
 use Predis\Client;
 use Symfony\Component\HttpFoundation\RequestStack;
-use UserBundle\Entity\User;
 
 /**
  * Twig extension
@@ -58,7 +57,6 @@ class KickExtension extends \Twig_Extension
                     'is_safe' => array('html'),
                 )
             ),
-            new \Twig_SimpleFilter('findUsers', array($this, 'findUsers'), array('is_safe' => array('html'))),
         );
     }
 
@@ -180,39 +178,6 @@ class KickExtension extends \Twig_Extension
     public function moderationToolsAccess(LinkGroup $group)
     {
         return $this->authService->haveModerationToolsAccess($group);
-    }
-
-    /**
-     * Checks for any user mentioned by "@"
-     *
-     * @TODO this must be in UserBundle
-     *
-     * @param $content
-     */
-    public function findUsers($content)
-    {
-        preg_match_all("/\@[a-ż0-9\_\-]+/i", $content, $result);
-
-        if (isset($result[0]) && sizeof($result[0]) > 0) {
-            $users = array_unique($result[0]);
-            foreach ($users as $result) {
-                $username = substr($result, 1);
-                $user = $this->redis->get('user:' . $username);
-                if (!$user) {
-                    $user = $this->em->getRepository("UserBundle:User")->findOneByUsername($username);
-                    if ($user instanceof User) {
-                        $this->redis->set('user:' . $username, $user->getId());
-                    } else {
-                        $this->redis->set('user:' . $username, -1);
-                    }
-                }
-                if ($user != null) {
-                    $content = str_replace($username, "<a href=/u/" . $username . ">{$username}</a>", $content);
-                }
-            }
-        }
-        return $content;
-
     }
 
     /**

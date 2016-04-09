@@ -64,7 +64,7 @@ class Link extends AbstractUniqueContent
 
     /**
      * @Gedmo\Slug(fields={"title"})
-     * @ORM\Column(length=255)
+     * @ORM\Column(length=255, unique=false)
      */
     private $slug;
 
