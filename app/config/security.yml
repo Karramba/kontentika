@@ -27,6 +27,7 @@ security:
             anonymous:    true
 
     access_control:
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/gitlab/request, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login_check, role: IS_AUTHENTICATED_ANONYMOUSLY }
