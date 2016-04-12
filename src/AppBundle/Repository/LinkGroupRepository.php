@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use UserBundle\Entity\User;
 
 /**
  * UserGroupRepository
@@ -16,24 +17,52 @@ class LinkGroupRepository extends \Doctrine\ORM\EntityRepository
      * @param $linksPerPage
      * @return array
      */
-    public function findAllGroups($page, $linksPerPage)
+    public function findAllGroups($page, $groupsPerPage)
     {
         $qb = $this->createQueryBuilder("lg");
-        $query = $qb
+        $query = $qb->select("lg")->orderBy('lg.id', 'DESC');
+
+        $result = $query->setFirstResult(($page - 1) * $groupsPerPage)->setMaxResults($groupsPerPage);
+        $linkgroups = new Paginator($query, true);
+
+        $resultQuery = $this->createQueryBuilder("lg")->select("lg")
             ->select("lg, o, m")
-            ->leftjoin("lg.owner", "o")
+            ->join("lg.owner", "o")
             ->leftjoin("lg.moderators", "m")
-            ->orderBy('lg.id', 'DESC')
-        ;
-
-        $result = $query->setFirstResult(($page - 1) * $linksPerPage)
-            ->setMaxResults($linksPerPage);
-
-        $linkGroups = new Paginator($result, $fetchJoinCollection = true);
+            ->where("lg in (:linkgroups)")->setParameter("linkgroups", $linkgroups->getQuery()->getResult());
 
         return [
-            'linkGroups' => $linkGroups->getQuery()->getResult(),
-            'linkGroupsNumber' => count($linkGroups),
+            'linkgroups' => $resultQuery->getQuery()->getResult(),
+            'linkgroupsNumber' => count($linkgroups),
+        ];
+    }
+
+    /**
+     * List all groups - paginated
+     *
+     * @param $page
+     * @param $linksPerPage
+     * @param User $user
+     * @return array
+     */
+    public function findUserGroups($page, $groupsPerPage, User $user)
+    {
+
+        $qb = $this->createQueryBuilder("lg");
+        $query = $qb->select("lg")->where("lg.owner = :user")->setParameter("user", $user)->orderBy('lg.id', 'DESC');
+
+        $result = $query->setFirstResult(($page - 1) * $groupsPerPage)->setMaxResults($groupsPerPage);
+        $linkgroups = new Paginator($result, true);
+
+        $resultQuery = $this->createQueryBuilder("lg")->select("lg")
+            ->select("lg, o, m")
+            ->join("lg.owner", "o")
+            ->leftjoin("lg.moderators", "m")
+            ->where("lg in (:linkgroups)")->setParameter("linkgroups", $linkgroups->getQuery()->getResult());
+
+        return [
+            'linkgroups' => $resultQuery->getQuery()->getResult(),
+            'linkgroupsNumber' => count($linkgroups),
         ];
     }
 

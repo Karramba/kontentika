@@ -3,12 +3,12 @@
 {% block subtitle %} - {% trans %}menu.groups{% endtrans %}{% endblock %}
 
 {% block body %}
-    {% for twogroups in linkGroups|batch(2) %}
+    {% for twogroups in linkgroups|batch(2) %}
         <div class="row">
             {% for group in twogroups %}
                 <div class="linkgroup box">
                         <div class="title">
-                            <h5><a href="{{ path('link_group_show', {'title': group.title }) }}">{{ group.title }}</a></h5>
+                            <h5><a href="{{ path('linkgroup_show', {'title': group.title }) }}">{{ group.title }}</a></h5>
                         </div>
                         <div class="description">
                             {% if group.description %}
@@ -31,10 +31,14 @@
                 </div>
             {% endfor %}
         </div>
+    {% else %}
+        <div class="row link box text-center">
+            <h4>{% trans %}linkgroup.no_groups{% endtrans %}</h4>
+        </div>
     {% endfor %}
 
     <div id="paginator">
-        {% include '::paginator.html.twig' with {'url': 'linkgroup_index_page', 'page': page, 'pages': pages} %}
+        {% include '::paginator.html.twig' with {'url': paginator_url, 'page': page, 'pages': pages, 'route_params': route_params} %}
     </div>
 {% endblock %}
 

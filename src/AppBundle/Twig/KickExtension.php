@@ -138,10 +138,12 @@ class KickExtension extends \Twig_Extension
      *
      * @param $route
      */
-    public function isRouteActive($route)
+    public function isRouteActive(array $routes = array())
     {
-        if ($this->requestStack->getCurrentRequest()->get('_route') == $route) {
-            return "active";
+        foreach ($routes as $route) {
+            if ($this->requestStack->getCurrentRequest()->get('_route') == $route) {
+                return "active";
+            }
         }
         return null;
     }
@@ -190,7 +192,11 @@ class KickExtension extends \Twig_Extension
 
     public function embedVideo($url)
     {
-        return $this->videoEmbedder->embedVideo($url);
+        $embedCode = $this->videoEmbedder->embedVideo($url);
+        if (!is_null($embedCode)) {
+            return '<div class="row link box thumbnail">' . $embedCode . '</div>';
+        }
+        return false;
     }
 
     /**

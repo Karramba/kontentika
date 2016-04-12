@@ -17,8 +17,17 @@ class EntryRepository extends \Doctrine\ORM\EntityRepository
      */
     public function findEntries($page, $entriesPerPage)
     {
-        $qb = $this->createQueryBuilder("e");
-        $query = $qb
+        $query = $this->createQueryBuilder("e")
+            ->select("e")
+            ->orderBy("e.added", "DESC")
+            ->where("e.parent IS NULL");
+
+        $result = $query->setFirstResult(($page - 1) * $entriesPerPage)
+            ->setMaxResults($entriesPerPage);
+
+        $entries = new Paginator($result, $fetchJoinCollection = true);
+
+        $resultQuery = $this->createQueryBuilder("e")
             ->select("e, u, g, uv, dv, c, cuv, cdv")
             ->join("e.user", "u")
             ->join("e.group", "g")
@@ -28,16 +37,11 @@ class EntryRepository extends \Doctrine\ORM\EntityRepository
             ->leftjoin("c.upvotes", "cuv")
             ->leftjoin("c.downvotes", "cdv")
             ->orderBy("e.added", "DESC")
-            ->where("e.parent IS NULL")
+            ->where("e.id IN (:entries)")->setParameter("entries", $entries->getQuery()->getResult())
         ;
 
-        $result = $query->setFirstResult(($page - 1) * $entriesPerPage)
-            ->setMaxResults($entriesPerPage);
-
-        $entries = new Paginator($result, $fetchJoinCollection = true);
-
         return [
-            'entries' => $entries->getQuery()->getResult(),
+            'entries' => $resultQuery->getQuery()->getResult(),
             'entriesNumber' => count($entries),
         ];
 

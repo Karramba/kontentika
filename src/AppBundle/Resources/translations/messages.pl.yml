@@ -16,6 +16,8 @@ menu:
     search: Szukaj
     issues: Zgłoszenia
     profile_edit: Edycja profilu
+    my_groups: Moje grupy
+    my_activity: Moja aktywność
 
 link:
     best: Najlepsze
@@ -60,7 +62,9 @@ linkgroup:
     moderators: Moderatorzy grupy
     admin: Administrator grupy
     settings_saved: Ustawienia zostały zapisane
-
+    no_groups: Brak grup do wyświetlenia
+    user_groups: Grupy użytkownika
+    no_links: Brak linków w danej grupie
     
 entry:
     add: Dodaj wpis

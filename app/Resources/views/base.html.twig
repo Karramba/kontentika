@@ -91,22 +91,27 @@
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.username }} <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
                                         <li>
+                                            <a href="{{ path('my_linkgroups') }}"><i class="fa fa-hashtag"></i> {% trans %}menu.my_groups{% endtrans %}</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('user_show', {'username': app.user.username}) }}"><i class="fa fa-user"></i> {% trans %}menu.my_activity{% endtrans %}</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
                                             <a href="{{ path('fos_user_profile_edit') }}"><i class="fa fa-edit"></i> {% trans %}menu.profile_edit{% endtrans %}</a>
                                         </li>
                                         <li>
                                             <a href="{{ path('fos_user_change_password') }}"><i class="fa fa-key"></i> {{ 'change_password.submit'|trans({}, 'FOSUserBundle') }}</a>
                                         </li>
-                                        <li>
-                                            <a href="{{ path('user_show', {'username': app.user.username}) }}"><i class="fa fa-user"></i> {% trans %}user.activity{% endtrans %}</a>
-                                        </li>
+                                        <li class="divider"></li>
                                         <li>
                                             <a href="{{ path('fos_user_security_logout') }}"><i class="fa fa-sign-out"></i> {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a>
                                         </li>
                                     </ul>
                                 </li>
                             {% else %}
-                                <li class="{{ isRouteActive('fos_user_registration_register') }}"><a href="{{ path('fos_user_registration_register') }}"><i class="fa fa-user-plus"></i> {{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a></li>
-                                <li class="{{ isRouteActive('fos_user_security_login') }}"><a href="{{ path('fos_user_security_login') }}"><i class="fa fa-sign-in"></i> {{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a></li>
+                                <li class="{{ isRouteActive(['fos_user_registration_register']) }}"><a href="{{ path('fos_user_registration_register') }}"><i class="fa fa-user-plus"></i> {{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a></li>
+                                <li class="{{ isRouteActive(['fos_user_security_login']) }}"><a href="{{ path('fos_user_security_login') }}"><i class="fa fa-sign-in"></i> {{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a></li>
                             {% endif %}
                         </ul>
                     </div><!--/.nav-collapse -->
@@ -196,6 +201,7 @@
             {% javascripts '@AppBundle/Resources/public/js/vendor/bootbox.min.js' filter='uglifyjs2' output="js/bootbox.min.js" %}
                 <script src="{{ asset_url }}"></script>
             {% endjavascripts %}
+            <script type"text/javascript" src="https://assets.gfycat.com/gfycat.js"></script>
         {% endblock %}
 
     </body>

@@ -12,7 +12,7 @@ class VideoEmbedder
     /**
      * @var array
      */
-    private $video_embedders = array('redtube', 'vimeo', 'youtube', 'html5', 'vine');
+    private $video_embedders = array('redtube', 'vimeo', 'youtube', 'html5', 'vine', 'gfy');
 
     /**
      * @param $query
@@ -106,22 +106,16 @@ class VideoEmbedder
             return null;
         }
 
-        $url = "https://youtube.googleapis.com/v/$tag?version=2&fs=1";
+        $url = "https://youtube.googleapis.com/v/$tag?version=3&fs=1";
         $width = "100%";
         $height = 480;
         $out =
-            "<object width=\"$width\" height=\"$height\">\n" .
-            "<param name=\"movie\" value=\"$url\"></param>\n" .
-            "<param name=\"allowFullScreen\" value=\"true\"></param>\n" .
-            "<param name=\"allowScriptAccess\" value=\"always\"></param>\n" .
-            "<embed src=\"$url\"\n" .
-            " type=\"application/x-shockwave-flash\"\n" .
-            " width=\"$width\" height=\"$height\"\n" .
-            " allowfullscreen=\"true\"\n" .
-            " allowscriptaccess=\"always\"\n>" .
-            "</embed>\n" .
-            "</object><br>\n";
-
+            "<object width=\"{$width}\" height=\"{$height}\">
+            <param name=\"movie\" value=\"http://www.youtube.com/embed/{$tag}?html5=1&amp;rel=0&amp;hl=en_US&amp;version=3\"/>
+            <param name=\"allowFullScreen\" value=\"true\"/>
+            <param name=\"allowscriptaccess\" value=\"always\"/>
+            <embed width=\"{$width}\" height=\"{$height}\" src=\"http://www.youtube.com/embed/{$tag}?html5=1&amp;rel=0&amp;hl=en_US&amp;version=3\" class=\"youtube-player\" type=\"text/html\" allowscriptaccess=\"always\" allowfullscreen=\"true\"/>
+            </object>";
         return $this->tagMedia($out, "YouTube ", "http://youtu.be/$tag", $tag, "youtube");
     }
 
@@ -186,11 +180,29 @@ class VideoEmbedder
         }
 
         $out =
-            "<video src=\"$url\" controls=\"controls\">\n" .
+            "<video src=\"$url\" controls=\"controls\" style=\"width:100%\">\n" .
             "Your browser <a href=\"http://en.wikipedia.org/wiki/HTML5_video#Browser_support\">does not support HTML5 and/or this codec</a>.\n" .
             "</video><br>\n";
 
         return $this->tagMedia($out, "", $url, "HTML5", "html5");
+    }
+
+    public function embedGfyVideo($url)
+    {
+        $u = parse_url(html_entity_decode($url));
+        if ($u == null) {
+            return null;
+        }
+
+        if ($u['host'] == "gfycat.com") {
+            $path = substr($u['path'], 1);
+
+            $out = "<img class=\"gfyitem\" data-id=\"{$path}\" data-title=true data-autoplay=false data-controls=true data-expand=false />";
+
+            return $this->tagMedia($out, "", $url, $url, "gfy");
+        }
+
+        return null;
     }
 
     /**
@@ -226,7 +238,7 @@ class VideoEmbedder
             $f = "embed" . ucfirst($embedder) . "Video";
             $out = $this->$f($url);
             if (!is_null($out)) {
-                return $out;
+                return "<div class=\"embeddedVideo\">$out</div>";
             }
 
         }

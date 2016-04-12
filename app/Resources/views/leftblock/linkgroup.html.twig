@@ -1,17 +1,59 @@
 <div class="list-group leftblock">
-    <a href="{{ path('linkgroup_new') }}" class="list-group-item active list-group-item-success"><i class="fa fa-hashtag"></i> {% trans %}linkgroup.add_new{% endtrans %}</a>
-    {% if linkGroup is defined and linkGroup is not null and app.user is not null and linkGroup.owner == app.user %}
-        <a href="{{ path('linkgroup_edit', {'title': linkGroup.title}) }}" class="list-group-item active list-group-item-info"><i class="fa fa-cog"></i> {% trans %}linkgroup.group_settings{% endtrans %}</a>
+    {% if linkgroup is defined and linkgroup is not null %}
+        {% set linkgroup = app.request.attributes.get('linkgroup') %}
+        <a href="{{ path('link_new_with_linkgroup', {'groupTitle': linkgroup.title}) }}" class="list-group-item active list-group-item-success">
+            <i class="fa fa-share-alt"></i> {% trans %}link.add_new{% endtrans %}
+        </a>
+        {% if app.user is not null and linkgroup.owner == app.user %}
+            <a href="{{ path('linkgroup_edit', {'title': linkgroup.title}) }}" class="list-group-item active list-group-item-info"><i class="fa fa-cog"></i> {% trans %}linkgroup.group_settings{% endtrans %}</a>
+        {% endif %}
+        <div class="admin list-group-item">
+            {% trans %}linkgroup.admin{% endtrans %}: <br>
+            <ul class="without-dots">
+                <li>
+                    <i class="fa fa-user"></i>
+                    <a href="{{ path('user_show', {'username': linkgroup.owner.username}) }}">
+                        {{ linkgroup.owner.username }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+        {% if linkgroup.moderators|length > 0 %}
+            <div class="moderators list-group-item">
+                {% trans %}linkgroup.moderators{% endtrans %}:
+                <ul class="without-dots">
+                    {% for moderator in linkgroup.moderators %}
+                        <li>
+                            <i class="fa fa-user"></i>
+                            <a href="{{ path('user_show', {'username': moderator.username}) }}">{{ moderator.username }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% elseif app.user is defined and app.user is not null %}
+        <a href="{{ path('link_new') }}" class="list-group-item active list-group-item-success">
+            <i class="fa fa-share-alt"></i> {% trans %}link.add_new{% endtrans %}
+        </a>
     {% endif %}
 </div>
 
 
+
+
 <div class="list-group leftblock"> 
     <div class="list-group-item">{% trans %}link.show_content_by{% endtrans %}:</div>
-    <a href="{{ path('linkgroup_index') }}" class="list-group-item {% if route == 'linkgroup_index' %}active{% endif %}">
-        <i class="fa fa-list"></i> {% trans %}linkgroup.newest{% endtrans %}</a>
-    </li>
-    {#<a href="{{ path('linkgroup_index') }}" class="list-group-item {% if route == 'linkgroup_index' %}active{% endif %}">
-        <i class="fa fa-fire"></i> {% trans %}linkgroup.most_active{% endtrans %}
+    <a href="{{ path('link_index') }}" class="list-group-item {{ isRouteActive(['link_index', 'link_index_page']) }}">
+        <i class="fa fa-fire"></i> {% trans %}link.best{% endtrans %}
+    </a>
+    <a href="{{ path('link_newest') }}" class="list-group-item {{ isRouteActive(['link_newest', 'link_newest_page']) }}" >
+        <i class="fa fa-list"></i> {% trans %}link.newest{% endtrans %}
+    </a>
+    <a href="{{ path('link_rising') }}" class="list-group-item {{ isRouteActive(['link_rising', 'link_rising_page']) }}">
+        <i class="fa fa-list"></i> {% trans %}link.rising{% endtrans %}
+    </a>
+    {#<a href="{{ path('link_newest') }}" class="list-group-item {% if route == 'link_most_comments' %}active{% endif %}">
+        <i class="fa fa-commenting-o"></i> {% trans %}link.most_comments{% endtrans %}
     </a>#}
 </div>
+

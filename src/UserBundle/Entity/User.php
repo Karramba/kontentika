@@ -29,7 +29,7 @@ class User extends BaseUser
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\LinkGroup", mappedBy="owner")
      */
-    protected $linkGroups;
+    protected $linkgroups;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment", mappedBy="user")
@@ -244,38 +244,38 @@ class User extends BaseUser
     }
 
     /**
-     * Add linkGroup
+     * Add linkgroup
      *
-     * @param \AppBundle\Entity\LinkGroup $linkGroup
+     * @param \AppBundle\Entity\LinkGroup $linkgroup
      *
      * @return User
      */
-    public function addLinkGroup(\AppBundle\Entity\LinkGroup $linkGroup)
+    public function addLinkGroup(\AppBundle\Entity\LinkGroup $linkgroup)
     {
-        $linkGroups->setUser($this);
-        $this->linkGroups[] = $linkGroup;
+        $linkgroups->setUser($this);
+        $this->linkgroups[] = $linkgroup;
 
         return $this;
     }
 
     /**
-     * Remove linkGroup
+     * Remove linkgroup
      *
-     * @param \AppBundle\Entity\LinkGroup $linkGroup
+     * @param \AppBundle\Entity\LinkGroup $linkgroup
      */
-    public function removeLinkGroup(\AppBundle\Entity\LinkGroup $linkGroup)
+    public function removeLinkGroup(\AppBundle\Entity\LinkGroup $linkgroup)
     {
-        $this->linkGroups->removeElement($linkGroup);
+        $this->linkgroups->removeElement($linkgroup);
     }
 
     /**
-     * Get linkGroups
+     * Get linkgroups
      *
      * @return \Doctrine\Common\Collections\Collection
      */
     public function getLinkGroups()
     {
-        return $this->linkGroups;
+        return $this->linkgroups;
     }
 
     /**
