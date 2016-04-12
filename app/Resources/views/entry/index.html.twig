@@ -20,7 +20,6 @@
         </div>
     {% endif %}
     <div class="entries row">
-        {{ dump(entries) }}
         {% for entry in entries %}
             {% include '::entry/entry.html.twig' with {'entry': entry} only %}
         {% endfor %}
