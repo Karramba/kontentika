@@ -5,7 +5,7 @@
     <div class="thumbnail">
     <a href="{{ linkRelated.url }}" target="_blank" rel="nofollow">
         {% if linkRelated.thumbnail is not null %}
-            <img src="{{ link.thumbnailWebPath | imagine_filter('main_thumb') }}" title="{{ link.title }}" />
+            <img src="{{ linkRelated.thumbnailWebPath | imagine_filter('main_thumb') }}" title="{{ linkRelated.title }}" />
         {% else %}
             <img src="{{ asset('bundles/app/images/link/default.png') }}" />
         {% endif %}

@@ -21,24 +21,25 @@ class LinkService
      * Downloads image and saves to storage
      *
      */
-    public function downloadAndSaveThumbnail($thumbnailUrl)
+    public function downloadAndSaveThumbnail($thumbnailUrl, $uniqueId)
     {
         $imagesDir = $this->kernelRootDir . '/../web/uploads';
 
         if (filter_var($thumbnailUrl, FILTER_VALIDATE_URL) && $image = file_get_contents($thumbnailUrl)) {
-            $path = sys_get_temp_dir() . "/" . $link->getUniqueId();
+            $path = sys_get_temp_dir() . "/" . $uniqueId;
             if (file_put_contents($path, $image)) {
                 try {
                     $file = new File($path);
                     $extension = $file->guessExtension();
-                    $newName = $link->getUniqueId() . "." . $extension;
+                    $newName = $uniqueId . "." . $extension;
                     $file->move($imagesDir, $newName);
-                    $link->setThumbnail($newName);
+                    return $newName;
                 } catch (Exception $e) {
                     throw new HttpException(500, $e->getMessage());
                 }
             }
         }
+        return null;
     }
 
     public function isImageOnly($url)

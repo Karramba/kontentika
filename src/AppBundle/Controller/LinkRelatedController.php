@@ -35,7 +35,9 @@ class LinkRelatedController extends Controller
             // $linkRelated->setDomain($domain);
             // $linkRelated->setImageOnly($this->get('link.service')->isImageOnly($linkRelated->getUrl()));
 
-            $this->get('link.service')->downloadAndSaveThumbnail($linkRelated->getThumbnail());
+            $thumbnail = $this->get('link.service')
+                ->downloadAndSaveThumbnail($linkRelated->getThumbnail(), $linkRelated->getUniqueId());
+            $linkRelated->setThumbnail($thumbnail);
             $link->addRelated($linkRelated);
             $linkRelated->setUser($this->getUser());
 

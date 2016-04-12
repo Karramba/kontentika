@@ -17,7 +17,9 @@ class LinkRelatedType extends AbstractType
     {
         $builder
             ->add('url')
-            ->add('title')
+            ->add('title', TextType::class, array(
+                'required' => true,
+            ))
             ->add('thumbnail', HiddenType::class)
         ;
     }
