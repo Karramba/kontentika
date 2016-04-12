@@ -106,22 +106,16 @@ class VideoEmbedder
             return null;
         }
 
-        $url = "https://youtube.googleapis.com/v/$tag?version=2&fs=1";
+        $url = "https://youtube.googleapis.com/v/$tag?version=3&fs=1";
         $width = "100%";
         $height = 480;
         $out =
-            "<object width=\"$width\" height=\"$height\">\n" .
-            "<param name=\"movie\" value=\"$url\"></param>\n" .
-            "<param name=\"allowFullScreen\" value=\"true\"></param>\n" .
-            "<param name=\"allowScriptAccess\" value=\"always\"></param>\n" .
-            "<embed src=\"$url\"\n" .
-            " type=\"application/x-shockwave-flash\"\n" .
-            " width=\"$width\" height=\"$height\"\n" .
-            " allowfullscreen=\"true\"\n" .
-            " allowscriptaccess=\"always\"\n>" .
-            "</embed>\n" .
-            "</object><br>\n";
-
+            "<object width=\"{$width}\" height=\"{$height}\">
+            <param name=\"movie\" value=\"http://www.youtube.com/embed/{$tag}?html5=1&amp;rel=0&amp;hl=en_US&amp;version=3\"/>
+            <param name=\"allowFullScreen\" value=\"true\"/>
+            <param name=\"allowscriptaccess\" value=\"always\"/>
+            <embed width=\"{$width}\" height=\"{$height}\" src=\"http://www.youtube.com/embed/{$tag}?html5=1&amp;rel=0&amp;hl=en_US&amp;version=3\" class=\"youtube-player\" type=\"text/html\" allowscriptaccess=\"always\" allowfullscreen=\"true\"/>
+            </object>";
         return $this->tagMedia($out, "YouTube ", "http://youtu.be/$tag", $tag, "youtube");
     }
 
@@ -202,8 +196,13 @@ class VideoEmbedder
 
         if ($u['host'] == "gfycat.com") {
             $path = substr($u['path'], 1);
-            return "<img class=\"gfyitem\" data-id=\"{$path}\" data-title=true data-autoplay=false data-controls=true data-expand=false />";
+
+            $out = "<img class=\"gfyitem\" data-id=\"{$path}\" data-title=true data-autoplay=false data-controls=true data-expand=false />";
+
+            return $this->tagMedia($out, "", $url, $url, "gfy");
         }
+
+        return null;
     }
 
     /**
