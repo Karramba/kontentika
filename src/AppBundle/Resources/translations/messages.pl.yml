@@ -40,6 +40,9 @@ link:
     deleted: Treść została usunięta
     edition_impossible: Przepraszamy. Edycja treści nie jest już możliwa.
     adult_content: Treść +18 lat
+    related_links: Linki powiązane
+    no_related_links: Brak linków powiązanych
+    add_related_link: Dodaj powiązany link
 
 linkgroup:
     new: Nowa grupa

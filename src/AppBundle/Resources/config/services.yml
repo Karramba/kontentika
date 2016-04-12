@@ -21,4 +21,10 @@ services:
             - '@translator'
             - '@security.token_storage'
             - '@user.service'
+    link.service:
+        class:  AppBundle\Service\LinkService
+        arguments:
+            - "%kernel.root_dir%"
+
+
 
