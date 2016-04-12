@@ -31,11 +31,38 @@ class LinkGroupController extends Controller
         $result = $em->getRepository('AppBundle:LinkGroup')->findAllGroups($page, $this->getParameter('content_per_page'));
 
         return $this->render('linkgroup/index.html.twig', array(
-            'linkGroups' => $result['linkGroups'],
+            'linkgroups' => $result['linkgroups'],
             'page' => $page,
-            'pages' => ceil($result['linkGroupsNumber'] / $this->getParameter('content_per_page')),
-            'linkGroupsNumber' => $result['linkGroupsNumber'],
+            'pages' => ceil($result['linkgroupsNumber'] / $this->getParameter('content_per_page')),
+            'linkgroupsNumber' => $result['linkgroupsNumber'],
         ));
+    }
+
+    /**
+     * Lists all Link entities.
+     *
+     * @Route("/g/{title}", name="linkgroup_show")
+     * @Route("/g/{title}/p/{page}", name="linkgroup_show_page")
+     */
+    public function showGroupAction(Request $request, LinkGroup $linkgroup, $page = 1)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $result = $em->getRepository("AppBundle:Link")->findAllGroupLinks($linkgroup, $page, $this->getParameter('content_per_page'));
+
+        if (!$result) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('link/index.html.twig', array(
+            'page' => $page,
+            'pages' => ceil($result['linksNumber'] / $this->getParameter('content_per_page')),
+            'links' => $result['links'],
+            'linksNumber' => $result['linksNumber'],
+            'paginationRoute' => 'link_group_show_page',
+            'linkgroup' => $linkgroup,
+        ));
+
     }
 
     /**
@@ -54,10 +81,10 @@ class LinkGroupController extends Controller
             ->findUserGroups($page, $this->getParameter('content_per_page'), $this->getUser());
 
         return $this->render('linkgroup/index.html.twig', array(
-            'linkGroups' => $result['linkGroups'],
+            'linkgroups' => $result['linkgroups'],
             'page' => $page,
-            'pages' => ceil($result['linkGroupsNumber'] / $this->getParameter('content_per_page')),
-            'linkGroupsNumber' => $result['linkGroupsNumber'],
+            'pages' => ceil($result['linkgroupsNumber'] / $this->getParameter('content_per_page')),
+            'linkgroupsNumber' => $result['linkgroupsNumber'],
         ));
     }
 
@@ -77,10 +104,10 @@ class LinkGroupController extends Controller
             ->findUserGroups($page, $this->getParameter('content_per_page'), $user);
 
         return $this->render('linkgroup/index.html.twig', array(
-            'linkGroups' => $result['linkGroups'],
+            'linkgroups' => $result['linkgroups'],
             'page' => $page,
-            'pages' => ceil($result['linkGroupsNumber'] / $this->getParameter('content_per_page')),
-            'linkGroupsNumber' => $result['linkGroupsNumber'],
+            'pages' => ceil($result['linkgroupsNumber'] / $this->getParameter('content_per_page')),
+            'linkgroupsNumber' => $result['linkgroupsNumber'],
             'user' => $user,
         ));
     }
@@ -93,22 +120,22 @@ class LinkGroupController extends Controller
      */
     public function newAction(Request $request)
     {
-        $linkGroup = new LinkGroup();
-        $form = $this->createForm('AppBundle\Form\LinkGroupType', $linkGroup);
+        $linkgroup = new LinkGroup();
+        $form = $this->createForm('AppBundle\Form\LinkGroupType', $linkgroup);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $linkGroup->setOwner($this->getUser());
-            $em->persist($linkGroup);
+            $linkgroup->setOwner($this->getUser());
+            $em->persist($linkgroup);
             $em->flush();
             $this->addFlash('success', 'linkgroup.created_flash');
 
-            return $this->redirectToRoute('link_group_show', array('title' => $linkGroup->getTitle()));
+            return $this->redirectToRoute('link_group_show', array('title' => $linkgroup->getTitle()));
         }
 
         return $this->render('linkgroup/new.html.twig', array(
-            'linkGroup' => $linkGroup,
+            'linkgroup' => $linkgroup,
             'form' => $form->createView(),
         ));
     }
@@ -131,34 +158,34 @@ class LinkGroupController extends Controller
      * @Route("/g/{title}/edit", name="linkgroup_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, LinkGroup $linkGroup)
+    public function editAction(Request $request, LinkGroup $linkgroup)
     {
-        if (!$this->get('auth.service')->isGroupAdmin($linkGroup)) {
+        if (!$this->get('auth.service')->isGroupAdmin($linkgroup)) {
             throw $this->createNotFoundException();
         }
 
         $em = $this->getDoctrine()->getManager();
 
-        $editForm = $this->createForm('AppBundle\Form\LinkGroupEditType', $linkGroup, array('em' => $em));
+        $editForm = $this->createForm('AppBundle\Form\LinkGroupEditType', $linkgroup, array('em' => $em));
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            foreach ($linkGroup->getModerators() as $moderator) {
+            foreach ($linkgroup->getModerators() as $moderator) {
                 if ($moderator == $this->getUser()) {
-                    $linkGroup->removeModerator($moderator);
+                    $linkgroup->removeModerator($moderator);
                     $this->addFlash('warning', 'linkgroup.groupowner_as_moderator_forbidden');
                 }
             }
-            $em->persist($linkGroup);
+            $em->persist($linkgroup);
             $em->flush();
 
             $this->addFlash('success', 'linkgroup.settings_saved');
 
-            return $this->redirectToRoute('linkgroup_edit', array('title' => $linkGroup->getTitle()));
+            return $this->redirectToRoute('linkgroup_edit', array('title' => $linkgroup->getTitle()));
         }
 
         return $this->render('linkgroup/edit.html.twig', array(
-            'linkGroup' => $linkGroup,
+            'linkgroup' => $linkgroup,
             'edit_form' => $editForm->createView(),
         ));
     }

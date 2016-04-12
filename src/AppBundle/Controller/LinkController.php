@@ -91,32 +91,6 @@ class LinkController extends Controller
     }
 
     /**
-     * Lists all Link entities.
-     *
-     * @Route("/g/{title}", name="link_group_show")
-     * @Route("/g/{title}/p/{page}", name="link_group_show_page")
-     */
-    public function showGroupAction(Request $request, LinkGroup $linkGroup, $page = 1)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $result = $em->getRepository("AppBundle:Link")->findAllGroupLinks($linkGroup, $page, $this->getParameter('content_per_page'));
-
-        if (!$result) {
-            throw $this->createNotFoundException();
-        }
-
-        return $this->render('link/index.html.twig', array(
-            'page' => $page,
-            'pages' => ceil($result['linksNumber'] / $this->getParameter('content_per_page')),
-            'links' => $result['links'],
-            'linksNumber' => $result['linksNumber'],
-            'paginationRoute' => 'link_group_show_page',
-            'linkgroup' => $linkGroup,
-        ));
-
-    }
-    /**
      * Creates a new Link entity.
      *
      * @Route("/new", name="link_new")
@@ -131,8 +105,8 @@ class LinkController extends Controller
         $link = new Link();
 
         if ($groupTitle != null) {
-            $linkGroup = $em->getRepository("AppBundle:LinkGroup")->findOneByTitle($groupTitle);
-            $link->setGroup($linkGroup);
+            $linkgroup = $em->getRepository("AppBundle:LinkGroup")->findOneByTitle($groupTitle);
+            $link->setGroup($linkgroup);
         }
 
         $form = $this->createForm('AppBundle\Form\LinkType', $link, array('em' => $em));

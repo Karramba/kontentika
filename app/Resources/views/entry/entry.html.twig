@@ -23,7 +23,7 @@
                 <div class="pull-right">
                     <span class="time-added"><i class="fa fa-clock-o"></i> {{ entry.added | ago }}</span>
                     {% if entry.group is not null %}
-                        <span class="group"><a href="{{ path('link_group_show', {'title': entry.group.title}) }}">g/{{ entry.group }}</a></span>
+                        <span class="group"><a href="{{ path('linkgroup_show', {'title': entry.group.title}) }}">g/{{ entry.group }}</a></span>
                     {% endif %}
                     {% if entry.deletedAt is null %}
                         {% include "::vote/buttons.html.twig" with {'content': entry, 'contentType': 'entry'} only %}

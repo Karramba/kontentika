@@ -108,11 +108,11 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
     /**
      * Returns all added links from given group
      *
-     * @param $linkGroup
+     * @param $linkgroup
      * @param $page
      * @param $linksPerPage
      */
-    public function findAllGroupLinks($linkGroup, $page, $linksPerPage)
+    public function findAllGroupLinks($linkgroup, $page, $linksPerPage)
     {
         $qb = $this->createQueryBuilder("l");
 
@@ -126,7 +126,7 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
             ->leftjoin("l.downvotes", "dv")
             ->orderBy('l.id', 'DESC')
             ->where("(l.totalUpvotes - l.totalDownvotes) > -5")
-            ->andWhere("l.group = :linkGroup")->setParameter("linkGroup", $linkGroup)
+            ->andWhere("l.group = :linkgroup")->setParameter("linkgroup", $linkgroup)
         ;
 
         $result = $query->setFirstResult(($page - 1) * $linksPerPage)

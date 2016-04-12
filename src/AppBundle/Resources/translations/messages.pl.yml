@@ -64,7 +64,7 @@ linkgroup:
     settings_saved: Ustawienia zostały zapisane
     no_groups: Brak grup do wyświetlenia
     user_groups: Grupy użytkownika
-
+    no_links: Brak linków w danej grupie
     
 entry:
     add: Dodaj wpis

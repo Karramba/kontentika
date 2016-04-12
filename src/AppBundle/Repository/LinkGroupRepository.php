@@ -30,11 +30,11 @@ class LinkGroupRepository extends \Doctrine\ORM\EntityRepository
         $result = $query->setFirstResult(($page - 1) * $linksPerPage)
             ->setMaxResults($linksPerPage);
 
-        $linkGroups = new Paginator($result, $fetchJoinCollection = true);
+        $linkgroups = new Paginator($result, $fetchJoinCollection = true);
 
         return [
-            'linkGroups' => $linkGroups->getQuery()->getResult(),
-            'linkGroupsNumber' => count($linkGroups),
+            'linkgroups' => $linkgroups->getQuery()->getResult(),
+            'linkgroupsNumber' => count($linkgroups),
         ];
     }
 
@@ -59,11 +59,11 @@ class LinkGroupRepository extends \Doctrine\ORM\EntityRepository
         $result = $query->setFirstResult(($page - 1) * $linksPerPage)
             ->setMaxResults($linksPerPage);
 
-        $linkGroups = new Paginator($result, $fetchJoinCollection = true);
+        $linkgroups = new Paginator($result, $fetchJoinCollection = true);
 
         return [
-            'linkGroups' => $linkGroups->getQuery()->getResult(),
-            'linkGroupsNumber' => count($linkGroups),
+            'linkgroups' => $linkgroups->getQuery()->getResult(),
+            'linkgroupsNumber' => count($linkgroups),
         ];
     }
 
