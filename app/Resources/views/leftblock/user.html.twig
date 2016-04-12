@@ -1,0 +1,14 @@
+<div class="list-group leftblock">
+    <a href="{{ path('link_new') }}" class="list-group-item active list-group-item-success"><i class="fa fa-share-alt"></i> {% trans %}link.add_new{% endtrans %}</a>
+</div>
+
+
+<div class="list-group leftblock"> 
+    <div class="list-group-item">{% trans %}user.profile{% endtrans %}:</div>
+    <a href="{{ path('user_show', {'username': user.username}) }}" class="list-group-item {{ isRouteActive(['user_show', 'user_show_page']) }}">
+        <i class="fa fa-user"></i> {% trans %}user.profile{% endtrans %}
+    </a>
+    <a href="{{ path('user_linkgroups', {'username': user.username}) }}" class="list-group-item {{ isRouteActive(['user_linkgroups', 'user_linkgroups_page']) }}">
+        <i class="fa fa-hashtag"></i> {% trans %}linkgroup.user_groups{% endtrans %}
+    </a>
+</div>

@@ -8,9 +8,9 @@
 
 <div class="list-group leftblock"> 
     <div class="list-group-item">{% trans %}link.show_content_by{% endtrans %}:</div>
-    <a href="{{ path('linkgroup_index') }}" class="list-group-item {% if route == 'linkgroup_index' %}active{% endif %}">
-        <i class="fa fa-list"></i> {% trans %}linkgroup.newest{% endtrans %}</a>
-    </li>
+    <a href="{{ path('linkgroup_index') }}" class="list-group-item {{ isRouteActive(['linkgroup_index', 'linkgroup_index_page']) }}">
+        <i class="fa fa-list"></i> {% trans %}linkgroup.newest{% endtrans %}
+    </a>
     {#<a href="{{ path('linkgroup_index') }}" class="list-group-item {% if route == 'linkgroup_index' %}active{% endif %}">
         <i class="fa fa-fire"></i> {% trans %}linkgroup.most_active{% endtrans %}
     </a>#}

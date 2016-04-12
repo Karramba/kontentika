@@ -94,7 +94,7 @@
                                             <a href="{{ path('my_linkgroups') }}"><i class="fa fa-hashtag"></i> {% trans %}menu.my_groups{% endtrans %}</a>
                                         </li>
                                         <li>
-                                            <a href="{{ path('user_show', {'username': app.user.username}) }}"><i class="fa fa-user"></i> {% trans %}user.activity{% endtrans %}</a>
+                                            <a href="{{ path('user_show', {'username': app.user.username}) }}"><i class="fa fa-user"></i> {% trans %}menu.my_activity{% endtrans %}</a>
                                         </li>
                                         <li class="divider"></li>
                                         <li>
@@ -110,8 +110,8 @@
                                     </ul>
                                 </li>
                             {% else %}
-                                <li class="{{ isRouteActive('fos_user_registration_register') }}"><a href="{{ path('fos_user_registration_register') }}"><i class="fa fa-user-plus"></i> {{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a></li>
-                                <li class="{{ isRouteActive('fos_user_security_login') }}"><a href="{{ path('fos_user_security_login') }}"><i class="fa fa-sign-in"></i> {{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a></li>
+                                <li class="{{ isRouteActive(['fos_user_registration_register']) }}"><a href="{{ path('fos_user_registration_register') }}"><i class="fa fa-user-plus"></i> {{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a></li>
+                                <li class="{{ isRouteActive(['fos_user_security_login']) }}"><a href="{{ path('fos_user_security_login') }}"><i class="fa fa-sign-in"></i> {{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a></li>
                             {% endif %}
                         </ul>
                     </div><!--/.nav-collapse -->

@@ -17,6 +17,7 @@ menu:
     issues: Zgłoszenia
     profile_edit: Edycja profilu
     my_groups: Moje grupy
+    my_activity: Moja aktywność
 
 link:
     best: Najlepsze
@@ -62,6 +63,7 @@ linkgroup:
     admin: Administrator grupy
     settings_saved: Ustawienia zostały zapisane
     no_groups: Brak grup do wyświetlenia
+    user_groups: Grupy użytkownika
 
     
 entry:

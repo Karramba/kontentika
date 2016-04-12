@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use UserBundle\Entity\User;
 
 /**
  * LinkGroup controller.
@@ -57,6 +58,30 @@ class LinkGroupController extends Controller
             'page' => $page,
             'pages' => ceil($result['linkGroupsNumber'] / $this->getParameter('content_per_page')),
             'linkGroupsNumber' => $result['linkGroupsNumber'],
+        ));
+    }
+
+    /**
+     * Lists all LinkGroup entities.
+     *
+     * @Route("/g-u/{username}", name="user_linkgroups")
+     * @Route("/g-u/{username}-{page}", name="user_linkgroups_page", requirements={"page": "[0-9]+"})
+     * @Method("GET")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function userGroupsAction($page = 1, User $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $result = $em->getRepository('AppBundle:LinkGroup')
+            ->findUserGroups($page, $this->getParameter('content_per_page'), $user);
+
+        return $this->render('linkgroup/index.html.twig', array(
+            'linkGroups' => $result['linkGroups'],
+            'page' => $page,
+            'pages' => ceil($result['linkGroupsNumber'] / $this->getParameter('content_per_page')),
+            'linkGroupsNumber' => $result['linkGroupsNumber'],
+            'user' => $user,
         ));
     }
 
