@@ -64,7 +64,7 @@ class Link extends AbstractUniqueContent
 
     /**
      * @Gedmo\Slug(fields={"title"})
-     * @ORM\Column(length=255, unique=true)
+     * @ORM\Column(length=255, unique=false)
      */
     private $slug;
 
@@ -118,6 +118,11 @@ class Link extends AbstractUniqueContent
      * @ORM\Column(name="adult", type="boolean", nullable=true)
      */
     private $adult;
+
+    /**
+     * @ORM\Column(name="image_only", type="boolean", nullable=true)
+     */
+    private $imageOnly;
 
     public function __construct()
     {
@@ -584,5 +589,29 @@ class Link extends AbstractUniqueContent
     public function getAdult()
     {
         return $this->adult;
+    }
+
+    /**
+     * Set imageOnly
+     *
+     * @param boolean $imageOnly
+     *
+     * @return Link
+     */
+    public function setImageOnly($imageOnly)
+    {
+        $this->imageOnly = $imageOnly;
+
+        return $this;
+    }
+
+    /**
+     * Get imageOnly
+     *
+     * @return boolean
+     */
+    public function getImageOnly()
+    {
+        return $this->imageOnly;
     }
 }

@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\LinkGroup;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,15 +13,14 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * LinkGroup controller.
  *
- * @Route("/g")
  */
 class LinkGroupController extends Controller
 {
     /**
      * Lists all LinkGroup entities.
      *
-     * @Route("/", name="linkgroup_index")
-     * @Route("-{page}", name="linkgroup_index_page", requirements={"page": "[0-9]+"})
+     * @Route("/g", name="linkgroup_index")
+     * @Route("/g-{page}", name="linkgroup_index_page", requirements={"page": "[0-9]+"})
      * @Method("GET")
      */
     public function indexAction($page = 1)
@@ -38,9 +38,32 @@ class LinkGroupController extends Controller
     }
 
     /**
+     * Lists all LinkGroup entities.
+     *
+     * @Route("/g-my", name="my_linkgroups")
+     * @Route("/g-my-{page}", name="my_linkgroups_page", requirements={"page": "[0-9]+"})
+     * @Method("GET")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function myGroupsAction($page = 1)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $result = $em->getRepository('AppBundle:LinkGroup')
+            ->findUserGroups($page, $this->getParameter('content_per_page'), $this->getUser());
+
+        return $this->render('linkgroup/index.html.twig', array(
+            'linkGroups' => $result['linkGroups'],
+            'page' => $page,
+            'pages' => ceil($result['linkGroupsNumber'] / $this->getParameter('content_per_page')),
+            'linkGroupsNumber' => $result['linkGroupsNumber'],
+        ));
+    }
+
+    /**
      * Creates a new LinkGroup entity.
      *
-     * @Route("-new", name="linkgroup_new")
+     * @Route("/g-new", name="linkgroup_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -66,7 +89,7 @@ class LinkGroupController extends Controller
     }
 
     /**
-     * @Route("-search", name="linkgroup_search")
+     * @Route("/g-search", name="linkgroup_search")
      * @Method({"POST"})
      */
     public function searchGroupAction(Request $request)
@@ -80,7 +103,7 @@ class LinkGroupController extends Controller
     /**
      * Displays a form to edit an existing LinkGroup entity.
      *
-     * @Route("/{title}/edit", name="linkgroup_edit")
+     * @Route("/g/{title}/edit", name="linkgroup_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, LinkGroup $linkGroup)

@@ -38,6 +38,7 @@ class NotificationController extends Controller
     public function redirectAction(Notification $notification)
     {
         $em = $this->getDoctrine()->getManager();
+        $filter = $em->getFilters()->disable('softdeleteable');
 
         $notification->setUnread(false);
         $em->persist($notification);

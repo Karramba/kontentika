@@ -20,7 +20,7 @@ $(document).ready(function() {
                     $("#link_title").prop('disabled', false);
                     $("#link_description").prop('disabled', false)
                 });
-        }, 1000);
+        }, 100);
         event.preventDefault();
         /* Act on the event */
     });

@@ -2,10 +2,22 @@
 
 namespace AppBundle\Media;
 
+/**
+ * Helper class for video embedding
+ * Original source code: https://sourceforge.net/p/kawf/git/ci/95c5adb1788da088099b04b0746045286582c853/tree/user/embed-media.inc.php
+ * Reformatted for PSR
+ */
 class VideoEmbedder
 {
-    private $video_embedders = array('redtube', 'vimeo', 'youtube', 'html5', 'vine');
+    /**
+     * @var array
+     */
+    private $video_embedders = array('redtube', 'vimeo', 'youtube', 'html5', 'vine', 'gfy');
 
+    /**
+     * @param $query
+     * @return mixed
+     */
     public function explodeQuery($query)
     {
         $queryParts = explode('&', $query);
@@ -19,6 +31,10 @@ class VideoEmbedder
         return $params;
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public function embedRedtubeVideo($url)
     {
         if (preg_match("#^http://(\w+\.)*redtube\.com/([0-9]+)#", $url, $regs)) {
@@ -38,6 +54,10 @@ class VideoEmbedder
         return $this->tagMedia($out, "RedTube ", $url, $tag, "redtube");
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public function embedVimeoVideo($url)
     {
         if (preg_match("#^http://(\w+\.)*vimeo\.com/([0-9]+)#", $url, $regs)) {
@@ -54,6 +74,10 @@ class VideoEmbedder
         return $this->tagMedia($out, "Vimeo ", $url, $tag, "vimeo");
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public function embedYoutubeVideo($url)
     {
         $tag = null;
@@ -82,25 +106,23 @@ class VideoEmbedder
             return null;
         }
 
-        $url = "https://youtube.googleapis.com/v/$tag?version=2&fs=1";
+        $url = "https://youtube.googleapis.com/v/$tag?version=3&fs=1";
         $width = "100%";
         $height = 480;
         $out =
-            "<object width=\"$width\" height=\"$height\">\n" .
-            "<param name=\"movie\" value=\"$url\"></param>\n" .
-            "<param name=\"allowFullScreen\" value=\"true\"></param>\n" .
-            "<param name=\"allowScriptAccess\" value=\"always\"></param>\n" .
-            "<embed src=\"$url\"\n" .
-            " type=\"application/x-shockwave-flash\"\n" .
-            " width=\"$width\" height=\"$height\"\n" .
-            " allowfullscreen=\"true\"\n" .
-            " allowscriptaccess=\"always\"\n>" .
-            "</embed>\n" .
-            "</object><br>\n";
-
+            "<object width=\"{$width}\" height=\"{$height}\">
+            <param name=\"movie\" value=\"http://www.youtube.com/embed/{$tag}?html5=1&amp;rel=0&amp;hl=en_US&amp;version=3\"/>
+            <param name=\"allowFullScreen\" value=\"true\"/>
+            <param name=\"allowscriptaccess\" value=\"always\"/>
+            <embed width=\"{$width}\" height=\"{$height}\" src=\"http://www.youtube.com/embed/{$tag}?html5=1&amp;rel=0&amp;hl=en_US&amp;version=3\" class=\"youtube-player\" type=\"text/html\" allowscriptaccess=\"always\" allowfullscreen=\"true\"/>
+            </object>";
         return $this->tagMedia($out, "YouTube ", "http://youtu.be/$tag", $tag, "youtube");
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public function getVineVideoFromUrl($url)
     {
         $ch = curl_init($url);
@@ -110,6 +132,10 @@ class VideoEmbedder
         return $output[1];
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public function embedVineVideo($url)
     {
         $u = parse_url(html_entity_decode($url));
@@ -137,6 +163,10 @@ class VideoEmbedder
 
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public function embedHtml5Video($url)
     {
         $u = parse_url(html_entity_decode($url));
@@ -150,13 +180,40 @@ class VideoEmbedder
         }
 
         $out =
-            "<video src=\"$url\" controls=\"controls\">\n" .
+            "<video src=\"$url\" controls=\"controls\" style=\"width:100%\">\n" .
             "Your browser <a href=\"http://en.wikipedia.org/wiki/HTML5_video#Browser_support\">does not support HTML5 and/or this codec</a>.\n" .
             "</video><br>\n";
 
         return $this->tagMedia($out, "", $url, "HTML5", "html5");
     }
 
+    public function embedGfyVideo($url)
+    {
+        $u = parse_url(html_entity_decode($url));
+        if ($u == null) {
+            return null;
+        }
+
+        if ($u['host'] == "gfycat.com") {
+            $path = substr($u['path'], 1);
+
+            $out = "<img class=\"gfyitem\" data-id=\"{$path}\" data-title=true data-autoplay=false data-controls=true data-expand=false />";
+
+            return $this->tagMedia($out, "", $url, $url, "gfy");
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $out
+     * @param $prefix
+     * @param $url
+     * @param $text
+     * @param $class
+     * @param $redirect
+     * @return string
+     */
     public function tagMedia($out, $prefix, $url, $text, $class, $redirect = false)
     {
         // if ($redirect) {
@@ -169,6 +226,10 @@ class VideoEmbedder
         return $out;
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public function embedVideo($url)
     {
         // $url = normalize_url_scheme($url);
@@ -177,7 +238,7 @@ class VideoEmbedder
             $f = "embed" . ucfirst($embedder) . "Video";
             $out = $this->$f($url);
             if (!is_null($out)) {
-                return $out;
+                return "<div class=\"embeddedVideo\">$out</div>";
             }
 
         }
@@ -185,6 +246,10 @@ class VideoEmbedder
         // return "'$url' is not a supported video type. Must be YouTube/Vimeo link or ogg/mp4/WebM<p>\n";
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public function embedImage($url)
     {
         $out = "<img src=\"$url\" alt=\"$url\">\n";

@@ -58,6 +58,8 @@ class CommentController extends Controller
             $link->addComment($comment);
             $em->persist($link);
             $em->flush();
+
+            $this->get('notification.service')->addMentionNotification($comment, "comment_mention");
         } else {
             // var_dump($form->getErrors());exit;
         }
@@ -85,6 +87,8 @@ class CommentController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
             $em->flush();
+
+            $this->get('notification.service')->addMentionNotification($comment, "comment_edited");
 
             $this->addFlash('success', 'comment.edited_and_saved');
 
@@ -161,12 +165,13 @@ class CommentController extends Controller
                     $reply->setParent($comment);
                 }
 
+                $em->persist($reply);
+                $em->flush();
+
                 if ($comment->getUser() != $this->getUser()) {
                     $this->get('notification.service')->addReplyNotification($comment, "comment_replied");
                 }
-
-                $em->persist($reply);
-                $em->flush();
+                $this->get('notification.service')->addMentionNotification($reply, "comment_mention");
 
                 $this->addFlash('success', 'comment.added_successfully');
             } catch (\Exception $e) {

@@ -8,8 +8,10 @@ use AppBundle\Service\AuthService;
 use Doctrine\ORM\EntityManager;
 use Predis\Client;
 use Symfony\Component\HttpFoundation\RequestStack;
-use UserBundle\Entity\User;
 
+/**
+ * Twig extension
+ */
 class KickExtension extends \Twig_Extension
 {
     private $requestStack;
@@ -17,8 +19,13 @@ class KickExtension extends \Twig_Extension
     private $authService;
     private $redis;
     private $videoEmbedder;
-
     private $linkClass;
+
+    /**
+     * Defines detected href target
+     *
+     * @var string
+     */
     private $target = "_blank";
 
     /**
@@ -50,7 +57,14 @@ class KickExtension extends \Twig_Extension
                     'is_safe' => array('html'),
                 )
             ),
-            new \Twig_SimpleFilter('findUsers', array($this, 'findUsers'), array('is_safe' => array('html'))),
+            new \Twig_SimpleFilter(
+                'embedIfVideo',
+                array($this, 'embedVideo'),
+                array(
+                    'pre_escape' => 'html',
+                    'is_safe' => array('html'),
+                )
+            ),
         );
     }
 
@@ -83,6 +97,8 @@ class KickExtension extends \Twig_Extension
     }
 
     /**
+     * Left block renderer - used in base.html.twig
+     *
      * @param \Twig_Environment $twig
      * @return mixed
      */
@@ -103,6 +119,8 @@ class KickExtension extends \Twig_Extension
     }
 
     /**
+     * Compares current group to route prefix
+     *
      * @param $groupRoute
      */
     public function isGroupActive($groupRoute)
@@ -116,6 +134,8 @@ class KickExtension extends \Twig_Extension
     }
 
     /**
+     * * Compares current route to given route name
+     *
      * @param $route
      */
     public function isRouteActive($route)
@@ -134,50 +154,47 @@ class KickExtension extends \Twig_Extension
         return $this->em->getRepository("AppBundle:Link")->findBestRated($days);
     }
 
+    /**
+     * @param $commentsNumber
+     * @return mixed
+     */
     public function lastComments($commentsNumber)
     {
         return $this->em->getRepository("AppBundle:Comment")->findLastComments($commentsNumber);
     }
 
+    /**
+     * @param $string
+     */
     public function countBR($string)
     {
         return substr_count($string, "\n");
     }
 
+    /**
+     * @param $object
+     */
     public function getClass($object)
     {
         return (new \ReflectionClass($object))->getShortName();
     }
 
+    /**
+     * @param LinkGroup $group
+     * @return mixed
+     */
     public function moderationToolsAccess(LinkGroup $group)
     {
         return $this->authService->haveModerationToolsAccess($group);
     }
 
-    public function findUsers($content)
+    public function embedVideo($url)
     {
-        preg_match_all("/\@[a-ż0-9\_\-]+/i", $content, $result);
-
-        if (isset($result[0]) && sizeof($result[0]) > 0) {
-            $users = array_unique($result[0]);
-            foreach ($users as $result) {
-                $username = substr($result, 1);
-                $user = $this->redis->get('user:' . $username);
-                if (!$user) {
-                    $user = $this->em->getRepository("UserBundle:User")->findOneByUsername($username);
-                    if ($user instanceof User) {
-                        $this->redis->set('user:' . $username, $user->getId());
-                    } else {
-                        $this->redis->set('user:' . $username, -1);
-                    }
-                }
-                if ($user != null) {
-                    $content = str_replace($username, "<a href=/u/" . $username . ">{$username}</a>", $content);
-                }
-            }
+        $embedCode = $this->videoEmbedder->embedVideo($url);
+        if (!is_null($embedCode)) {
+            return '<div class="row link box thumbnail">' . $embedCode . '</div>';
         }
-        return $content;
-
+        return false;
     }
 
     /**
@@ -194,6 +211,10 @@ class KickExtension extends \Twig_Extension
         return $stringFiltered;
     }
 
+    /**
+     * @param $matches
+     * @return mixed
+     */
     public function callbackReplace($matches)
     {
         if ($matches[1] !== '') {
@@ -202,6 +223,7 @@ class KickExtension extends \Twig_Extension
         $url = $matches[2];
 
         $video = $this->videoEmbedder->embedVideo($url);
+
         if (!is_null($video)) {
             return $video;
         }

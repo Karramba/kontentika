@@ -7,15 +7,18 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use UserBundle\Entity\User;
 
 /**
- * undocumented class
- *
- * @package default
- * @author
- **/
+ * Main moderator/admin authorization class
+ */
 class AuthService
 {
+    /**
+     * @var User
+     */
     private $user = null;
 
+    /**
+     * @param TokenStorageInterface $tokenStorage
+     */
     public function __construct(TokenStorageInterface $tokenStorage)
     {
         if ($tokenStorage->getToken() !== null) {
@@ -23,6 +26,9 @@ class AuthService
         }
     }
 
+    /**
+     * @param LinkGroup $group
+     */
     public function isGroupModerator(LinkGroup $group)
     {
         if ($this->user instanceof User) {
@@ -34,6 +40,9 @@ class AuthService
         return false;
     }
 
+    /**
+     * @param LinkGroup $group
+     */
     public function isGroupAdmin(LinkGroup $group)
     {
         if ($this->user instanceof User) {
@@ -44,6 +53,9 @@ class AuthService
         return false;
     }
 
+    /**
+     * @param LinkGroup $group
+     */
     public function haveModerationToolsAccess(LinkGroup $group)
     {
         if ($this->isGroupModerator($group) || $this->isGroupAdmin($group)) {

@@ -31,6 +31,10 @@
                 </div>
             {% endfor %}
         </div>
+    {% else %}
+        <div class="row link box text-center">
+            <h4>{% trans %}linkgroup.no_groups{% endtrans %}</h4>
+        </div>
     {% endfor %}
 
     <div id="paginator">

@@ -15,19 +15,18 @@ Things already done:
   * Voting - for all kind of content - hover with voters preview
   * Link domains collecting in db (Domain entity) - for future domain blocking contents
   * Markdown in entries and comments (KontentikaParser.php - @$features)
-  * Embedding youtube videos, webm videos, etc (VideoEmbedder.php - modified https://sourceforge.net/p/kawf/git/ci/95c5adb1788da088099b04b0746045286582c853/tree/user/embed-media.inc.php)
+  * Embedding youtube videos, webm videos, gfy, etc (VideoEmbedder.php - modified https://sourceforge.net/p/kawf/git/ci/95c5adb1788da088099b04b0746045286582c853/tree/user/embed-media.inc.php)
   * User avatar
   * Redis integrations - for doctrine/users 
+  * Notifications
 
 Things they need to be finished:
   * Notifications:
-    * user is notified **only** when other user has replied for base content
     * user is notified when his content was deleted. TODO: More specific informations (e.g. content title, etc)
-    * TODO: notification, if user is mentioned by "@" in entry or comment
   * Fix markdown parser - sometimes is making mess in entries, problematic with nl2br (KontentikaParser.php @transformMarkdown)
   * Groups autocompleter based on redis 
   * Session stored in redis
-  * User profile - show actions, unified template
+  * User profile - show actions, unified templates 
 
 TODO:
   * Tests and code refactoring

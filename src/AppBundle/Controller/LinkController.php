@@ -142,6 +142,14 @@ class LinkController extends Controller
             $link->setDomain($this->findDomain($link->getUrl()));
             $this->downloadAndSaveImage($link);
 
+            $headers = @get_headers($link->getUrl(), 1);
+
+            if (isset($headers['Content-Type'])) {
+                if (strpos($headers['Content-Type'], 'image/') !== false) {
+                    $link->setImageOnly(true);
+                }
+            }
+
             $this->getUser()->addLink($link);
 
             $em->persist($link);
@@ -208,6 +216,20 @@ class LinkController extends Controller
     /**
      * Finds and displays a Link entity.
      *
+     * @Route("/l/{uniqueId}", name="link_short")
+     * @Method("GET")
+     */
+    public function shortLinkAction(Link $link)
+    {
+        return $this->redirectToRoute('link_show', array(
+            'uniqueId' => $link->getUniqueId(),
+            'slug' => $link->getSlug(),
+        ));
+    }
+
+    /**
+     * Finds and displays a Link entity.
+     *
      * @Route("/l/{uniqueId}/{slug}", name="link_show")
      * @Method("GET")
      */
@@ -261,6 +283,7 @@ class LinkController extends Controller
             'comments' => $comments,
             'delete_form' => $deleteFormView,
             'comment_form' => $comment_form->createView(),
+            'link_details' => true,
         ));
     }
 
