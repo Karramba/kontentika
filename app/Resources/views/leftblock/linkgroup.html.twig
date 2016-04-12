@@ -1,6 +1,5 @@
 <div class="list-group leftblock">
-    {% if linkgroup is defined and linkgroup is not null %}
-        {% set linkgroup = app.request.attributes.get('linkgroup') %}
+    {% if linkgroup is defined and linkgroup is not null and app.request.get('_route') == "linkgroup_show" %}
         <a href="{{ path('link_new_with_linkgroup', {'groupTitle': linkgroup.title}) }}" class="list-group-item active list-group-item-success">
             <i class="fa fa-share-alt"></i> {% trans %}link.add_new{% endtrans %}
         </a>
@@ -32,16 +31,26 @@
             </div>
         {% endif %}
     {% elseif app.user is defined and app.user is not null %}
-        <a href="{{ path('link_new') }}" class="list-group-item active list-group-item-success">
-            <i class="fa fa-share-alt"></i> {% trans %}link.add_new{% endtrans %}
+        <a href="{{ path('linkgroup_new') }}" class="list-group-item active list-group-item-success">
+            <i class="fa fa-hashtag"></i> {% trans %}linkgroup.add_new{% endtrans %}
         </a>
     {% endif %}
 </div>
 
+{% if linkgroup is defined and linkgroup.description is not null %}
+    <div class="list-group leftblock"> 
+        <div class="list-group-item">
+            <div>{% trans %}linkgroup.description{% endtrans %}:</div>
+        </div>
+        <div class="list-group-item">
+            {{ linkgroup.description }}
+        </div>
+    </div>
+{% endif %}
 
 
 
-<div class="list-group leftblock"> 
+{#<div class="list-group leftblock"> 
     <div class="list-group-item">{% trans %}link.show_content_by{% endtrans %}:</div>
     <a href="{{ path('link_index') }}" class="list-group-item {{ isRouteActive(['link_index', 'link_index_page']) }}">
         <i class="fa fa-fire"></i> {% trans %}link.best{% endtrans %}
@@ -54,6 +63,6 @@
     </a>
     {#<a href="{{ path('link_newest') }}" class="list-group-item {% if route == 'link_most_comments' %}active{% endif %}">
         <i class="fa fa-commenting-o"></i> {% trans %}link.most_comments{% endtrans %}
-    </a>#}
-</div>
+    </a># }
+</div>#}
 

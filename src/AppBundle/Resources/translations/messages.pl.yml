@@ -54,6 +54,7 @@ linkgroup:
     created %datetime% by: utworzona %datetime% przez
     created_flash: Grupa została utworzona
     no_description: Brak opisu
+    description: Opis grupy
     add_moderator: Dodaj moderatora
     current_moderators: Moderatorzy grupy
     no_moderators: Brak moderatorów
