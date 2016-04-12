@@ -2,7 +2,6 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Entity\Link;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -22,11 +21,11 @@ class LinkService
      * Downloads image and saves to storage
      *
      */
-    public function downloadAndSaveThumbnail(Link $link)
+    public function downloadAndSaveThumbnail($thumbnailUrl)
     {
         $imagesDir = $this->kernelRootDir . '/../web/uploads';
 
-        if (filter_var($link->getThumbnail(), FILTER_VALIDATE_URL) && $image = file_get_contents($link->getThumbnail())) {
+        if (filter_var($thumbnailUrl, FILTER_VALIDATE_URL) && $image = file_get_contents($thumbnailUrl)) {
             $path = sys_get_temp_dir() . "/" . $link->getUniqueId();
             if (file_put_contents($path, $image)) {
                 try {

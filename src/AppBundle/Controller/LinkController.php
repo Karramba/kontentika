@@ -115,7 +115,7 @@ class LinkController extends Controller
             $link->setDomain($domain);
             $link->setImageOnly($this->get('link.service')->isImageOnly($link->getUrl()));
 
-            $this->get('link.service')->downloadAndSaveThumbnail($link);
+            $this->get('link.service')->downloadAndSaveThumbnail($link->getThumbnail());
 
             $this->getUser()->addLink($link);
 

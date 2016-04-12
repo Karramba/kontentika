@@ -28,7 +28,7 @@ class LinkRelatedType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Link',
+            'data_class' => 'AppBundle\Entity\LinkRelated',
             'em' => null,
         ));
     }

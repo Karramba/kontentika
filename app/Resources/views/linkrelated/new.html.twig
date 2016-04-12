@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="link">
+        <div class="form well bs-component">
+            {{ form_start(form) }}
+                <fieldset>
+                    <legend>{% trans %}link.add_new{% endtrans %}</legend>
+                    {{ form_widget(form) }}
+                    <div class="buttons">
+                        <a href="{{ path('link_index') }}" class="btn btn-primary">{% trans %}cancel{% endtrans %}</a>
+                        <button type="submit" class="btn btn-primary">{% trans %}link.save{% endtrans %}</button>
+                    </div>
+                    <div class="clearfix"></div>
+                </fieldset>
+            {{ form_end(form) }}
+        </div>
+
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@AppBundle/Resources/public/js/link.js' filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
