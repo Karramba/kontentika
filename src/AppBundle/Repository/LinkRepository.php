@@ -17,43 +17,22 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
     public function __construct($em, ClassMetadata $class)
     {
         parent::__construct($em, $class);
-        $this->prepareQuery();
     }
 
-    private function prepareQuery()
+    public function findLinks(array $links = array())
     {
-        $qb = $this->createQueryBuilder("l");
-        $this->query = $qb
+        $query = $this->createQueryBuilder("l")
             ->select("l, c, uv, dv, g, u, d")
-        // ->addSelect("(l.totalUpvotes - l.totalDownvotes) as HIDDEN _total_votes")
             ->leftjoin("l.comments", "c")
             ->leftjoin("l.group", "g")
             ->leftjoin("l.user", "u")
             ->leftjoin("l.domain", "d")
             ->leftjoin("l.upvotes", "uv")
             ->leftjoin("l.downvotes", "dv")
-            ->orderBy('l.id', 'DESC')
             ->where("(l.totalUpvotes - l.totalDownvotes) > -5")
+            ->andWhere("l IN (:links)")->setParameter("links", $links)
         ;
-    }
-
-    /**
-     * Result of built query
-     *
-     * @param $page
-     * @param $linksPerPage
-     */
-    private function getResult($page, $linksPerPage)
-    {
-        $result = $this->query->setFirstResult(($page - 1) * $linksPerPage)
-            ->setMaxResults($linksPerPage);
-
-        $links = new Paginator($result, $fetchJoinCollection = true);
-
-        return [
-            'links' => $links,
-            'linksNumber' => count($links),
-        ];
+        return $query;
     }
 
     /**
@@ -64,11 +43,21 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
      */
     public function findNewestLinks($user, $page, $linksPerPage)
     {
-        $this->query->andWhere("l.mainpageAt is null");
-        $this->query->andWhere("l.added > :newestExpirationTime")
-            ->setParameter("newestExpirationTime", new \DateTime('-52 hours'));
+        $query = $this->createQueryBuilder("l")
+            ->select("l")
+            ->where("l.mainpageAt is null")
+            ->andWhere("l.added > :newestExpirationTime")->setParameter("newestExpirationTime", new \DateTime('-52 hours'))
+            ->orderBy("l.id", "DESC");
 
-        return $this->getResult($page, $linksPerPage);
+        $result = $query->setFirstResult(($page - 1) * $linksPerPage)->setMaxResults($linksPerPage);
+        $links = new Paginator($result, $fetchJoinCollection = true);
+
+        $resultQuery = $this->findLinks($links->getQuery()->getResult());
+
+        return [
+            'links' => $resultQuery->getQuery()->getResult(),
+            'linksNumber' => count($links),
+        ];
     }
 
     /**
@@ -81,11 +70,21 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
      */
     public function findBestLinks($user, $page, $linksPerPage)
     {
-        $this->query->andWhere("(l.totalUpvotes - l.totalDownvotes) > 0");
-        $this->query->andWhere("l.mainpageAt is not null");
-        $this->query->orderBy("l.mainpageAt", "DESC");
+        $query = $this->createQueryBuilder("l")
+            ->select("l")
+            ->where("(l.totalUpvotes - l.totalDownvotes) > 0")
+            ->andWhere("l.mainpageAt is not null")
+            ->orderBy("l.mainpageAt", "DESC");
 
-        return $this->getResult($page, $linksPerPage);
+        $result = $query->setFirstResult(($page - 1) * $linksPerPage)->setMaxResults($linksPerPage);
+        $links = new Paginator($result, $fetchJoinCollection = true);
+
+        $resultQuery = $this->findLinks($links->getQuery()->getResult());
+
+        return [
+            'links' => $resultQuery->getQuery()->getResult(),
+            'linksNumber' => count($links),
+        ];
     }
 
     /**
@@ -96,13 +95,23 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
      */
     public function findRisingLinks($user, $page, $linksPerPage)
     {
-        $this->query->addSelect("(l.totalUpvotes - l.totalDownvotes) as HIDDEN _total_votes");
-        $this->query->andWhere("l.mainpageAt is null");
-        $this->query->andWhere("l.added > :newestExpirationTime")
-            ->setParameter("newestExpirationTime", new \DateTime('-3 days'));
-        $this->query->orderBy("_total_votes", "DESC");
+        $query = $this->createQueryBuilder("l")
+            ->select("l")
+            ->addSelect("(l.totalUpvotes - l.totalDownvotes) as HIDDEN _total_votes")
+            ->where("l.mainpageAt is null")
+            ->andWhere("l.added > :newestExpirationTime")->setParameter("newestExpirationTime", new \DateTime('-3 days'))
+            ->orderBy("_total_votes", "DESC")
+        ;
 
-        return $this->getResult($page, $linksPerPage);
+        $result = $query->setFirstResult(($page - 1) * $linksPerPage)->setMaxResults($linksPerPage);
+        $links = new Paginator($result, $fetchJoinCollection = true);
+
+        $resultQuery = $this->findLinks($links->getQuery()->getResult());
+
+        return [
+            'links' => $resultQuery->getQuery()->getResult(),
+            'linksNumber' => count($links),
+        ];
     }
 
     /**

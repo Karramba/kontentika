@@ -35,6 +35,8 @@ class LinkGroupController extends Controller
             'page' => $page,
             'pages' => ceil($result['linkgroupsNumber'] / $this->getParameter('content_per_page')),
             'linkgroupsNumber' => $result['linkgroupsNumber'],
+            'paginator_url' => 'linkgroup_index_page',
+            'route_params' => array(),
         ));
     }
 
@@ -61,6 +63,8 @@ class LinkGroupController extends Controller
             'linksNumber' => $result['linksNumber'],
             'paginationRoute' => 'link_group_show_page',
             'linkgroup' => $linkgroup,
+            'paginator_url' => 'linkgroup_show_page',
+            'route_params' => array('title' => $linkgroup->getTitle()),
         ));
 
     }
@@ -85,6 +89,8 @@ class LinkGroupController extends Controller
             'page' => $page,
             'pages' => ceil($result['linkgroupsNumber'] / $this->getParameter('content_per_page')),
             'linkgroupsNumber' => $result['linkgroupsNumber'],
+            'paginator_url' => 'my_linkgroups_page',
+            'route_params' => array(),
         ));
     }
 
@@ -92,7 +98,7 @@ class LinkGroupController extends Controller
      * Lists all LinkGroup entities.
      *
      * @Route("/g-u/{username}", name="user_linkgroups")
-     * @Route("/g-u/{username}-{page}", name="user_linkgroups_page", requirements={"page": "[0-9]+"})
+     * @Route("/g-u/{username}/{page}", name="user_linkgroups_page", requirements={"page": "[0-9]+"})
      * @Method("GET")
      * @Security("has_role('ROLE_USER')")
      */
@@ -109,6 +115,8 @@ class LinkGroupController extends Controller
             'pages' => ceil($result['linkgroupsNumber'] / $this->getParameter('content_per_page')),
             'linkgroupsNumber' => $result['linkgroupsNumber'],
             'user' => $user,
+            'paginator_url' => 'user_linkgroups_page',
+            'route_params' => array('username' => $user->getUsername()),
         ));
     }
 

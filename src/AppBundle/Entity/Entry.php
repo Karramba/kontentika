@@ -48,7 +48,7 @@ class Entry extends AbstractUniqueContent
     private $group;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Entry", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Entry", inversedBy="children", fetch="EAGER")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     private $parent;
