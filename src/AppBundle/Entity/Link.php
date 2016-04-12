@@ -124,6 +124,11 @@ class Link extends AbstractUniqueContent
      */
     private $imageOnly;
 
+    /**
+     * @ORM\OneToMany(targetEntity="LinkRelated", mappedBy="link")
+     */
+    private $related;
+
     public function __construct()
     {
         parent::__construct();
@@ -613,5 +618,40 @@ class Link extends AbstractUniqueContent
     public function getImageOnly()
     {
         return $this->imageOnly;
+    }
+
+    /**
+     * Add related
+     *
+     * @param \AppBundle\Entity\LinkRelated $related
+     *
+     * @return Link
+     */
+    public function addRelated(\AppBundle\Entity\LinkRelated $related)
+    {
+        $related->setLink($this);
+        $this->related[] = $related;
+
+        return $this;
+    }
+
+    /**
+     * Remove related
+     *
+     * @param \AppBundle\Entity\LinkRelated $related
+     */
+    public function removeRelated(\AppBundle\Entity\LinkRelated $related)
+    {
+        $this->related->removeElement($related);
+    }
+
+    /**
+     * Get related
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRelated()
+    {
+        return $this->related;
     }
 }
