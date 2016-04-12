@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use UserBundle\Entity\User;
 
 /**
  * UserGroupRepository
@@ -23,6 +24,35 @@ class LinkGroupRepository extends \Doctrine\ORM\EntityRepository
             ->select("lg, o, m")
             ->leftjoin("lg.owner", "o")
             ->leftjoin("lg.moderators", "m")
+            ->orderBy('lg.id', 'DESC')
+        ;
+
+        $result = $query->setFirstResult(($page - 1) * $linksPerPage)
+            ->setMaxResults($linksPerPage);
+
+        $linkGroups = new Paginator($result, $fetchJoinCollection = true);
+
+        return [
+            'linkGroups' => $linkGroups->getQuery()->getResult(),
+            'linkGroupsNumber' => count($linkGroups),
+        ];
+    }
+
+    /**
+     * List all groups - paginated
+     *
+     * @param $page
+     * @param $linksPerPage
+     * @return array
+     */
+    public function findUserGroups($page, $linksPerPage, User $user)
+    {
+        $qb = $this->createQueryBuilder("lg");
+        $query = $qb
+            ->select("lg, o, m")
+            ->leftjoin("lg.owner", "o")
+            ->leftjoin("lg.moderators", "m")
+            ->where("lg.owner = :user")->setParameter("user", $user)
             ->orderBy('lg.id', 'DESC')
         ;
 
