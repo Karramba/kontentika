@@ -9,7 +9,7 @@
         {% block stylesheets %}
             {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">#}
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 
             {% stylesheets '@AppBundle/Resources/public/css/*.css' filter='cssrewrite' output="css/vendor.css" %}
                 <link rel="stylesheet" href="{{ asset_url }}" />
@@ -91,10 +91,10 @@
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.username }} <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="{{ path('my_linkgroups') }}"><i class="fa fa-hashtag"></i> {% trans %}menu.my_groups{% endtrans %}</a>
+                                            <a href="{{ path('user_show', {'username': app.user.username}) }}"><i class="fa fa-user"></i> {% trans %}menu.my_activity{% endtrans %}</a>
                                         </li>
                                         <li>
-                                            <a href="{{ path('user_show', {'username': app.user.username}) }}"><i class="fa fa-user"></i> {% trans %}menu.my_activity{% endtrans %}</a>
+                                            <a href="{{ path('my_linkgroups') }}"><i class="fa fa-hashtag"></i> {% trans %}menu.my_groups{% endtrans %}</a>
                                         </li>
                                         <li class="divider"></li>
                                         <li>

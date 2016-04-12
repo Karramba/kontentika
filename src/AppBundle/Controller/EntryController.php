@@ -55,6 +55,7 @@ class EntryController extends Controller
             'paginationRoute' => 'entry_page',
         ));
     }
+
     /**
      * Displays a form to edit an existing Entry entity.
      *

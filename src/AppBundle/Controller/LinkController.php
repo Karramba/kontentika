@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Comment;
-use AppBundle\Entity\Domain;
 use AppBundle\Entity\Link;
 use AppBundle\Entity\LinkGroup;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -11,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -113,16 +111,13 @@ class LinkController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $link->setDomain($this->findDomain($link->getUrl()));
-            $this->downloadAndSaveImage($link);
+            $domain = $em->getRepository("AppBundle:Domain")->findDomain($link->getUrl());
+            $link->setDomain($domain);
+            $link->setImageOnly($this->get('link.service')->isImageOnly($link->getUrl()));
 
-            $headers = @get_headers($link->getUrl(), 1);
-
-            if (isset($headers['Content-Type'])) {
-                if (strpos($headers['Content-Type'], 'image/') !== false) {
-                    $link->setImageOnly(true);
-                }
-            }
+            $thumbnail = $this->get('link.service')
+                ->downloadAndSaveThumbnail($link->getThumbnail(), $link->getUniqueId());
+            $link->setThumbnail($thumbnail);
 
             $this->getUser()->addLink($link);
 
@@ -138,53 +133,6 @@ class LinkController extends Controller
             'link' => $link,
             'form' => $form->createView(),
         ));
-    }
-
-    private function findDomain($url)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $domain = null;
-        try {
-            $data = parse_url($url);
-            if (isset($data['host'])) {
-                $domain = $em->getRepository("AppBundle:Domain")->findOneByName($data['host']);
-                if (!$domain) {
-                    $domain = new Domain();
-                    $domain->setName($data['host']);
-                }
-            }
-        } catch (Exception $e) {
-
-        }
-        return $domain;
-    }
-
-    /**
-     * Downloads image and saves to storage
-     *
-     */
-    private function downloadAndSaveImage(Link $link)
-    {
-        $imagesDir = $this->container->getParameter('kernel.root_dir') . '/../web/uploads';
-
-        if (filter_var($link->getThumbnail(), FILTER_VALIDATE_URL) && $image = file_get_contents($link->getThumbnail())) {
-            $path = sys_get_temp_dir() . "/" . $link->getUniqueId();
-            if (file_put_contents($path, $image)) {
-                try {
-                    $file = new File($path);
-                    $extension = $file->guessExtension();
-                    $newName = $link->getUniqueId() . "." . $extension;
-                    $file->move($imagesDir, $newName);
-                    $link->setThumbnail($newName);
-                } catch (Exception $e) {
-                    throw new Symfony\Component\HttpKernel\Exception\HttpException(500, $e->getMessage());
-                    // var_dump($e->getMessage());
-                    // exit;
-                }
-            }
-
-        }
     }
 
     /**

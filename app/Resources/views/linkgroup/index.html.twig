@@ -38,7 +38,7 @@
     {% endfor %}
 
     <div id="paginator">
-        {% include '::paginator.html.twig' with {'url': paginator_url, 'page': page, 'pages': pages, 'route_params': route_params} %}
+        {% include '::paginator.html.twig' with {'url': paginationRoute, 'page': page, 'pages': pages, 'route_params': route_params} %}
     </div>
 {% endblock %}
 

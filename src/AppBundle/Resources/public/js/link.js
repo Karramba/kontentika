@@ -24,7 +24,26 @@ $(document).ready(function() {
         event.preventDefault();
         /* Act on the event */
     });
+    $("#link_related_url").on('input', function(event) {
+        clearTimeout(update);
+        update = setTimeout(function() {
+            $("#link_related_title").prop('disabled', true);
+            $.ajax({
+                    url: '/l/generate_title',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { url: $("#link_related_url").val() },
+                })
+                .done(function(response) {
+                    $("#link_related_title").val(response.title);
+                    $("#link_related_thumbnail").val(response.thumbnail);
 
+                    $("#link_related_title").prop('disabled', false);
+                });
+        }, 100);
+        event.preventDefault();
+        /* Act on the event */
+    });
 });
 
 $(window).load(function() {

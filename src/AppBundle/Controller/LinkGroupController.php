@@ -35,7 +35,7 @@ class LinkGroupController extends Controller
             'page' => $page,
             'pages' => ceil($result['linkgroupsNumber'] / $this->getParameter('content_per_page')),
             'linkgroupsNumber' => $result['linkgroupsNumber'],
-            'paginator_url' => 'linkgroup_index_page',
+            'paginationRoute' => 'linkgroup_index_page',
             'route_params' => array(),
         ));
     }
@@ -61,9 +61,8 @@ class LinkGroupController extends Controller
             'pages' => ceil($result['linksNumber'] / $this->getParameter('content_per_page')),
             'links' => $result['links'],
             'linksNumber' => $result['linksNumber'],
-            'paginationRoute' => 'link_group_show_page',
             'linkgroup' => $linkgroup,
-            'paginator_url' => 'linkgroup_show_page',
+            'paginationRoute' => 'linkgroup_show_page',
             'route_params' => array('title' => $linkgroup->getTitle()),
         ));
 
@@ -89,7 +88,7 @@ class LinkGroupController extends Controller
             'page' => $page,
             'pages' => ceil($result['linkgroupsNumber'] / $this->getParameter('content_per_page')),
             'linkgroupsNumber' => $result['linkgroupsNumber'],
-            'paginator_url' => 'my_linkgroups_page',
+            'paginationRoute' => 'my_linkgroups_page',
             'route_params' => array(),
         ));
     }
@@ -115,7 +114,7 @@ class LinkGroupController extends Controller
             'pages' => ceil($result['linkgroupsNumber'] / $this->getParameter('content_per_page')),
             'linkgroupsNumber' => $result['linkgroupsNumber'],
             'user' => $user,
-            'paginator_url' => 'user_linkgroups_page',
+            'paginationRoute' => 'user_linkgroups_page',
             'route_params' => array('username' => $user->getUsername()),
         ));
     }

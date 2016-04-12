@@ -1,0 +1,41 @@
+<div class="col-md-1 col-xs-1">
+    {%- include '::vote/buttons.html.twig' with {'content': linkRelated, 'contentType': 'linkRelated'} only -%}
+</div>
+<div class="col-md-2 col-xs-4">
+    <div class="thumbnail">
+    <a href="{{ linkRelated.url }}" target="_blank" rel="nofollow">
+        {% if linkRelated.thumbnail is not null %}
+            <img src="{{ linkRelated.thumbnailWebPath | imagine_filter('main_thumb') }}" title="{{ linkRelated.title }}" />
+        {% else %}
+            <img src="{{ asset('bundles/app/images/link/default.png') }}" />
+        {% endif %}
+    </a>
+    </div>
+</div>
+
+<div class="col-md-9 col-xs-6 content">
+    <h1 class="title">
+        <a href="{{ linkRelated.url }}" rel="nofollow" target="_blank">{{ linkRelated.title }}</a>
+    </h1>
+
+    <div class="options">
+        <span class="option">
+            <i class="fa fa-user"></i> <a href="{{ path('user_show', {'username': linkRelated.user}) }}"> {{ linkRelated.user }}</a>
+        </span>
+        <span class="option" title="{{ linkRelated.added | date("Y-m-d H:i:s") }}">
+            <i class="fa fa-clock-o"></i> {{ linkRelated.added | ago }}
+        </span>
+        {% if app.user == linkRelated.user or moderationToolsAccess(linkRelated.link.group) %}
+            {#<span class="option">
+                <i class="fa fa-pencil-square-o"></i> <a href="{{ path('link_edit', {'uniqueId': link.uniqueId}) }}">{% trans %}edit{% endtrans %}</a>
+            </span>#}
+            <span class="option">
+                <i class="fa fa-trash"></i> <a href="{{ path('linkRelated_delete', {'uniqueId': linkRelated.uniqueId}) }}" data-bb="confirm" class="delete-confirm">{% trans %}delete{% endtrans %}</a>
+            </span>
+        {% endif %}
+
+        
+    </div>
+</div>
+
+<div class="clearfix"></div>
