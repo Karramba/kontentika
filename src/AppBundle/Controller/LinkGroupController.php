@@ -138,7 +138,7 @@ class LinkGroupController extends Controller
             $em->flush();
             $this->addFlash('success', 'linkgroup.created_flash');
 
-            return $this->redirectToRoute('link_group_show', array('title' => $linkgroup->getTitle()));
+            return $this->redirectToRoute('linkgroup_show', array('title' => $linkgroup->getTitle()));
         }
 
         return $this->render('linkgroup/new.html.twig', array(
