@@ -52,7 +52,7 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
         $result = $query->setFirstResult(($page - 1) * $linksPerPage)->setMaxResults($linksPerPage);
         $links = new Paginator($result, $fetchJoinCollection = true);
 
-        $resultQuery = $this->findLinks($links->getQuery()->getResult());
+        $resultQuery = $this->findLinks($links->getQuery()->getResult())->addOrderBy("l.added", "DESC");
 
         return [
             'links' => $resultQuery->getQuery()->getResult(),
