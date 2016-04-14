@@ -1,4 +1,5 @@
 {% set notifications = app.user.notifications %}
+
 {% for notification in notifications[0:10] %}
     <li class="notification {% if notification.unread %}unread{% endif %}">
         <a role="menuitem" href="{{ path('notification_redirect', {'uniqueId': notification.uniqueId}) }}">

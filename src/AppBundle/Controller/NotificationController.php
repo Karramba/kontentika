@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\LinkGroup;
 use AppBundle\Entity\Notification;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  * LinkGroup controller.
  *
  * @Route("/n")
+ * @Security("has_role('ROLE_USER')")
  */
 class NotificationController extends Controller
 {

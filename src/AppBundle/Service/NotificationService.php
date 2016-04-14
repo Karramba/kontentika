@@ -82,11 +82,8 @@ class NotificationService
         $this->em->persist($notification);
         $this->em->flush();
 
-        $unreadNotifications = $this->em
-            ->getRepository("AppBundle:Notification")
-            ->findUserUnreadNotifications($notification->getUser());
-
-        $this->pusherService->notify('notification', $notification->getUser()->getId(), count($unreadNotifications));
+        $user = $notification->getUser();
+        $this->pusherService->notify('notification', $user->getId(), $user->getUnreadNotificationsNumber());
     }
 
     public function addMentionNotification($content, $message, array $params = array())
@@ -102,13 +99,15 @@ class NotificationService
             if ($user != $this->user && $user != $content->getUser() && $user != $this->repliedTo) {
                 $notification = $this->buildNotification($user, $content, $message, $params);
                 $this->em->persist($notification);
-
-                $unreadNotifications = $this->em
-                    ->getRepository("AppBundle:Notification")
-                    ->findUserUnreadNotifications($notification->getUser());
-                $this->pusherService->notify('notification', $notification->getUser()->getId(), count($unreadNotifications));
             }
         }
         $this->em->flush();
+
+        /* We need to send unread notifications number after doctrine flush */
+        foreach ($users as $user) {
+            if ($user != $this->user && $user != $content->getUser() && $user != $this->repliedTo) {
+                $this->pusherService->notify('notification', $user->getId(), $user->getUnreadNotificationsNumber());
+            }
+        }
     }
 }

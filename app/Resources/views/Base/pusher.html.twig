@@ -13,6 +13,11 @@
             $("span.notifications-number").html(data);
             if (parseInt(data) > 0) {
                 $("span.notifications-number").removeClass('zero');
+                if (document.title.match(/\([0-9+]\) /g)) {
+                    document.title = document.title.replace(/\([0-9+]\) /g, "(" + data + ") ");
+                } else {
+                    document.title = "(" + data + ") " + document.title;
+                }
             }
             $.get('/n/dropdown', function(data) {
                 $(".notifications .dropdown-menu").html(data);
