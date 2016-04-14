@@ -138,10 +138,12 @@ class KickExtension extends \Twig_Extension
      *
      * @param $route
      */
-    public function isRouteActive($route)
+    public function isRouteActive(array $routes = array())
     {
-        if ($this->requestStack->getCurrentRequest()->get('_route') == $route) {
-            return "active";
+        foreach ($routes as $route) {
+            if ($this->requestStack->getCurrentRequest()->get('_route') == $route) {
+                return "active";
+            }
         }
         return null;
     }

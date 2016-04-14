@@ -1,6 +1,7 @@
 /app/config/parameters.yml
 /app/config/parameters.yml.test
 /app/config/deploy.rb
+/app/config/pusher.yml
 /build/
 #/phpunit.xml
 /var/*

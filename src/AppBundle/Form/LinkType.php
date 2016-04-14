@@ -21,7 +21,9 @@ class LinkType extends AbstractType
     {
         $builder
             ->add('url')
-            ->add('title')
+            ->add('title', TextType::class, array(
+                'required' => true,
+            ))
             ->add('description', TextAreaType::class, array(
                 'attr' => array(
                     'rows' => 2,
