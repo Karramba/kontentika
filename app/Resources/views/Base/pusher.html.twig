@@ -1,0 +1,28 @@
+{% if is_granted("IS_AUTHENTICATED_FULLY") %}
+    <script src="https://js.pusher.com/3.0/pusher.min.js"></script>
+    {% javascripts '@DevPusherBundle/Resources/public/js/pusher.js' filter='uglifyjs2' output="js/pusher.js" %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        {% set config = pusherJsSettings() %}
+        var dev_pusher = dev_pusher("{{ config.app_key }}", "{{ config.cluster }}");
+    </script>
+    <script>
+        var channel = dev_pusher.subscribe('notifications-' + {{ app.user.id }});
+        channel.bind('notification', function(data) {
+            $("span.notifications-number").html(data);
+            if (parseInt(data) > 0) {
+                $("span.notifications-number").removeClass('zero');
+                if (document.title.match(/\([0-9+]\) /g)) {
+                    document.title = document.title.replace(/\([0-9+]\) /g, "(" + data + ") ");
+                } else {
+                    document.title = "(" + data + ") " + document.title;
+                }
+            }
+            $.get('/n/dropdown', function(data) {
+                $(".notifications .dropdown-menu").html(data);
+            });
+        });
+    </script>
+{% endif %}
+            
