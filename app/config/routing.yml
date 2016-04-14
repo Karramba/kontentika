@@ -27,6 +27,9 @@ user:
     type:     annotation
     prefix:   /
 
+dev_pusher:
+    resource: "@DevPusherBundle/Resources/config/routing.yml"
+
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 

@@ -3,6 +3,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\Notification;
+use Dev\PusherBundle\Service\PusherService;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use UserBundle\Service\UserService;
@@ -26,6 +27,7 @@ class NotificationService
      * @var User
      */
     private $user;
+    private $pusherService;
 
     private $userService;
     private $repliedTo;
@@ -35,11 +37,16 @@ class NotificationService
      * @param $translator
      * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(EntityManager $em, $translator, TokenStorageInterface $tokenStorage, UserService $userService)
-    {
+    public function __construct(EntityManager $em,
+        $translator,
+        TokenStorageInterface $tokenStorage,
+        UserService $userService,
+        PusherService $pusherService
+    ) {
         $this->em = $em;
         $this->translator = $translator;
         $this->userService = $userService;
+        $this->pusherService = $pusherService;
 
         $this->tokenStorage = $tokenStorage;
         if ($tokenStorage->getToken() !== null) {
@@ -74,6 +81,12 @@ class NotificationService
 
         $this->em->persist($notification);
         $this->em->flush();
+
+        $unreadNotifications = $this->em
+            ->getRepository("AppBundle:Notification")
+            ->findUserUnreadNotifications($notification->getUser());
+
+        $this->pusherService->notify('notification', $notification->getUser()->getId(), count($unreadNotifications));
     }
 
     public function addMentionNotification($content, $message, array $params = array())
@@ -89,6 +102,11 @@ class NotificationService
             if ($user != $this->user && $user != $content->getUser() && $user != $this->repliedTo) {
                 $notification = $this->buildNotification($user, $content, $message, $params);
                 $this->em->persist($notification);
+
+                $unreadNotifications = $this->em
+                    ->getRepository("AppBundle:Notification")
+                    ->findUserUnreadNotifications($notification->getUser());
+                $this->pusherService->notify('notification', $notification->getUser()->getId(), count($unreadNotifications));
             }
         }
         $this->em->flush();

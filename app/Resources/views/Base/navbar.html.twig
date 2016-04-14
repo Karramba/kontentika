@@ -1,0 +1,98 @@
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ path('link_index') }}">Kontentika</a>
+            </div>
+            
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-default bg-faded">
+                    <li class="{{ isGroupActive('linkgroup') }}">
+                        <a href="{{ path('linkgroup_index') }}">
+                            <i class="fa fa-hashtag"></i> {% trans %}menu.groups{% endtrans %}
+                        </a>
+                    </li>
+                    <li class="{{ isGroupActive('entry') }}">
+                        <a href="{{ path('entry_index') }}">
+                            <i class="fa fa-comments-o"></i> {% trans %}menu.entries{% endtrans %}
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="nav navbar-nav navbar-right navbar-default bg-faded">
+                    {% if app.user is defined and app.user is not null %}
+                        <li class="dropdown notifications">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-globe"></i>
+                                <span class="notifications-number {% if app.user.unreadNotificationsNumber == 0 %}zero{% endif %}">{{ app.user.unreadNotificationsNumber }}</span>
+                            </a>
+                            
+                            <ul class="dropdown-menu">
+                                {{ render(controller("AppBundle:Notification:dropdown")) }}
+                            </ul>
+                            
+                        </li>
+                        
+                        <li>
+                            {% if app.user.avatar is not null %}
+                                <img src="{{ app.user.avatar | imagine_filter('profile_thumb') }}" title="{{ app.user.avatar }}" />
+                            {% else %}
+                                <img src="{{ asset('bundles/app/images/link/default.png' | imagine_filter('profile_thumb')) }}" />
+                            {% endif %}
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.username }} <span class="caret"></span></a>
+
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="{{ path('user_show', {'username': app.user.username}) }}">
+                                        <i class="fa fa-user"></i> {% trans %}menu.my_activity{% endtrans %}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('my_linkgroups') }}">
+                                        <i class="fa fa-hashtag"></i> {% trans %}menu.my_groups{% endtrans %}
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="{{ path('fos_user_profile_edit') }}">
+                                        <i class="fa fa-edit"></i> {% trans %}menu.profile_edit{% endtrans %}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('fos_user_change_password') }}">
+                                        <i class="fa fa-key"></i> {{ 'change_password.submit'|trans({}, 'FOSUserBundle') }}
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="{{ path('fos_user_security_logout') }}">
+                                        <i class="fa fa-sign-out"></i> {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="{{ isRouteActive(['fos_user_registration_register']) }}">
+                            <a href="{{ path('fos_user_registration_register') }}">
+                                <i class="fa fa-user-plus"></i> {{ 'layout.register'|trans({}, 'FOSUserBundle') }}
+                            </a>
+                        </li>
+                        <li class="{{ isRouteActive(['fos_user_security_login']) }}">
+                            <a href="{{ path('fos_user_security_login') }}">
+                                <i class="fa fa-sign-in"></i> {{ 'layout.login'|trans({}, 'FOSUserBundle') }}
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+

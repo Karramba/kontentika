@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\LinkGroup;
 use AppBundle\Entity\Notification;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -15,6 +16,15 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class NotificationController extends Controller
 {
+    /**
+     * @Route("/dropdown")
+     * @Template("notification/dropdown.html.twig")
+     */
+    public function dropdownAction()
+    {
+        return array();
+    }
+
     /**
      * @Route("/markasread", name="notification_mark_as_read")
      */

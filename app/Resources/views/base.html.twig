@@ -7,8 +7,6 @@
 
         <title>{% block title %}{{ site_name }}{% endblock %}{% block subtitle %}{% endblock %}</title>
         {% block stylesheets %}
-            {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">#}
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 
             {% stylesheets '@AppBundle/Resources/public/css/*.css' filter='cssrewrite' output="css/vendor.css" %}
@@ -29,105 +27,16 @@
 
     <body role="document">
         {% block header %}
-            <nav class="navbar navbar-default navbar-fixed-top">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="{{ path('link_index') }}">Kontentika</a>
-                    </div>
-                    <div id="navbar" class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav navbar-default bg-faded">
-                            <li class="{{ isGroupActive('linkgroup') }}"><a href="{{ path('linkgroup_index') }}"><i class="fa fa-hashtag"></i> {% trans %}menu.groups{% endtrans %}</a></li>
-                            <li class="{{ isGroupActive('entry') }}"><a href="{{ path('entry_index') }}"><i class="fa fa-comments-o"></i> {% trans %}menu.entries{% endtrans %}</a></li>
-                            {#<li class="{{ isGroupActive('comments') }}"><a href="#"><i class="fa fa-commenting-o"></i> {% trans %}menu.comments{% endtrans %}</a></li>#}
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right navbar-default bg-faded">
-                            <li>
-                                {#<form class="navbar-form" role="search">
-                                  <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="{% trans %}menu.search{% endtrans %}">
-                                  </div>
-                                  <button type="submit" class="btn btn-default"><i class="fa fa-search"></i> </button>
-                                </form>#}
-                            </li>
-                            {% if app.user is defined and app.user is not null %}
-                                {% set notifications = app.user.notifications %}
-                                <li class="dropdown notifications">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-globe"></i>
-                                        <span class="notifications-number {% if app.user.unreadNotificationsNumber == 0 %}zero{% endif %}">{{ app.user.unreadNotificationsNumber }}</span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        {% for notification in notifications[0:10] %}
-                                            <li class="notification {% if notification.unread %}unread{% endif %}">
-                                                <a role="menuitem" href="{{ path('notification_redirect', {'uniqueId': notification.uniqueId}) }}">{{ notification.message }}</a>
-                                            </li>
-                                        {% else %}
-                                            <li class="notification">
-                                                <a>{% trans %}notification.no_notifications{% endtrans %}</a>
-                                            </li>
-                                        {% endfor %}
-                                        <li role="presentation" class="divider"></li>
-                                        <li>
-                                            <a href="#" class="mark-as-read">
-                                                {% trans %}notification.mark_as_read{% endtrans %}
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    {% if app.user.avatar is not null %}
-                                        <img src="{{ app.user.avatar | imagine_filter('profile_thumb') }}" title="{{ app.user.avatar }}" />
-                                    {% else %}
-                                        <img src="{{ asset('bundles/app/images/link/default.png' | imagine_filter('profile_thumb')) }}" />
-                                    {% endif %}
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.username }} <span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a href="{{ path('user_show', {'username': app.user.username}) }}"><i class="fa fa-user"></i> {% trans %}menu.my_activity{% endtrans %}</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ path('my_linkgroups') }}"><i class="fa fa-hashtag"></i> {% trans %}menu.my_groups{% endtrans %}</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li>
-                                            <a href="{{ path('fos_user_profile_edit') }}"><i class="fa fa-edit"></i> {% trans %}menu.profile_edit{% endtrans %}</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ path('fos_user_change_password') }}"><i class="fa fa-key"></i> {{ 'change_password.submit'|trans({}, 'FOSUserBundle') }}</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li>
-                                            <a href="{{ path('fos_user_security_logout') }}"><i class="fa fa-sign-out"></i> {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            {% else %}
-                                <li class="{{ isRouteActive(['fos_user_registration_register']) }}"><a href="{{ path('fos_user_registration_register') }}"><i class="fa fa-user-plus"></i> {{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a></li>
-                                <li class="{{ isRouteActive(['fos_user_security_login']) }}"><a href="{{ path('fos_user_security_login') }}"><i class="fa fa-sign-in"></i> {{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a></li>
-                            {% endif %}
-                        </ul>
-                    </div><!--/.nav-collapse -->
-                </div>
-            </nav>
+            {% include ':Base:navbar.html.twig' %}
         {% endblock %}
-        
+
         <div class="container theme-showcase main" role="main">
             <div class="row">
                 <div class="col-md-2">
                     {% block leftblock %}
                         {% set leftblockcontent = leftblock() %}
                         {% if leftblockcontent is not null %}
-                            {#<h4 class="top-news">Menu</h4>#}
                             <aside>
-                                {#{ leftblockcontent|raw }#}
                                 {% include leftblockcontent with {'route': app.request.get('_route')} %}
                             </aside>
                         {% endif %}
@@ -135,53 +44,14 @@
                 </div>
                 <div class="col-md-7">
                     <div class="row">
-                    {% for type, flashbag in app.session.flashbag.peekAll %}
-                        {% for flash in app.session.flashbag.get(type) %}
-                            <div class="alert alert-dismissible alert-{{ type }} link alertbox">
-                                 <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                 <h4>{{ ('alert.'~type) | trans }}</h4>
-                                 <p>{{ flash | trans }}</p>
-                            </div>
-                        {% endfor %}
-                    {% endfor %}
+                        {% include ':Base:flashbag.html.twig' %}
                     </div>
-
                     {% block body %}
                     {% endblock %}
                 </div>
+
                 <div class="col-md-3">
-                    {% block rightblock %}
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <i class="fa fa-github"></i> 
-                                <a href="{{ repository_url }}" target="_blank">{% trans %}code.repository{% endtrans %} {{ site_name }}</a>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                          <div class="panel-heading">{% trans %}link.best_rated{% endtrans %}</div>
-                          <div class="panel-body panel-best-rated">
-                            {% for link in bestRated(30) %}
-                                {% include "::link/best_rated.html.twig" with {'link': link} %}
-                            {% endfor %}
-                          </div>
-                        </div>
-                        <div class="panel panel-default">
-                          <div class="panel-heading">{% trans %}comments.last{% endtrans %}</div>
-                          <div class="panel-body">
-                            {% for comment in lastComments(5) %}
-                                {% include "::comment/last_comments.html.twig" with {'comment': comment} %}
-                            {% endfor %}
-                          </div>
-                        </div>
-                        <div class="panel panel-default">
-                          {#<div class="panel-heading">{% trans %}entries.last{% endtrans %}</div>
-                          <div class="panel-body">
-                            Lorem ipsum xyz<br>
-                            Lorem ipsum generator<br>
-                            Lorem && ipsum<br>
-                          </div>#}
-                        </div>
-                    {% endblock %}
+                    {% include ':Base:rightblock.html.twig' %}
                 </div>
             </div>
         </div>
@@ -202,6 +72,8 @@
                 <script src="{{ asset_url }}"></script>
             {% endjavascripts %}
             <script type"text/javascript" src="https://assets.gfycat.com/gfycat.js"></script>
+
+            {% include ':Base:pusher.html.twig' %}
         {% endblock %}
 
     </body>
