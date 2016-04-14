@@ -39,7 +39,7 @@ class LinkGroup extends AbstractUniqueContent
     private $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="linkGroups")
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="linkgroups")
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
     private $owner;

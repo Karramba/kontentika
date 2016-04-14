@@ -1,0 +1,13 @@
+services:
+    dev_pusher.service:
+       class: Dev\PusherBundle\Service\PusherService
+       arguments: 
+          - "%dev_pusher.config%"
+          - '@security.token_storage'
+
+    dev_pusher.twig_extension:
+        class: Dev\PusherBundle\Twig\PusherExtension
+        arguments: 
+            - "@dev_pusher.service"
+        tags:
+            - { name: twig.extension }

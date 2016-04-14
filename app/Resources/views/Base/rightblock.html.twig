@@ -1,0 +1,25 @@
+{% block rightblock %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <i class="fa fa-github"></i> 
+            <a href="{{ repository_url }}" target="_blank">{% trans %}code.repository{% endtrans %} {{ site_name }}</a>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">{% trans %}link.best_rated{% endtrans %}</div>
+        <div class="panel-body panel-best-rated">
+            {% for link in bestRated(30) %}
+                {% include "::link/best_rated.html.twig" with {'link': link} %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">{% trans %}comments.last{% endtrans %}</div>
+            <div class="panel-body">
+                {% for comment in lastComments(5) %}
+                    {% include "::comment/last_comments.html.twig" with {'comment': comment} %}
+                {% endfor %}
+            </div>
+        </div>
+    <div class="panel panel-default">
+{% endblock %}

@@ -1,0 +1,17 @@
+{% set notifications = app.user.notifications %}
+
+{% for notification in notifications[0:10] %}
+    <li class="notification {% if notification.unread %}unread{% endif %}">
+        <a role="menuitem" href="{{ path('notification_redirect', {'uniqueId': notification.uniqueId}) }}">
+            {{ notification.message }}
+        </a>
+    </li>
+{% else %}
+    <li class="notification">
+        <a>{% trans %}notification.no_notifications{% endtrans %}</a>
+    </li>
+{% endfor %}
+<li role="presentation" class="divider"></li>
+<li>
+    <a href="#" class="mark-as-read">{% trans %}notification.mark_as_read{% endtrans %}</a>
+</li>

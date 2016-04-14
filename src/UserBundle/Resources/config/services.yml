@@ -3,3 +3,14 @@ services:
         class: UserBundle\Form\ProfileFormType
         tags:
             - { name: form.type, alias: app_user_profile_edit }
+    user.service:
+        class: UserBundle\Service\UserService
+        arguments: 
+            - "@doctrine.orm.entity_manager"
+            - "@snc_redis.default"
+    user.twig_extension:
+        class: UserBundle\Twig\UserExtension
+        arguments: 
+            - "@user.service"
+        tags:
+            - { name: twig.extension }

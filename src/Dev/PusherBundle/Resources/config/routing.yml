@@ -1,0 +1,4 @@
+pusher_socket_auth:
+    path:   /pusher/auth/presence
+    defaults:  { _controller: DevPusherBundle:Pusher:presenceAuth }
+    methods: POST

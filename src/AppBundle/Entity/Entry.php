@@ -48,7 +48,7 @@ class Entry extends AbstractUniqueContent
     private $group;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Entry", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Entry", inversedBy="children", fetch="EAGER")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     private $parent;
@@ -79,6 +79,14 @@ class Entry extends AbstractUniqueContent
      * @ORM\Column(name="total_downvotes", type="integer", options={"default"=0}, nullable=false)
      */
     private $totalDownvotes;
+
+    /**
+     * @var \DateTime $updated
+     *
+     * @Gedmo\Timestampable(on="change", field={"content"})
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updated;
 
     public function __construct()
     {
@@ -381,5 +389,29 @@ class Entry extends AbstractUniqueContent
     public function getDownvotes()
     {
         return $this->downvotes;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     *
+     * @return Entry
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
     }
 }

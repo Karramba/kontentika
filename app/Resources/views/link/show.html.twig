@@ -7,6 +7,29 @@
         <div class="row link box">
             {% include '::link/box.html.twig' with {'link': link} %}
         </div>
+        {% if link.imageOnly == true %}
+            <div class="row link box thumbnail">
+                <img src="{{ link.url }}">
+            </div>
+        {% else  %}
+            {{ link.url|embedIfVideo }}
+        {% endif %}
+        <div class="row link box">
+            <div class="related-box">
+                <h5>{% trans %}link.related_links{% endtrans %}:</h5>
+                <ul class="related"> 
+                    {% for relatedLink in link.related %}
+                        <li class="link">
+                            {% include '::linkrelated/box.html.twig' with {'linkRelated': relatedLink} only %}
+                        </li>
+                    {% else %}
+                        <li>
+                            <i>{% trans %}link.no_related_links{% endtrans %}</i>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
         <div class="row link box">
             <div class="comments-box" id="comments">
                 <h5>{% trans %}link.comments{% endtrans %}:</h5>
@@ -24,12 +47,12 @@
                                 </ul>
                             {% endif %}
                         </li>
-
                     {% else %}
-                        <i>{% trans %}link.no_comments{% endtrans %}</i>
+                        <li><i>{% trans %}link.no_comments{% endtrans %}</i></li>
                     {% endfor %}
                 </ul>
                 <hr>
+
                 {% if app.user is defined and app.user is not null %}
                     <div class="form well bs-component">
                         {{ form_start(comment_form) }}

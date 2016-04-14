@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use UserBundle\Entity\User;
+
 /**
  * NotificationRepository
  *
@@ -10,4 +12,13 @@ namespace AppBundle\Repository;
  */
 class NotificationRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findUserUnreadNotifications(User $user)
+    {
+        return $this->createQueryBuilder("n")
+            ->select("n")
+            ->where("n.unread = 1")
+            ->andWhere("n.user = :user")->setParameter("user", $user)
+            ->getQuery()->getResult();
+
+    }
 }

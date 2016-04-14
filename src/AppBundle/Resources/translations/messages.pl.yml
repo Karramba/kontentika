@@ -5,6 +5,7 @@ delete: Usuń
 hreflink: Link
 options: Opcje
 show_all: Pokaż całość
+edited: Edytowano
 
 menu:
     contents: Treści
@@ -15,6 +16,8 @@ menu:
     search: Szukaj
     issues: Zgłoszenia
     profile_edit: Edycja profilu
+    my_groups: Moje grupy
+    my_activity: Moja aktywność
 
 link:
     best: Najlepsze
@@ -37,6 +40,9 @@ link:
     deleted: Treść została usunięta
     edition_impossible: Przepraszamy. Edycja treści nie jest już możliwa.
     adult_content: Treść +18 lat
+    related_links: Linki powiązane
+    no_related_links: Brak linków powiązanych
+    add_related_link: Dodaj powiązany link
 
 linkgroup:
     new: Nowa grupa
@@ -51,6 +57,7 @@ linkgroup:
     created %datetime% by: utworzona %datetime% przez
     created_flash: Grupa została utworzona
     no_description: Brak opisu
+    description: Opis grupy
     add_moderator: Dodaj moderatora
     current_moderators: Moderatorzy grupy
     no_moderators: Brak moderatorów
@@ -59,7 +66,9 @@ linkgroup:
     moderators: Moderatorzy grupy
     admin: Administrator grupy
     settings_saved: Ustawienia zostały zapisane
-
+    no_groups: Brak grup do wyświetlenia
+    user_groups: Grupy użytkownika
+    no_links: Brak linków w danej grupie
     
 entry:
     add: Dodaj wpis
@@ -113,7 +122,12 @@ notification:
     mark_as_read: Oznacz jako przeczytane
     entry_replied: odpowiedział(a) na Twój wpis
     comment_replied: odpowiedział(a) na Twój komentarz
+    entry_mention: wspomniał(a) o Tobie we wpisie
+    entry_edited: wyedytował(a) swój wpis
+    comment_mention: wspomiał(a) o Tobie w komentarzu
+    comment_edited: wyedytował(a) swój komentarz
 
-
+code:
+    repository: Repozytorium
 
 

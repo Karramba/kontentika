@@ -15,8 +15,13 @@
 
 <div class="col-md-9 col-xs-6 content">
     <h1 class="title">
-        <a href="{{ link.url }}" rel="nofollow" target="_blank">{{ link.title }}</a>
-        <span class="domain">({{ link.domain }})</span>
+        {% if link_details is defined and link_details == true %}
+            <a href="{{ link.url }}" rel="nofollow" target="_blank">{{ link.title }}</a>
+        {% else %}
+            <a href="{{ path('link_show', {'uniqueId': link.uniqueId, 'slug': link.slug}) }}">{{ link.title }}</a>
+        {% endif %}
+        <br>
+        <span class="domain">(<a href="{{ link.url }}" rel="nofollow" target="_blank">{{ link.domain }}</a>)</span>
     </h1>
 
     <div class="description">
@@ -33,7 +38,7 @@
             </a>
         </span>
         <span class="option">
-            <i class="fa fa-hashtag"></i> <a href="{{ path('link_group_show', {'title': link.group.title}) }}"> {{ link.group }}</a>
+            <i class="fa fa-hashtag"></i> <a href="{{ path('linkgroup_show', {'title': link.group.title}) }}"> {{ link.group }}</a>
         </span>
         <span class="option">
             <i class="fa fa-user"></i> <a href="{{ path('user_show', {'username': link.user}) }}"> {{ link.user }}</a>

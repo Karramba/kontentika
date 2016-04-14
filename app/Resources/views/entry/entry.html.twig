@@ -23,7 +23,7 @@
                 <div class="pull-right">
                     <span class="time-added"><i class="fa fa-clock-o"></i> {{ entry.added | ago }}</span>
                     {% if entry.group is not null %}
-                        <span class="group"><a href="{{ path('link_group_show', {'title': entry.group.title}) }}">g/{{ entry.group }}</a></span>
+                        <span class="group"><a href="{{ path('linkgroup_show', {'title': entry.group.title}) }}">g/{{ entry.group }}</a></span>
                     {% endif %}
                     {% if entry.deletedAt is null %}
                         {% include "::vote/buttons.html.twig" with {'content': entry, 'contentType': 'entry'} only %}
@@ -39,12 +39,10 @@
                 <div class="content">
                     {{ entry.content|markdown|findUsers|createUrls }}
                 </div>
-                {#% if countBR(entry.content) > 5 or entry.content|length > 500 %}
-                    <div class="more">
-                        <button class="btn btn-default btn-xs btn-show" data-contentid="entry-{{ entry.uniqueId }}">{% trans %}show_all{% endtrans %}</button>
-                    </div>
-                {% endif %#}
                 <div class="options">
+                    {% if entry.updated is not null %}
+                        <span>*{% trans %}edited{% endtrans %}: {{ entry.updated|ago}}</span>
+                    {% endif %}
                     {% if app.user == entry.user %}
                         <a href="{{ path('entry_edit', {'uniqueId': entry.uniqueId}) }}">
                             <i class="fa fa-pencil-square-o"></i> {% trans %}edit{% endtrans %}

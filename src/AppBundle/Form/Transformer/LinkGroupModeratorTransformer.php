@@ -6,10 +6,19 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
+/**
+ * Transforms usernames to users (for linkgroup settings)
+ */
 class LinkGroupModeratorTransformer implements DataTransformerInterface
 {
+    /**
+     * @var ObjectManager
+     */
     private $manager;
 
+    /**
+     * @param ObjectManager $manager
+     */
     public function __construct(ObjectManager $manager)
     {
         $this->manager = $manager;

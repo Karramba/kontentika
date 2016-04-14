@@ -7,10 +7,19 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
+/**
+ * Transforms LinkGroup name to Object
+ */
 class LinkGroupTransformer implements DataTransformerInterface
 {
+    /**
+     * @var ObjectManager
+     */
     private $manager;
 
+    /**
+     * @param ObjectManager $manager
+     */
     public function __construct(ObjectManager $manager)
     {
         $this->manager = $manager;
@@ -19,10 +28,10 @@ class LinkGroupTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($linkGroup)
+    public function transform($linkgroup)
     {
-        if ($linkGroup instanceof LinkGroup) {
-            return $linkGroup->getTitle();
+        if ($linkgroup instanceof LinkGroup) {
+            return $linkgroup->getTitle();
         }
     }
 
@@ -34,11 +43,11 @@ class LinkGroupTransformer implements DataTransformerInterface
         if (!$groupTitle) {
             return;
         }
-        $linkGroup = $this->manager->getRepository('AppBundle:LinkGroup')->findOneByTitle($groupTitle);
+        $linkgroup = $this->manager->getRepository('AppBundle:LinkGroup')->findOneByTitle($groupTitle);
 
-        if (null === $linkGroup) {
+        if (null === $linkgroup) {
             throw new TransformationFailedException(sprintf('An issue with number "%s" does not exist!', $groupTitle));
         }
-        return $linkGroup;
+        return $linkgroup;
     }
 }

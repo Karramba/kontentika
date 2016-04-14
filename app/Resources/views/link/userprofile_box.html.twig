@@ -33,7 +33,7 @@
             </a>
         </span>
         <span class="option">
-            <i class="fa fa-hashtag"></i> <a href="{{ path('link_group_show', {'title': link.group.title}) }}"> {{ link.group }}</a>
+            <i class="fa fa-hashtag"></i> <a href="{{ path('linkgroup_show', {'title': link.group.title}) }}"> {{ link.group }}</a>
         </span>
         <span class="option" title="{{ link.added | date("Y-m-d H:i:s") }}">
             <i class="fa fa-clock-o"></i> {{ link.added | ago }}

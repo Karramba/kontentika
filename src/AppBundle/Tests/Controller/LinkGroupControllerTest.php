@@ -8,7 +8,7 @@ class LinkGroupControllerTest extends AbstractTestController
     public function testCompleteScenario()
     {
         // Create a new entry in the database
-        $crawler = $this->client->request('GET', '/g/');
+        $crawler = $this->client->request('GET', '/g');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /g/");
         /*$crawler = $client->click($crawler->selectLink('Nowa grupa')->link());
 

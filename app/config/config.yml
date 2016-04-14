@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: pusher.yml }
     - { resource: "@UserBundle/Resources/config/services.yml" }
     - { resource: "@AppBundle/Resources/config/services.yml" }
 
@@ -45,7 +46,7 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
         site_name: "%site_name%"
-
+        repository_url: "%repository_url%"
 
 # Doctrine Configuration
 doctrine:
@@ -114,7 +115,6 @@ assetic:
             bin: /usr/bin/uglifyjs
 
 liip_imagine:
-    default_image: '/bundles/app/images/link/default.png'
     resolvers:
        default:
           web_path: ~
@@ -122,16 +122,19 @@ liip_imagine:
     filter_sets:
         cache: ~
         main_thumb:
+            default_image: '/bundles/app/images/link/default_90.png'
             quality: 90
             filters:
                 thumbnail: { size: [90, 90], mode: outbound }
                 background: { size: [90, 90], color: '#ffffff' }
         best_rated_thumb:
+            default_image: '/bundles/app/images/link/default_50.png'
             quality: 90
             filters:
                 thumbnail: { size: [50, 50], mode: outbound }
                 background: { size: [50, 50], color: '#ffffff' }
         profile_thumb:
+            default_image: '/bundles/app/images/link/default_48.png'
             quality: 90
             animated: true
             filters:
