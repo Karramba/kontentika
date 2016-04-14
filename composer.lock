@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c3962d7dec78969aa6ec391e265103e1",
-    "content-hash": "ce03255536bf7f3fb8d6d91086f5452b",
+    "hash": "b4f63cc7357085d34e9220903bdfc682",
+    "content-hash": "656c56faa12f1620cdd64c5815b88b11",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1320,61 +1320,6 @@
                 "minification"
             ],
             "time": "2015-11-12 13:51:40"
-        },
-        {
-            "name": "laupifrpar/pusher-bundle",
-            "version": "1.2.8",
-            "target-dir": "Lopi/Bundle/PusherBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laupiFrpar/LopiPusherBundle.git",
-                "reference": "26e291624481a4fb0ed45cb9e69e29f468c96898"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laupiFrpar/LopiPusherBundle/zipball/26e291624481a4fb0ed45cb9e69e29f468c96898",
-                "reference": "26e291624481a4fb0ed45cb9e69e29f468c96898",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "pusher/pusher-php-server": ">=2.2.1"
-            },
-            "require-dev": {
-                "symfony/config": "~2.3",
-                "symfony/dependency-injection": "~2.3",
-                "symfony/http-kernel": "~2.3"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-0": {
-                    "Lopi\\Bundle\\PusherBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Pierre-Louis Launay",
-                    "email": "laupi.frpar@gmail.com",
-                    "homepage": "https://github.com/laupiFrpar",
-                    "role": "developer"
-                },
-                {
-                    "name": "Community contributors",
-                    "homepage": "https://github.com/laupifrpar/lopipusherbundle/contributors"
-                }
-            ],
-            "description": "A Pusher bundle for Symfony2",
-            "homepage": "https://github.com/laupifrpar/lopipusherbundle",
-            "keywords": [
-                "nosql",
-                "pusher",
-                "symfony"
-            ],
-            "time": "2016-03-09 18:51:35"
         },
         {
             "name": "liip/imagine-bundle",
@@ -2808,6 +2753,61 @@
                 "orm"
             ],
             "time": "2016-03-24 18:00:50"
+        },
+        {
+            "name": "laupifrpar/pusher-bundle",
+            "version": "1.2.8",
+            "target-dir": "Lopi/Bundle/PusherBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laupiFrpar/LopiPusherBundle.git",
+                "reference": "26e291624481a4fb0ed45cb9e69e29f468c96898"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laupiFrpar/LopiPusherBundle/zipball/26e291624481a4fb0ed45cb9e69e29f468c96898",
+                "reference": "26e291624481a4fb0ed45cb9e69e29f468c96898",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "pusher/pusher-php-server": ">=2.2.1"
+            },
+            "require-dev": {
+                "symfony/config": "~2.3",
+                "symfony/dependency-injection": "~2.3",
+                "symfony/http-kernel": "~2.3"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Lopi\\Bundle\\PusherBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pierre-Louis Launay",
+                    "email": "laupi.frpar@gmail.com",
+                    "homepage": "https://github.com/laupiFrpar",
+                    "role": "developer"
+                },
+                {
+                    "name": "Community contributors",
+                    "homepage": "https://github.com/laupifrpar/lopipusherbundle/contributors"
+                }
+            ],
+            "description": "A Pusher bundle for Symfony2",
+            "homepage": "https://github.com/laupifrpar/lopipusherbundle",
+            "keywords": [
+                "nosql",
+                "pusher",
+                "symfony"
+            ],
+            "time": "2016-03-09 18:51:35"
         },
         {
             "name": "sensio/generator-bundle",
