@@ -208,7 +208,7 @@ class KickExtension extends \Twig_Extension
      */
     public function autoConvertUrls($string)
     {
-        $pattern = '/(http|https|ftp|ftps)\:\/\/[-a-zA-Zа-яёА-ЯЁ0-9\-\.]+\.[a-zA-Z]{2,3}(\/[-a-zA-Zа-яёА-ЯЁ0-9\-\.\?\=\/\&\#\[\]\%\~\:\!\$\;\,\+\@\;\'\(\)]*)?/u';
+        $pattern = '/(^|[^"])(http|https|ftp|ftps)\:\/\/[-a-zA-Zа-яёА-ЯЁ0-9\-\.]+\.[a-zA-Z]{2,3}(\/[-a-zA-Zа-яёА-ЯЁ0-9\-\.\?\=\/\&\#\[\]\%\~\:\!\$\;\,\+\@\;\']*)?/u';
         $stringFiltered = preg_replace_callback($pattern, array($this, 'callbackReplace'), $string);
         return $stringFiltered;
     }
@@ -219,14 +219,14 @@ class KickExtension extends \Twig_Extension
      */
     public function callbackReplace($matches)
     {
-        $url = $matches[0];
+        $url = substr($matches[0], 1);
 
         $video = $this->videoEmbedder->embedVideo($url);
         if (!is_null($video)) {
             return $video;
         }
 
-        return '<a href="' . $url . '" class="' . $this->linkClass . '" target="' . $this->target . '">' . $url . '</a>';
+        return $matches[1] . '<a href="' . $url . '" class="' . $this->linkClass . '" target="' . $this->target . '">' . $url . '</a>';
     }
 
     public function getName()
