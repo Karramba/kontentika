@@ -39,9 +39,7 @@ class KontentikaParser extends MarkdownParser
      */
     public function transformMarkdown($text)
     {
-        // var_dump($text);
-        // $text = preg_replace("/\r\n|\r|\n/", '<br/>', $text);
-        $text = nl2br($text);
+        $text = preg_replace("/\r\n|\n\r/", "\n\r\n\r", $text);
 
         return parent::transform($text);
     }
