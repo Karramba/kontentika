@@ -91,7 +91,7 @@ class EntryController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-        $editForm = $this->createForm('AppBundle\Form\EntryType', $entry, array('em' => $em));
+        $editForm = $this->createForm('AppBundle\Form\EntryType', $entry, array('em' => $em, 'rows' => 20));
         $editForm->remove('group');
         $editForm->handleRequest($request);
 

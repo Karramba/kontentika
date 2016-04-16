@@ -27,7 +27,7 @@ $(document).ready(function() {
 
 $(window).load(function() {
     $(".entry-content").each(function() {
-        if ($(this).find('.content').height() > 140) {
+        if ($(this).find('.content').height() >= 200) {
             $btnMore = $('<div class="more"><button class="btn btn-default btn-xs btn-show" data-contentid="' + $(this).attr('id') + '">Pokaż całość</button></div>');
             $btnMore.insertBefore($(this).find('.options'));
             $btnMore.find(".btn-show").on('click', function(event) {
@@ -42,8 +42,4 @@ $(window).load(function() {
         event.preventDefault();
         /* Act on the event */
     });
-    // var video = document.getElementById('video');
-    // video.addEventListener('click',function(){
-        
-    // },false);
 })

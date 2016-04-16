@@ -19,7 +19,7 @@ class EntryType extends AbstractType
     {
         $builder
             ->add('content', TextareaType::class, array(
-                'attr' => array('rows' => 3),
+                'attr' => array('rows' => $options['rows']),
             ))
             ->add('group', TextType::class, array(
                 'attr' => array('class' => 'group-autocomplete'),
@@ -37,6 +37,7 @@ class EntryType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Entry',
             'em' => null,
+            'rows' => 5,
         ));
     }
 }
