@@ -16,7 +16,7 @@ $(document).ready(function() {
                 document.title = document.title.replace(/\([0-9+]\) /g, "");
             });
 
-            e.stopPropagation();
+            e.preventDefault();
         }
     }, '.mark-as-read');
 });
