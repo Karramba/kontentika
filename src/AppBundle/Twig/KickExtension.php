@@ -223,7 +223,7 @@ class KickExtension extends \Twig_Extension
 
         $video = $this->videoEmbedder->embedVideo($url);
         if (!is_null($video)) {
-            return $video;
+            return $matches[1] . $video;
         }
 
         return $matches[1] . '<a href="' . $url . '" class="' . $this->linkClass . '" target="' . $this->target . '">' . $url . '</a>';
