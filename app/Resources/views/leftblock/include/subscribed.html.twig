@@ -1,4 +1,4 @@
-{% if app.user is defined and app.user is not null and app.user.subscribedGroups is not null %}
+{% if app.user is defined and app.user is not null and app.user.subscribedGroups|length > 0  %}
     <div class="list-group leftblock"> 
         <div class="list-group-item">
             {% trans %}linkgroup.my_subscriptions{% endtrans %}:
