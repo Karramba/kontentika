@@ -1,6 +1,5 @@
 <div class="list-group leftblock">
     {% if app.user is defined and app.user is not null  %}
-
         <a href="{{ path('link_new') }}" class="list-group-item active list-group-item-success">
             <i class="fa fa-share-alt"></i> {% trans %}link.add_new{% endtrans %}
         </a>
@@ -12,6 +11,8 @@
         {% endif %}
     {% endif %}
 </div>
+
+{% include ':leftblock:include/subscribed.html.twig' %}
 
 <div class="list-group leftblock"> 
     <div class="list-group-item">{% trans %}link.show_content_by{% endtrans %}:</div>

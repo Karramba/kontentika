@@ -124,6 +124,7 @@ class LinkGroupController extends Controller
      *
      * @Route("/g-new", name="linkgroup_new")
      * @Method({"GET", "POST"})
+     * @Security("has_role('ROLE_USER')")
      */
     public function newAction(Request $request)
     {
@@ -159,11 +160,13 @@ class LinkGroupController extends Controller
         // var_dump(array_map('current', $groups));exit;
         return new JsonResponse(array_map('current', $groups));
     }
+
     /**
      * Displays a form to edit an existing LinkGroup entity.
      *
      * @Route("/g/{title}/edit", name="linkgroup_edit")
      * @Method({"GET", "POST"})
+     * @Security("has_role('ROLE_USER')")
      */
     public function editAction(Request $request, LinkGroup $linkgroup)
     {
@@ -197,4 +200,49 @@ class LinkGroupController extends Controller
         ));
     }
 
+    /**
+     * Lists all LinkGroup entities.
+     *
+     * @Route("/g/{title}/subscribe", name="linkgroup_subscribe")
+     * @Method("GET")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function subscribeAction(LinkGroup $linkgroup)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $linkgroup->addSubscribedUser($this->getUser());
+
+        $em->persist($linkgroup);
+        $em->flush();
+
+        $this->addFlash('success', 'linkgroup.subscribed');
+
+        return $this->redirectToRoute('linkgroup_show', array(
+            'title' => $linkgroup->getTitle(),
+        ));
+    }
+
+    /**
+     * Lists all LinkGroup entities.
+     *
+     * @Route("/g/{title}/unsubscribe", name="linkgroup_unsubscribe")
+     * @Method("GET")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function unsubscribeAction(LinkGroup $linkgroup)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $linkgroup->removeSubscribedUser($this->getUser());
+
+        $em->persist($linkgroup);
+        $em->flush();
+
+        $this->addFlash('success', 'linkgroup.unsubscribed');
+
+        return $this->redirectToRoute('linkgroup_show', array(
+            'title' => $linkgroup->getTitle(),
+        ));
+    }
 }

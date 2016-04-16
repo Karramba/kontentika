@@ -69,6 +69,11 @@ linkgroup:
     no_groups: Brak grup do wyświetlenia
     user_groups: Grupy użytkownika
     no_links: Brak linków w danej grupie
+    subscribe: Subskrybuj
+    unsubscribe: Usuń subskrypcje
+    subscribed: Subskrypcja została zapisana
+    unsubscribed: Subskrypcja została usunięta
+    my_subscriptions: Subskrybowane
     
 entry:
     add: Dodaj wpis

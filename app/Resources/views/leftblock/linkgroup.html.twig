@@ -3,6 +3,15 @@
         <a href="{{ path('link_new_with_linkgroup', {'groupTitle': linkgroup.title}) }}" class="list-group-item active list-group-item-success">
             <i class="fa fa-share-alt"></i> {% trans %}link.add_new{% endtrans %}
         </a>
+        {% if app.user.subscribedGroups.contains(linkgroup) %}
+            <a href="{{ path('linkgroup_unsubscribe', {'title': linkgroup.title}) }}" class="list-group-item active list-group-item-primary">
+                <i class="fa fa-chain-broken"></i> {% trans %}linkgroup.unsubscribe{% endtrans %}
+            </a>
+        {% else %}
+            <a href="{{ path('linkgroup_subscribe', {'title': linkgroup.title}) }}" class="list-group-item active list-group-item-primary">
+                <i class="fa fa-newspaper-o"></i> {% trans %}linkgroup.subscribe{% endtrans %}
+            </a>
+        {% endif %}
         {% if app.user is not null and linkgroup.owner == app.user %}
             <a href="{{ path('linkgroup_edit', {'title': linkgroup.title}) }}" class="list-group-item active list-group-item-info"><i class="fa fa-cog"></i> {% trans %}linkgroup.group_settings{% endtrans %}</a>
         {% endif %}
@@ -36,6 +45,8 @@
         </a>
     {% endif %}
 </div>
+
+{% include ':leftblock:include/subscribed.html.twig' %}
 
 {% if linkgroup is defined and linkgroup.description is not null %}
     <div class="list-group leftblock"> 

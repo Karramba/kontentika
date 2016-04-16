@@ -58,6 +58,11 @@ class User extends BaseUser
     private $notifications;
 
     /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\LinkGroup", mappedBy="subscribedUsers")
+     */
+    private $subscribedGroups;
+
+    /**
      * @Assert\Image(maxSize="6000000")
      */
     private $file;
@@ -390,5 +395,39 @@ class User extends BaseUser
             }
         }
         return $notificationsNumber;
+    }
+
+    /**
+     * Add subscribedGroup
+     *
+     * @param \AppBundle\Entity\LinkGroup $subscribedGroup
+     *
+     * @return User
+     */
+    public function addSubscribedGroup(\AppBundle\Entity\LinkGroup $subscribedGroup)
+    {
+        $this->subscribedGroups[] = $subscribedGroup;
+
+        return $this;
+    }
+
+    /**
+     * Remove subscribedGroup
+     *
+     * @param \AppBundle\Entity\LinkGroup $subscribedGroup
+     */
+    public function removeSubscribedGroup(\AppBundle\Entity\LinkGroup $subscribedGroup)
+    {
+        $this->subscribedGroups->removeElement($subscribedGroup);
+    }
+
+    /**
+     * Get subscribedGroups
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSubscribedGroups()
+    {
+        return $this->subscribedGroups;
     }
 }
