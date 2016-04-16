@@ -123,6 +123,7 @@ class EntryController extends Controller
             } else {
                 $uniqueId = $entry->getUniqueId();
             }
+            $this->get('dev_pusher.service')->notifyChannel("entries", "entry_edit", $entry->getUniqueId());
 
             return $this->redirectToRoute('entry_show', array('uniqueId' => $uniqueId));
         }

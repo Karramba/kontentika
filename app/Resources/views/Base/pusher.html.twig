@@ -24,13 +24,15 @@
             });
         });
 
-        {% if isGroupActive("entry") %}
+        {% if app.request.get("_route") == "entry_index" %}
             var entry = dev_pusher.subscribe('entries');
             entry.bind('new_entry', function(data) {
                 $.get('/e/' + data + '/render' , function(entry) {
                     $(".entries.row").prepend(entry);
                 });
             });
+        {% endif %}
+        {% if isGroupActive("entry") %}
             entry.bind('entry_reply', function(data) {
                 var $thread = $(".entries.row").find(".children-" + data.parent);
                 if ($thread != 'undefined') {
