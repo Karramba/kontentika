@@ -8,8 +8,8 @@
         var dev_pusher = dev_pusher("{{ config.app_key }}", "{{ config.cluster }}");
     </script>
     <script>
-        var channel = dev_pusher.subscribe('notifications-' + {{ app.user.id }});
-        channel.bind('notification', function(data) {
+        var privateChannel = dev_pusher.subscribe('notifications-' + {{ app.user.id }});
+        privateChannel.bind('notification', function(data) {
             $("span.notifications-number").html(data);
             if (parseInt(data) > 0) {
                 $("span.notifications-number").removeClass('zero');
@@ -23,6 +23,24 @@
                 $(".notifications .dropdown-menu").html(data);
             });
         });
+
+        {% if isGroupActive("entry") %}
+            var entry = dev_pusher.subscribe('entries');
+            entry.bind('new_entry', function(data) {
+                $.get('/e/' + data + '/render' , function(entry) {
+                    $(".entries.row").prepend(entry);
+                });
+            });
+            entry.bind('entry_reply', function(data) {
+                var $thread = $(".entries.row").find(".children-" + data.parent);
+                if ($thread != 'undefined') {
+                    $.get('/e/' + data.reply + '/render' , function(entry) {
+                        $thread.append(entry)
+                    });
+                }
+            });
+        {% endif %}
     </script>
+
 {% endif %}
             

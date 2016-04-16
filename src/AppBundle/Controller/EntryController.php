@@ -42,6 +42,7 @@ class EntryController extends Controller
             $em->flush();
 
             $this->get('notification.service')->addMentionNotification($entry, "entry_mention");
+            $this->get('dev_pusher.service')->notifyChannel("entries", "new_entry", $entry->getUniqueId());
 
             return $this->redirectToRoute('entry_index');
         }
@@ -73,6 +74,19 @@ class EntryController extends Controller
         }
 
         return $this->render('entry/show.html.twig', array(
+            'entry' => $entry,
+        ));
+    }
+
+    /**
+     * Displays a form to edit an existing Entry entity.
+     *
+     * @Route("/{uniqueId}/render", name="entry_render")
+     * @Method({"GET", "POST"})
+     */
+    public function renderAction(Request $request, Entry $entry)
+    {
+        return $this->render('entry/entry.html.twig', array(
             'entry' => $entry,
         ));
     }
@@ -189,6 +203,11 @@ class EntryController extends Controller
                         $this->get('notification.service')->addReplyNotification($entry, "entry_replied");
                     }
                     $this->get('notification.service')->addMentionNotification($reply, "entry_mention");
+
+                    $this->get('dev_pusher.service')->notifyChannel("entries", "entry_reply", array(
+                        'reply' => $reply->getUniqueId(),
+                        'parent' => $parent->getUniqueId(),
+                    ));
 
                 } else {
                     $this->addFlash('danger', 'entry.cannot_add_entry_deleted');
