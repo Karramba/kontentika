@@ -50,7 +50,8 @@ class LinkGroupController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $result = $em->getRepository("AppBundle:Link")->findAllGroupLinks($linkgroup, $page, $this->getParameter('content_per_page'));
+        $result = $em->getRepository('AppBundle:Link')
+            ->findBestLinks($page, $this->getParameter('content_per_page'), $linkgroup);
 
         if (!$result) {
             throw $this->createNotFoundException();
@@ -66,6 +67,52 @@ class LinkGroupController extends Controller
             'route_params' => array('title' => $linkgroup->getTitle()),
         ));
 
+    }
+
+    /**
+     * @Route("/g/{title}/newest", name="linkgroup_newest")
+     * @Route("/g/{title}/newest/p/{page}", name="linkgroup_newest_page")
+     * @Method("GET")
+     */
+    public function newestAction(Request $request, $page = 1, LinkGroup $linkgroup)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $result = $em->getRepository('AppBundle:Link')
+            ->findNewestLinks($page, $this->getParameter('content_per_page'), $linkgroup);
+
+        return $this->render('link/index.html.twig', array(
+            'page' => $page,
+            'pages' => ceil($result['linksNumber'] / $this->getParameter('content_per_page')),
+            'links' => $result['links'],
+            'linksNumber' => $result['linksNumber'],
+            'paginationRoute' => "linkgroup_newest_page",
+            'subtitle' => "link.newest",
+            'linkgroup' => $linkgroup,
+        ));
+    }
+
+    /**
+     * @Route("/g/{title}/rising", name="linkgroup_rising")
+     * @Route("/g/{title}/rising/p/{page}", name="linkgroup_rising_page")
+     * @Method("GET")
+     */
+    public function risingAction(Request $request, $page = 1, LinkGroup $linkgroup)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $result = $em->getRepository('AppBundle:Link')
+            ->findRisingLinks($page, $this->getParameter('content_per_page'), $linkgroup);
+
+        return $this->render('link/index.html.twig', array(
+            'page' => $page,
+            'pages' => ceil($result['linksNumber'] / $this->getParameter('content_per_page')),
+            'links' => $result['links'],
+            'linksNumber' => $result['linksNumber'],
+            'paginationRoute' => "linkgroup_rising_page",
+            'subtitle' => "link.rising",
+            'linkgroup' => $linkgroup,
+        ));
     }
 
     /**
