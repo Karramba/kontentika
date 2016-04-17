@@ -84,8 +84,13 @@ class EntryController extends Controller
      * @Route("/{uniqueId}/render", name="entry_render")
      * @Method({"GET", "POST"})
      */
-    public function renderAction(Request $request, Entry $entry)
+    public function renderAction(Request $request, $uniqueId)
     {
+        $em = $this->getDoctrine()->getManager();
+        $filter = $em->getFilters()->disable('softdeleteable');
+
+        $entry = $em->getRepository("AppBundle:Entry")->findEntry($uniqueId);
+
         return $this->render('entry/entry.html.twig', array(
             'entry' => $entry,
         ));
@@ -123,7 +128,7 @@ class EntryController extends Controller
             } else {
                 $uniqueId = $entry->getUniqueId();
             }
-            $this->get('dev_pusher.service')->notifyChannel("entries", "entry_edit", $entry->getUniqueId());
+            $this->get('dev_pusher.service')->notifyChannel("entries", "entry_update", $entry->getUniqueId());
 
             return $this->redirectToRoute('entry_show', array('uniqueId' => $uniqueId));
         }
@@ -156,6 +161,8 @@ class EntryController extends Controller
 
         $em->remove($entry);
         $em->flush();
+
+        $this->get('dev_pusher.service')->notifyChannel("entries", "entry_update", $entry->getUniqueId());
 
         $this->addFlash('success', 'entry.deleted');
 
@@ -196,6 +203,7 @@ class EntryController extends Controller
 
                 if ($entry->getDeletedAt() == null) {
                     $reply->setParent($parent);
+                    $reply->setGroup($parent->getGroup());
                     $em->persist($reply);
                     $em->flush();
                     $this->addFlash('success', 'entry.added_successfully');

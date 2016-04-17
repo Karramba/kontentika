@@ -24,20 +24,31 @@
             });
         });
 
-        var entry = dev_pusher.subscribe('entries');
+        var entries = dev_pusher.subscribe('entries');
         {% if app.request.get("_route") == "entry_index" %}
-            entry.bind('new_entry', function(data) {
-                $.get('/e/' + data + '/render' , function(entry) {
+            entries.bind('new_entry', function(entryId) {
+                $.get('/e/' + entryId + '/render' , function(entry) {
                     $(".entries.row").prepend(entry);
                 });
             });
         {% endif %}
         {% if isGroupActive("entry") %}
-            entry.bind('entry_reply', function(data) {
+            entries.bind('entry_reply', function(data) {
                 var $thread = $(".entries.row").find(".children-" + data.parent);
                 if ($thread != 'undefined') {
                     $.get('/e/' + data.reply + '/render' , function(entry) {
                         $thread.append(entry)
+                    });
+                }
+            });
+
+            entries.bind('entry_update', function(entryId) {
+                var $entry = $(".entries.row").find("#entry-" + entryId);
+                if ($entry != 'undefined') {
+                    $.get('/e/' + entryId + '/render' , function(updatedEntry) {
+                        console.log(updatedEntry);
+                        $entry.html($(updatedEntry).find('#entry-' + entryId).html());
+                        // $thread.append(entry)
                     });
                 }
             });

@@ -34,7 +34,7 @@
         </div>
         <div class="panel-body entry-content" id="entry-{{ entry.uniqueId }}">
             {% if entry.deletedAt is not null %}
-                <i>{% trans %}entry.deleted{% endtrans %}</i>
+                <div class="content"><i>{% trans %}entry.deleted{% endtrans %}</i></div>
             {% else %}
                 <div class="content">
                     {{ entry.content|markdown|findUsers|createUrls }}
