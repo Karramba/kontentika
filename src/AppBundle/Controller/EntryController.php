@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use UserBundle\Entity\User;
 
@@ -33,19 +34,6 @@ class EntryController extends Controller
 
         $entry = new Entry();
         $form = $this->createForm('AppBundle\Form\EntryType', $entry, array('em' => $em));
-        $form->handleRequest($request);
-
-        if ($this->getUser() instanceof User && $form->isSubmitted() && $form->isValid()) {
-            $this->getUser()->addEntry($entry);
-
-            $em->persist($entry);
-            $em->flush();
-
-            $this->get('notification.service')->addMentionNotification($entry, "entry_mention");
-            $this->get('dev_pusher.service')->notifyChannel("entries", "new_entry", $entry->getUniqueId());
-
-            return $this->redirectToRoute('entry_index');
-        }
 
         return $this->render('entry/index.html.twig', array(
             'entries' => $result['entries'],
@@ -58,10 +46,44 @@ class EntryController extends Controller
     }
 
     /**
+     * Lists all Entry entities.
+     *
+     * @Route("/new", name="entry_new")
+     * @Method({"POST"})
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function newAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entry = new Entry();
+        $form = $this->createForm('AppBundle\Form\EntryType', $entry, array('em' => $em));
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getUser()->addEntry($entry);
+
+            $em->persist($entry);
+            $em->flush();
+
+            $this->get('notification.service')->addMentionNotification($entry, "entry_mention");
+            $this->get('dev_pusher.service')->notifyChannel("entries", "new_entry", $entry->getUniqueId());
+
+            return new JsonResponse(array(
+                'error' => false)
+            );
+        }
+
+        return new JsonResponse(array(
+            'error' => (string) $form->getErrors(true, false))
+        );
+    }
+
+    /**
      * Displays a form to edit an existing Entry entity.
      *
      * @Route("/{uniqueId}", name="entry_show")
-     * @Method({"GET", "POST"})
+     * @Method({"GET"})
      */
     public function showAction(Request $request, $uniqueId)
     {
@@ -206,7 +228,7 @@ class EntryController extends Controller
                     $reply->setGroup($parent->getGroup());
                     $em->persist($reply);
                     $em->flush();
-                    $this->addFlash('success', 'entry.added_successfully');
+                    // $this->addFlash('success', 'entry.added_successfully');
 
                     if ($entry->getUser() != $this->getUser()) {
                         $this->get('notification.service')->addReplyNotification($entry, "entry_replied");
@@ -217,19 +239,32 @@ class EntryController extends Controller
                         'reply' => $reply->getUniqueId(),
                         'parent' => $parent->getUniqueId(),
                     ));
-
+                    return new JsonResponse(array(
+                        'error' => false,
+                    ));
                 } else {
-                    $this->addFlash('danger', 'entry.cannot_add_entry_deleted');
+                    return new JsonResponse(array(
+                        'error' => $this->get('translator')->trans('entry.cannot_add_entry_deleted'),
+                    ));
                 }
 
             } catch (\Exception $e) {
-                $this->addFlash('danger', 'entry.error_adding');
+                return new JsonResponse(array(
+                    'error' => $this->get('translator')->trans('entry.error_adding'),
+                ));
             }
 
             $route = $this->generateUrl('entry_show', array(
                 'uniqueId' => $parent->getUniqueId(),
             ));
-            return $this->redirect($route . "#" . $reply->getUniqueId());
+            // return $this->redirect($route . "#" . $reply->getUniqueId());
+            return new JsonResponse(array(
+                'error' => (string) $form->getErrors(true, false),
+            ));
+        } elseif ($request->getMethod() == "POST" && !$form->isValid()) {
+            return new JsonResponse(array(
+                'error' => (string) $form->getErrors(true, false),
+            ));
         }
 
         return $this->render('entry/reply.html.twig', array(

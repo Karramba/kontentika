@@ -7,20 +7,62 @@ $(document).ready(function() {
         $.ajax({
             url: '/e/' + $entryId + '/reply',
             type: 'GET',
-        })
-        .done(function(result) {
+        }).done(function(result) {
             $("#entry-" + $entryId).find('.reply-form').html(result);
             var $textarea = $("#entry-" + $entryId).find('.reply-form').find('textarea');
             $textarea.focus();
             $textarea.val($textarea.val() + ": ");
         })
-       
+
         event.preventDefault();
     });
 
     $(".entries").on('click', '.entry-reply-cancel', function(event) {
         $(this).closest('div.reply-form').empty();
-        event.preventDefault();
+    });
+
+    function entryAdd($form) {
+        console.log($form);
+        var url = '/e/new';
+
+        if ($form.attr('action') != undefined) {
+            url = $form.attr('action');
+        }
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            data: $form.serialize(),
+        }).done(function(response) {
+            if (response.error == false) {
+                $form.trigger('reset');
+                $(".errors").html("").removeClass("alert alert-danger");
+                if ($form.attr('action') != undefined) {
+                   $('.reply-form').remove();
+                }
+            } else {
+                $(".errors").html(response.error);
+                if ($(".errors").hasClass('alert') == false) {
+                    $(".errors").addClass("alert alert-danger");
+                }
+            }
+        }).fail(function(response) {
+            $(".errors").html("Fail");
+            $(".errors").addClass("alert alert-danger");
+        }).always(function() {
+            // console.log("complete");
+        });
+    }
+    
+    $(document).delegate('form[name="entry"]', 'submit', function(e) {
+        e.preventDefault();
+        entryAdd($(this));
+    });
+
+    $(document).delegate('form[name="entry_reply"]', 'submit', function(e) {
+        e.preventDefault();
+        entryAdd($(this));
     });
 
 });
