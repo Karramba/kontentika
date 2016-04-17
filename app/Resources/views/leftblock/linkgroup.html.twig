@@ -46,7 +46,7 @@
     {% endif %}
 </div>
 
-{% if linkgroup is defined and linkgroup.description is not null %}
+{% if linkgroup is defined and linkgroup is not null %}
     <div class="list-group leftblock"> 
         <div class="list-group-item">{% trans %}link.show_content_by{% endtrans %}:</div>
         <a href="{{ path('linkgroup_show', {'title': linkgroup.title}) }}" class="list-group-item {{ isRouteActive(['linkgroup_show', 'linkgroup_show_page']) }}">
@@ -62,15 +62,16 @@
             <i class="fa fa-commenting-o"></i> {% trans %}link.most_comments{% endtrans %}
         </a>#}
     </div>
-
-    <div class="list-group leftblock"> 
-        <div class="list-group-item">
-            <div>{% trans %}linkgroup.description{% endtrans %}:</div>
+    {% if  linkgroup.description is not null %}
+        <div class="list-group leftblock"> 
+            <div class="list-group-item">
+                <div>{% trans %}linkgroup.description{% endtrans %}:</div>
+            </div>
+            <div class="list-group-item">
+                {{ linkgroup.description }}
+            </div>
         </div>
-        <div class="list-group-item">
-            {{ linkgroup.description }}
-        </div>
-    </div>
+    {% endif %}
 {% endif %}
 
 
