@@ -28,10 +28,8 @@
         {% if app.request.get("_route") == "entry_index" %}
             entries.bind('new_entry', function(entryId) {
                 $.get('/e/' + entryId + '/render' , function(entry) {
-                    $(entry).prependTo($(".entries.row")).ready(function() {
-                        $(".entry-content").each(function() {
-                            addButtonMore($(this));
-                        });
+                    $(entry).hide().prependTo($(".entries.row")).fadeIn(1000).ready(function() {
+                        addButtonsMore();
                     });
                 });
             });
@@ -41,11 +39,8 @@
                 var $thread = $(".entries.row").find(".children-" + data.parent);
                 if ($thread != 'undefined') {
                     $.get('/e/' + data.reply + '/render' , function(entry) {
-                        // $thread.append(entry)
-                        $(entry).prependTo($thread).ready(function() {
-                            $(".entry-content").each(function() {
-                                addButtonMore($(this));
-                            });
+                        $(entry).hide().appendTo($thread).fadeIn(1000).ready(function() {
+                            addButtonsMore();
                         });
                     });
                 }
@@ -55,15 +50,8 @@
                 var $entry = $(".entries.row").find("#entry-" + entryId);
                 if ($entry != 'undefined') {
                     $.get('/e/' + entryId + '/render' , function(updatedEntry) {
-                        // $(updatedEntry).prependTo($entry).ready(function() {
-                        //     $(".entry-content").each(function() {
-                        //         addButtonMore($(this));
-                        //     });
-                        // });
                         $entry.replaceWith($(updatedEntry).find('#entry-' + entryId)).ready(function() {
-                            $(".entry-content").each(function() {
-                                addButtonMore($(this));
-                            });
+                            addButtonsMore();
                         });
                     });
                 }

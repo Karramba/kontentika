@@ -103,24 +103,24 @@ $(document).ready(function() {
     });
 });
 
-function addButtonMore($entryContent) {
-    $content = $entryContent.find('.content');
-    if ($content.height() >= 200) {
-        if (!$entryContent.has($('.more')).length) {
-            $btnMore = $('<div class="more"><button class="btn btn-default btn-xs btn-show" data-contentid="' + $entryContent.attr('id') + '">Pokaż całość</button></div>');
-            $btnMore.insertBefore($entryContent.find('.options'));
-            $btnMore.find(".btn-show").on('click', function(event) {
-                $("#" + $entryContent.attr('id')).find('.content').toggleClass('full');
-                $(this).remove();
-            });
+function addButtonsMore() {
+    $(".entry-content").each(function() {
+        $content = $entryContent.find('.content');
+        if ($content.height() >= 200) {
+            if (!$entryContent.has($('.more')).length) {
+                $btnMore = $('<div class="more"><button class="btn btn-default btn-xs btn-show" data-contentid="' + $entryContent.attr('id') + '">Pokaż całość</button></div>');
+                $btnMore.insertBefore($entryContent.find('.options'));
+                $btnMore.find(".btn-show").on('click', function(event) {
+                    $("#" + $entryContent.attr('id')).find('.content').toggleClass('full');
+                    $(this).remove();
+                });
+            }
+        } else if ($entryContent.has($('.more')).length) {
+            $('.more').remove();
         }
-    } else if ($entryContent.has($('.more')).length) {
-        $('.more').remove();
-    }
+    });
 }
 
 $(window).load(function() {
-    $(".entry-content").each(function() {
-        addButtonMore($(this));
-    });
+    addButtonsMore();
 })
