@@ -48,7 +48,7 @@
                             <i class="fa fa-pencil-square-o"></i> {% trans %}edit{% endtrans %}
                         </a>
                     {% endif %}
-                    {% if app.user == entry.user or moderationToolsAccess(entryGroup) %}
+                    {% if app.user == entry.user or (entryGroup is not null and moderationToolsAccess(entryGroup)) %}
                         <a href="#" data-bb="confirm" class="entry-delete" data-id="{{ entry.uniqueId }}">
                             <i class="fa fa-trash"></i> {% trans %}delete{% endtrans %}
                         </a>
