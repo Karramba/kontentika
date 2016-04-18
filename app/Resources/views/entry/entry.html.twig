@@ -44,12 +44,12 @@
                         <span>*{% trans %}edited{% endtrans %}: {{ entry.updated|ago}}</span>
                     {% endif %}
                     {% if app.user == entry.user %}
-                        <a href="{{ path('entry_edit', {'uniqueId': entry.uniqueId}) }}">
+                        <a href="#" class="entry-edit" data-id="{{ entry.uniqueId }}">
                             <i class="fa fa-pencil-square-o"></i> {% trans %}edit{% endtrans %}
                         </a>
                     {% endif %}
                     {% if app.user == entry.user or moderationToolsAccess(entryGroup) %}
-                        <a href="{{ path('entry_delete', {'uniqueId': entry.uniqueId}) }}" data-bb="confirm" class="delete-confirm">
+                        <a href="#" data-bb="confirm" class="entry-delete" data-id="{{ entry.uniqueId }}">
                             <i class="fa fa-trash"></i> {% trans %}delete{% endtrans %}
                         </a>
                     {% endif %}                    
@@ -63,6 +63,7 @@
                     {% endif %}
                 </div>
                 <div class="reply-form"></div>
+                <div class="edit-form"></div>
             {% endif %}
         </div>
     </div>

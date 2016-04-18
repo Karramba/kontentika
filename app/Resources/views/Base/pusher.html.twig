@@ -28,7 +28,11 @@
         {% if app.request.get("_route") == "entry_index" %}
             entries.bind('new_entry', function(entryId) {
                 $.get('/e/' + entryId + '/render' , function(entry) {
-                    $(".entries.row").prepend(entry);
+                    $(entry).prependTo($(".entries.row")).ready(function() {
+                        $(".entry-content").each(function() {
+                            addButtonMore($(this));
+                        });
+                    });
                 });
             });
         {% endif %}
@@ -37,7 +41,12 @@
                 var $thread = $(".entries.row").find(".children-" + data.parent);
                 if ($thread != 'undefined') {
                     $.get('/e/' + data.reply + '/render' , function(entry) {
-                        $thread.append(entry)
+                        // $thread.append(entry)
+                        $(entry).prependTo($thread).ready(function() {
+                            $(".entry-content").each(function() {
+                                addButtonMore($(this));
+                            });
+                        });
                     });
                 }
             });
@@ -46,9 +55,16 @@
                 var $entry = $(".entries.row").find("#entry-" + entryId);
                 if ($entry != 'undefined') {
                     $.get('/e/' + entryId + '/render' , function(updatedEntry) {
-                        console.log(updatedEntry);
-                        $entry.html($(updatedEntry).find('#entry-' + entryId).html());
-                        // $thread.append(entry)
+                        // $(updatedEntry).prependTo($entry).ready(function() {
+                        //     $(".entry-content").each(function() {
+                        //         addButtonMore($(this));
+                        //     });
+                        // });
+                        $entry.replaceWith($(updatedEntry).find('#entry-' + entryId)).ready(function() {
+                            $(".entry-content").each(function() {
+                                addButtonMore($(this));
+                            });
+                        });
                     });
                 }
             });

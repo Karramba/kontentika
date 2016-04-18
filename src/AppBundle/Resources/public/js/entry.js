@@ -13,7 +13,6 @@ $(document).ready(function() {
             $textarea.focus();
             $textarea.val($textarea.val() + ": ");
         })
-
         event.preventDefault();
     });
 
@@ -21,8 +20,41 @@ $(document).ready(function() {
         $(this).closest('div.reply-form').empty();
     });
 
+    $(".entries").on('click', '.entry-edit', function(event) {
+        $(".entries").find('div.edit-form').empty();
+
+        var $entryId = $(this).data('id');
+
+        $.ajax({
+            url: '/e/' + $entryId + '/edit',
+            type: 'GET',
+        }).done(function(result) {
+            $("#entry-" + $entryId).find('.edit-form').html(result);
+            var $textarea = $("#entry-" + $entryId).find('.edit-form').find('textarea');
+            $textarea.focus();
+        })
+        event.preventDefault();
+    });
+
+    $(".entries").on('click', '.entry-delete', function(event) {
+        var $btn = $(this);
+        var $entryId = $(this).data('id');
+        bootbox.confirm("Czy na pewno chcesz usunąć?", function(confirmed) {
+            if (confirmed) {
+                $.ajax({
+                    url: '/e/' + $entryId + '/delete',
+                    type: 'GET',
+                }).fail(function(response) {
+                    $(".errors").html("Fail");
+                    $(".errors").addClass("alert alert-danger");
+                });
+            }
+        });
+        event.preventDefault();
+        event.stopPropagation();
+    });
+
     function entryAdd($form) {
-        console.log($form);
         var url = '/e/new';
 
         if ($form.attr('action') != undefined) {
@@ -39,7 +71,7 @@ $(document).ready(function() {
                 $form.trigger('reset');
                 $(".errors").html("").removeClass("alert alert-danger");
                 if ($form.attr('action') != undefined) {
-                   $('.reply-form').remove();
+                    $('.reply-form').remove();
                 }
             } else {
                 $(".errors").html(response.error);
@@ -54,7 +86,7 @@ $(document).ready(function() {
             // console.log("complete");
         });
     }
-    
+
     $(document).delegate('form[name="entry"]', 'submit', function(e) {
         e.preventDefault();
         entryAdd($(this));
@@ -65,23 +97,30 @@ $(document).ready(function() {
         entryAdd($(this));
     });
 
+    $(document).delegate('form[name="entry_edit"]', 'submit', function(e) {
+        e.preventDefault();
+        entryAdd($(this));
+    });
 });
 
-$(window).load(function() {
-    $(".entry-content").each(function() {
-        if ($(this).find('.content').height() >= 200) {
-            $btnMore = $('<div class="more"><button class="btn btn-default btn-xs btn-show" data-contentid="' + $(this).attr('id') + '">Pokaż całość</button></div>');
-            $btnMore.insertBefore($(this).find('.options'));
+function addButtonMore($entryContent) {
+    $content = $entryContent.find('.content');
+    if ($content.height() >= 200) {
+        if (!$entryContent.has($('.more')).length) {
+            $btnMore = $('<div class="more"><button class="btn btn-default btn-xs btn-show" data-contentid="' + $entryContent.attr('id') + '">Pokaż całość</button></div>');
+            $btnMore.insertBefore($entryContent.find('.options'));
             $btnMore.find(".btn-show").on('click', function(event) {
-                var contentid = $(this).data('contentid');
-                $("#" + contentid).find('.content').toggleClass('full');
+                $("#" + $entryContent.attr('id')).find('.content').toggleClass('full');
                 $(this).remove();
             });
         }
-    });
-    $('video').on('click', function(event) {
-        $(this).get(0).play();
-        event.preventDefault();
-        /* Act on the event */
+    } else if ($entryContent.has($('.more')).length) {
+        $('.more').remove();
+    }
+}
+
+$(window).load(function() {
+    $(".entry-content").each(function() {
+        addButtonMore($(this));
     });
 })

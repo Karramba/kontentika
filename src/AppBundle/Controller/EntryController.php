@@ -128,12 +128,13 @@ class EntryController extends Controller
     public function editAction(Request $request, Entry $entry)
     {
         if ($entry->getUser() != $this->getUser()) {
-            throw $this->createNotFoundException();
+            return new JsonResponse(array('error' => $this->get('translator')->trans('access_denied')));
         }
 
         $em = $this->getDoctrine()->getManager();
-        $editForm = $this->createForm('AppBundle\Form\EntryType', $entry, array('em' => $em, 'rows' => 20));
-        $editForm->remove('group');
+        $editForm = $this->createForm('AppBundle\Form\EntryEditType', $entry, array(
+            'action' => $this->generateUrl('entry_edit', array('uniqueId' => $entry->getUniqueId())),
+        ));
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -141,18 +142,21 @@ class EntryController extends Controller
             $em->persist($entry);
             $em->flush();
 
-            $this->addFlash('success', 'entry.edited_and_saved');
-
             $this->get('notification.service')->addMentionNotification($entry, "entry_edited");
-
-            if ($entry->getParent()) {
-                $uniqueId = $entry->getParent()->getUniqueId();
-            } else {
-                $uniqueId = $entry->getUniqueId();
-            }
             $this->get('dev_pusher.service')->notifyChannel("entries", "entry_update", $entry->getUniqueId());
 
-            return $this->redirectToRoute('entry_show', array('uniqueId' => $uniqueId));
+            // if ($entry->getParent()) {
+            //     $uniqueId = $entry->getParent()->getUniqueId();
+            // } else {
+            //     $uniqueId = $entry->getUniqueId();
+            // }
+
+            // return $this->redirectToRoute('entry_show', array('uniqueId' => $uniqueId));
+            return new JsonResponse(array('error' => false));
+        } elseif ($request->getMethod() == "POST" && !$form->isValid()) {
+            return new JsonResponse(array(
+                'error' => (string) $form->getErrors(true, false),
+            ));
         }
 
         return $this->render('entry/edit.html.twig', array(
@@ -174,7 +178,7 @@ class EntryController extends Controller
 
         if ($entry->getUser() != $this->getUser() &&
             !$this->get('auth.service')->haveModerationToolsAccess($entry->getGroup())) {
-            throw $this->createNotFoundException();
+            return new JsonResponse(array('error' => $this->get('translator')->trans('access_denied')));
         }
 
         if ($entry->getUser() != $this->getUser()) {
@@ -186,9 +190,7 @@ class EntryController extends Controller
 
         $this->get('dev_pusher.service')->notifyChannel("entries", "entry_update", $entry->getUniqueId());
 
-        $this->addFlash('success', 'entry.deleted');
-
-        return $this->redirectToRoute('entry_index');
+        return new JsonResponse(array('error' => false));
     }
 
     /**
