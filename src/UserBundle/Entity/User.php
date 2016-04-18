@@ -87,7 +87,7 @@ class User extends BaseUser
     {
         $this->file = $file;
         if (null !== $this->file) {
-            $this->avatar = $this->username . '.' . $this->file->guessExtension();
+            $this->avatar = hash('crc32b', uniqid()) . '.' . $this->file->guessExtension();
             $this->file->move($this->getUploadRootDir(), $this->avatar);
             $this->file = null;
         }
