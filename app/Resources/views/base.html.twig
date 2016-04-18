@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         {% set unreadNotificationsNumber = null %}
-        {% if app.user.unreadNotificationsNumber > 0 %}
+        {% if app.user is defined and app.user is not null and app.user.unreadNotificationsNumber > 0 %}
             {% set unreadNotificationsNumber = "(" ~ app.user.unreadNotificationsNumber ~ ") " %}
         {% endif %}
         <title>{{ unreadNotificationsNumber }} {% block title %}{{ site_name }}{% endblock %}{% block subtitle %}{% endblock %}</title>

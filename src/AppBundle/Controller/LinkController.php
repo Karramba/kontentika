@@ -32,7 +32,7 @@ class LinkController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $result = $em->getRepository('AppBundle:Link')
-            ->findBestLinks($this->getUser(), $page, $this->getParameter('content_per_page'));
+            ->findBestLinks($page, $this->getParameter('content_per_page'));
 
         return $this->render('link/index.html.twig', array(
             'page' => $page,
@@ -54,7 +54,7 @@ class LinkController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $result = $em->getRepository('AppBundle:Link')
-            ->findNewestLinks($this->getUser(), $page, $this->getParameter('content_per_page'));
+            ->findNewestLinks($page, $this->getParameter('content_per_page'));
 
         return $this->render('link/index.html.twig', array(
             'page' => $page,
@@ -76,7 +76,7 @@ class LinkController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $result = $em->getRepository('AppBundle:Link')
-            ->findRisingLinks($this->getUser(), $page, $this->getParameter('content_per_page'));
+            ->findRisingLinks($page, $this->getParameter('content_per_page'));
 
         return $this->render('link/index.html.twig', array(
             'page' => $page,

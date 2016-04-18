@@ -76,7 +76,7 @@ class CommentController extends Controller
      */
     public function editAction(Request $request, Comment $comment)
     {
-        $editForm = $this->createForm('AppBundle\Form\CommentType', $comment);
+        $editForm = $this->createForm('AppBundle\Form\CommentType', $comment, array('rows' => 20));
         $editForm->handleRequest($request);
 
         if ($comment->getUser() != $this->getUser()) {

@@ -6,6 +6,8 @@ namespace AppBundle\Media;
  * Helper class for video embedding
  * Original source code: https://sourceforge.net/p/kawf/git/ci/95c5adb1788da088099b04b0746045286582c853/tree/user/embed-media.inc.php
  * Reformatted for PSR
+ *
+ * TODO: REBUILD
  */
 class VideoEmbedder
 {
@@ -83,7 +85,7 @@ class VideoEmbedder
         $tag = null;
 
         $u = parse_url(html_entity_decode($url));
-        if ($u == null) {
+        if ($u == null || !isset($u['host'])) {
             return null;
         }
 
@@ -139,7 +141,7 @@ class VideoEmbedder
     public function embedVineVideo($url)
     {
         $u = parse_url(html_entity_decode($url));
-        if ($u == null) {
+        if ($u == null || !isset($u['host'])) {
             return null;
         }
 
@@ -170,7 +172,7 @@ class VideoEmbedder
     public function embedHtml5Video($url)
     {
         $u = parse_url(html_entity_decode($url));
-        if ($u == null) {
+        if ($u == null || !isset($u['host']) || !isset($u['path'])) {
             return null;
         }
 
@@ -190,7 +192,7 @@ class VideoEmbedder
     public function embedGfyVideo($url)
     {
         $u = parse_url(html_entity_decode($url));
-        if ($u == null) {
+        if ($u == null || !isset($u['host'])) {
             return null;
         }
 
@@ -232,15 +234,12 @@ class VideoEmbedder
      */
     public function embedVideo($url)
     {
-        // $url = normalize_url_scheme($url);
-
         foreach ($this->video_embedders as $embedder) {
             $f = "embed" . ucfirst($embedder) . "Video";
             $out = $this->$f($url);
             if (!is_null($out)) {
                 return "<div class=\"embeddedVideo\">$out</div>";
             }
-
         }
         return null;
         // return "'$url' is not a supported video type. Must be YouTube/Vimeo link or ogg/mp4/WebM<p>\n";

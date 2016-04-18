@@ -5,6 +5,23 @@
             <a href="{{ repository_url }}" target="_blank">{% trans %}code.repository{% endtrans %} {{ site_name }}</a>
         </div>
     </div>
+
+    {% if app.user is defined and app.user is not null and app.user.subscribedGroups|length > 0  %}
+    <div class="panel panel-default"> 
+        <div class="panel-heading">{% trans %}linkgroup.my_subscriptions{% endtrans %}:</div>
+        <div class="panel-body">
+            <ul class="without-dots">
+                {% for linkgroup in app.user.subscribedGroups %}
+                    <li>
+                        <i class="fa fa-hashtag"></i>
+                        <a href="{{ path('linkgroup_show', {'title': linkgroup.title}) }}">{{ linkgroup.title }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+
     <div class="panel panel-default">
         <div class="panel-heading">{% trans %}link.best_rated{% endtrans %}</div>
         <div class="panel-body panel-best-rated">

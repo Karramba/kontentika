@@ -83,7 +83,7 @@ class NotificationService
         $this->em->flush();
 
         $user = $notification->getUser();
-        $this->pusherService->notify('notification', $user->getId(), $user->getUnreadNotificationsNumber());
+        $this->pusherService->notifyUser('notification', $user->getId(), $user->getUnreadNotificationsNumber());
     }
 
     public function addMentionNotification($content, $message, array $params = array())
@@ -106,7 +106,7 @@ class NotificationService
         /* We need to send unread notifications number after doctrine flush */
         foreach ($users as $user) {
             if ($user != $this->user && $user != $content->getUser() && $user != $this->repliedTo) {
-                $this->pusherService->notify('notification', $user->getId(), $user->getUnreadNotificationsNumber());
+                $this->pusherService->notifyUser('notification', $user->getId(), $user->getUnreadNotificationsNumber());
             }
         }
     }

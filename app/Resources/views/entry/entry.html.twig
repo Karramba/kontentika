@@ -34,7 +34,7 @@
         </div>
         <div class="panel-body entry-content" id="entry-{{ entry.uniqueId }}">
             {% if entry.deletedAt is not null %}
-                <i>{% trans %}entry.deleted{% endtrans %}</i>
+                <div class="content"><i>{% trans %}entry.deleted{% endtrans %}</i></div>
             {% else %}
                 <div class="content">
                     {{ entry.content|markdown|findUsers|createUrls }}
@@ -44,12 +44,12 @@
                         <span>*{% trans %}edited{% endtrans %}: {{ entry.updated|ago}}</span>
                     {% endif %}
                     {% if app.user == entry.user %}
-                        <a href="{{ path('entry_edit', {'uniqueId': entry.uniqueId}) }}">
+                        <a href="#" class="entry-edit" data-id="{{ entry.uniqueId }}">
                             <i class="fa fa-pencil-square-o"></i> {% trans %}edit{% endtrans %}
                         </a>
                     {% endif %}
-                    {% if app.user == entry.user or moderationToolsAccess(entryGroup) %}
-                        <a href="{{ path('entry_delete', {'uniqueId': entry.uniqueId}) }}" data-bb="confirm" class="delete-confirm">
+                    {% if app.user == entry.user or (entryGroup is not null and moderationToolsAccess(entryGroup)) %}
+                        <a href="#" data-bb="confirm" class="entry-delete" data-id="{{ entry.uniqueId }}">
                             <i class="fa fa-trash"></i> {% trans %}delete{% endtrans %}
                         </a>
                     {% endif %}                    
@@ -63,10 +63,11 @@
                     {% endif %}
                 </div>
                 <div class="reply-form"></div>
+                <div class="edit-form"></div>
             {% endif %}
         </div>
     </div>
-        <div class="row children">
+        <div class="row children children-{{ entry.uniqueId }}">
             {% if entry.getFirstParent() is null %}
                 {% for entry_child in entry.children %}
                     {% include '::entry/entry.html.twig' with {'entry': entry_child} only %}

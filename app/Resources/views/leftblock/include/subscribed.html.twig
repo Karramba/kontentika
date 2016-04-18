@@ -1,0 +1,15 @@
+{% if app.user is defined and app.user is not null and app.user.subscribedGroups|length > 0  %}
+    <div class="list-group leftblock"> 
+        <div class="list-group-item">
+            {% trans %}linkgroup.my_subscriptions{% endtrans %}:
+            <ul class="without-dots">
+                {% for linkgroup in app.user.subscribedGroups %}
+                    <li>
+                        <i class="fa fa-hashtag"></i>
+                        <a href="{{ path('linkgroup_show', {'title': linkgroup.title}) }}">{{ linkgroup.title }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}

@@ -55,8 +55,13 @@ class PusherService
         }
     }
 
-    public function notify($event, $receiverId, $message)
+    public function notifyChannel($channel, $event, $content)
     {
-        $this->pusher->trigger($this->channel . "-" . $receiverId, $event, $message, $this->socketId);
+        $this->pusher->trigger($channel, $event, $content, $this->socketId);
+    }
+
+    public function notifyUser($event, $receiverId, $content)
+    {
+        $this->pusher->trigger($this->channel . "-" . $receiverId, $event, $content, $this->socketId);
     }
 }

@@ -8,8 +8,8 @@
         var dev_pusher = dev_pusher("{{ config.app_key }}", "{{ config.cluster }}");
     </script>
     <script>
-        var channel = dev_pusher.subscribe('notifications-' + {{ app.user.id }});
-        channel.bind('notification', function(data) {
+        var privateChannel = dev_pusher.subscribe('notifications-' + {{ app.user.id }});
+        privateChannel.bind('notification', function(data) {
             $("span.notifications-number").html(data);
             if (parseInt(data) > 0) {
                 $("span.notifications-number").removeClass('zero');
@@ -23,6 +23,41 @@
                 $(".notifications .dropdown-menu").html(data);
             });
         });
+
+        var entries = dev_pusher.subscribe('entries');
+        {% if app.request.get("_route") == "entry_index" %}
+            entries.bind('new_entry', function(entryId) {
+                $.get('/e/' + entryId + '/render' , function(entry) {
+                    $(entry).hide().prependTo($(".entries.row")).fadeIn(1000).ready(function() {
+                        addButtonsMore();
+                    });
+                });
+            });
+        {% endif %}
+        {% if isGroupActive("entry") %}
+            entries.bind('entry_reply', function(data) {
+                var $thread = $(".entries.row").find(".children-" + data.parent);
+                if ($thread != 'undefined') {
+                    $.get('/e/' + data.reply + '/render' , function(entry) {
+                        $(entry).hide().appendTo($thread).fadeIn(1000).ready(function() {
+                            addButtonsMore();
+                        });
+                    });
+                }
+            });
+
+            entries.bind('entry_update', function(entryId) {
+                var $entry = $(".entries.row").find("#entry-" + entryId);
+                if ($entry != 'undefined') {
+                    $.get('/e/' + entryId + '/render' , function(updatedEntry) {
+                        $entry.replaceWith($(updatedEntry).find('#entry-' + entryId)).ready(function() {
+                            addButtonsMore();
+                        });
+                    });
+                }
+            });
+        {% endif %}
     </script>
+
 {% endif %}
             

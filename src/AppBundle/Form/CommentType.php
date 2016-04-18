@@ -18,7 +18,7 @@ class CommentType extends AbstractType
         $builder
             ->add('content', TextAreaType::class, array(
                 'attr' => array(
-                    'rows' => 3,
+                    'rows' => $options['rows'],
                 ),
             ))
         ;
@@ -31,6 +31,7 @@ class CommentType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Comment',
+            'rows' => 5,
         ));
     }
 }
