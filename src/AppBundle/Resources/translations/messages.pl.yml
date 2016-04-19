@@ -33,7 +33,7 @@ link:
     add_new: Dodaj link
     most_commented: Najczęściej komentowane
     most_comments: Najwięcej komentarzy
-    best_rated: Najlepiej oceniane
+    best_rated %days%: Najlepiej oceniane (ostatnie %days% dni)
     show_content_by: Pokaż linki
     no_comments: Brak komentarzy
     added_flash: Treśc dodana pomyślnie

@@ -89,6 +89,7 @@ class LinkGroupController extends Controller
             'paginationRoute' => "linkgroup_newest_page",
             'subtitle' => "link.newest",
             'linkgroup' => $linkgroup,
+            'route_params' => array('title' => $linkgroup->getTitle()),
         ));
     }
 
@@ -112,6 +113,7 @@ class LinkGroupController extends Controller
             'paginationRoute' => "linkgroup_rising_page",
             'subtitle' => "link.rising",
             'linkgroup' => $linkgroup,
+            'route_params' => array('title' => $linkgroup->getTitle()),
         ));
     }
 

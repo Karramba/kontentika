@@ -47,11 +47,15 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
         $query = $this->createQueryBuilder("l")
             ->select("l")
             ->where("l.mainpageAt is null")
-            ->andWhere("l.added > :newestExpirationTime")->setParameter("newestExpirationTime", new \DateTime('-52 hours'))
             ->orderBy("l.id", "DESC");
 
         if ($linkgroup instanceof LinkGroup) {
             $query->andWhere("l.group = :linkgroup")->setParameter("linkgroup", $linkgroup);
+        } else {
+            /* Show some links on global newest */
+            $query
+                ->andWhere("l.added > :newestExpirationTime")
+                ->setParameter("newestExpirationTime", new \DateTime('-52 hours'));
         }
         $result = $query->setFirstResult(($page - 1) * $linksPerPage)->setMaxResults($linksPerPage);
         $links = new Paginator($result, $fetchJoinCollection = true);
@@ -108,12 +112,15 @@ class LinkRepository extends \Doctrine\ORM\EntityRepository
             ->select("l")
             ->addSelect("(l.totalUpvotes - l.totalDownvotes) as HIDDEN _total_votes")
             ->where("l.mainpageAt is null")
-            ->andWhere("l.added > :newestExpirationTime")->setParameter("newestExpirationTime", new \DateTime('-3 days'))
+            ->andWhere("l.added > :newestExpirationTime")
             ->orderBy("_total_votes", "DESC")
         ;
 
         if ($linkgroup instanceof LinkGroup) {
             $query->andWhere("l.group = :linkgroup")->setParameter("linkgroup", $linkgroup);
+            $query->setParameter("newestExpirationTime", new \DateTime('-7 days'));
+        } else {
+            $query->setParameter("newestExpirationTime", new \DateTime('-3 days'));
         }
 
         $result = $query->setFirstResult(($page - 1) * $linksPerPage)->setMaxResults($linksPerPage);
