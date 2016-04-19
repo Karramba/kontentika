@@ -60,6 +60,15 @@ class NotificationController extends Controller
             $content = $em->getRepository("AppBundle:" . $notification->getContentType())
                 ->findOneByUniqueId($notification->getContentUniqueId());
 
+            $query = $em->getRepository("AppBundle:Notification")
+                ->createQueryBuilder("n")
+                ->update("AppBundle:Notification", "n")
+                ->set("n.unread", 0)
+                ->where("n.user = :user")->setParameter("user", $this->getUser())
+                ->andWhere("n.contentUniqueId = :contentId")->setParameter("contentId", $content->getUniqueId());
+
+            $query->getQuery()->execute();
+
             switch ($notification->getContentType()) {
                 case 'Entry':
                     $url = $this->generateUrl('entry_show', array(
