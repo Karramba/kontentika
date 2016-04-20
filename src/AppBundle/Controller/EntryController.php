@@ -70,8 +70,8 @@ class EntryController extends Controller
             $this->get('dev_pusher.service')->notifyChannel("entries", "new_entry", $entry->getUniqueId());
 
             return new JsonResponse(array(
-                'error' => false)
-            );
+                'error' => false,
+            ));
         }
 
         return new JsonResponse(array(
