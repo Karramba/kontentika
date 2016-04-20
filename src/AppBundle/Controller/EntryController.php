@@ -75,7 +75,7 @@ class EntryController extends Controller
         }
 
         return new JsonResponse(array(
-            'error' => (string) $form->getErrors(true, false))
+            'error' => (string) $form->getErrors(true, true))
         );
     }
 

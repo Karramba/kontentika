@@ -655,12 +655,4 @@ class Link extends AbstractUniqueContent
     {
         return $this->related;
     }
-
-    /**
-     * @Assert\IsFalse(message="linkgroup.cannot_add_link_group_locked")
-     */
-    public function isGroupLocked()
-    {
-        return $this->group->getLocked();
-    }
 }

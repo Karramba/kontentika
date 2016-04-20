@@ -45,8 +45,11 @@ class LinkGroupTransformer implements DataTransformerInterface
         }
         $linkgroup = $this->manager->getRepository('AppBundle:LinkGroup')->findOneByTitle($groupTitle);
 
+        if ($linkgroup->getLocked() == true) {
+            throw new TransformationFailedException(sprintf('linkgroup.cannot_add_group_locked'));
+        }
         if (null === $linkgroup) {
-            throw new TransformationFailedException(sprintf('An issue with number "%s" does not exist!', $groupTitle));
+            throw new TransformationFailedException(sprintf('Linkgroup "%s" does not exist!', $groupTitle));
         }
         return $linkgroup;
     }
