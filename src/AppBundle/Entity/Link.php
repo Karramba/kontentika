@@ -266,6 +266,7 @@ class Link extends AbstractUniqueContent
     public function setGroup(\AppBundle\Entity\LinkGroup $group = null)
     {
         $this->group = $group;
+        $this->isGroupLocked();
 
         return $this;
     }
@@ -653,5 +654,13 @@ class Link extends AbstractUniqueContent
     public function getRelated()
     {
         return $this->related;
+    }
+
+    /**
+     * @Assert\IsFalse(message="linkgroup.cannot_add_link_group_locked")
+     */
+    public function isGroupLocked()
+    {
+        return $this->group->getLocked();
     }
 }

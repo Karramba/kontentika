@@ -26,4 +26,9 @@ services:
         class:  AppBundle\Service\LinkService
         arguments:
             - "%kernel.root_dir%"
-
+    persist.listener:
+        class: AppBundle\EventListener\PersistListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist, connection: default }
+        arguments:
+            - "@request_stack"

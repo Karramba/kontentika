@@ -14,3 +14,7 @@ services:
             - "@user.service"
         tags:
             - { name: twig.extension }
+    user.login:
+        class: UserBundle\EventListener\LoginListener
+        tags:
+            - { name: kernel.event_subscriber }
