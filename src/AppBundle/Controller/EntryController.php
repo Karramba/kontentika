@@ -75,8 +75,8 @@ class EntryController extends Controller
         }
 
         return new JsonResponse(array(
-            'error' => (string) $form->getErrors(true, true))
-        );
+            'error' => (string) $form->getErrors(true, true),
+        ));
     }
 
     /**
@@ -155,7 +155,7 @@ class EntryController extends Controller
             return new JsonResponse(array('error' => false));
         } elseif ($request->getMethod() == "POST" && !$form->isValid()) {
             return new JsonResponse(array(
-                'error' => (string) $form->getErrors(true, false),
+                'error' => (string) $form->getErrors(true, true),
             ));
         }
 
@@ -261,11 +261,11 @@ class EntryController extends Controller
             ));
             // return $this->redirect($route . "#" . $reply->getUniqueId());
             return new JsonResponse(array(
-                'error' => (string) $form->getErrors(true, false),
+                'error' => (string) $form->getErrors(true, true),
             ));
         } elseif ($request->getMethod() == "POST" && !$form->isValid()) {
             return new JsonResponse(array(
-                'error' => (string) $form->getErrors(true, false),
+                'error' => (string) $form->getErrors(true, true),
             ));
         }
 
