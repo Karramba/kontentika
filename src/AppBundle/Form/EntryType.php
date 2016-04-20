@@ -23,6 +23,7 @@ class EntryType extends AbstractType
             ))
             ->add('group', TextType::class, array(
                 'attr' => array('class' => 'group-autocomplete'),
+                'invalid_message' => 'linkgroup.group_invalid_or_locked',
             ))
         ;
         $builder->get('group')->addModelTransformer(new LinkGroupTransformer($options['em']));

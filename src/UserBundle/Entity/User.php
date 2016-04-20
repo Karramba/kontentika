@@ -72,6 +72,11 @@ class User extends BaseUser
      */
     private $avatar;
 
+    /**
+     * @ORM\OneToMany(targetEntity="LoginHistory", mappedBy="user", cascade={"all"})
+     */
+    private $loginHistory;
+
     public function __construct()
     {
         parent::__construct();
@@ -429,5 +434,40 @@ class User extends BaseUser
     public function getSubscribedGroups()
     {
         return $this->subscribedGroups;
+    }
+
+    /**
+     * Add loginHistory
+     *
+     * @param \UserBundle\Entity\LoginHistory $loginHistory
+     *
+     * @return User
+     */
+    public function addLoginHistory(\UserBundle\Entity\LoginHistory $loginHistory)
+    {
+        $loginHistory->setUser($this);
+        $this->loginHistory[] = $loginHistory;
+
+        return $this;
+    }
+
+    /**
+     * Remove loginHistory
+     *
+     * @param \UserBundle\Entity\LoginHistory $loginHistory
+     */
+    public function removeLoginHistory(\UserBundle\Entity\LoginHistory $loginHistory)
+    {
+        $this->loginHistory->removeElement($loginHistory);
+    }
+
+    /**
+     * Get loginHistory
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLoginHistory()
+    {
+        return $this->loginHistory;
     }
 }

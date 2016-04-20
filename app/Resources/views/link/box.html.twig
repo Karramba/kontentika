@@ -38,7 +38,14 @@
             </a>
         </span>
         <span class="option">
-            <i class="fa fa-hashtag"></i> <a href="{{ path('linkgroup_show', {'title': link.group.title}) }}"> {{ link.group }}</a>
+            <i class="fa fa-hashtag"></i> 
+            {% if isRouteActive(['link_newest', 'link_newest_page']) == "active" %}
+                <a href="{{ path('linkgroup_newest', {'title': link.group.title}) }}"> {{ link.group }}</a>
+            {% elseif isRouteActive(['link_rising', 'link_rising_page']) == "active" %}
+                <a href="{{ path('linkgroup_rising', {'title': link.group.title}) }}"> {{ link.group }}</a>
+            {% else %}
+                <a href="{{ path('linkgroup_show', {'title': link.group.title}) }}"> {{ link.group }}</a>
+            {% endif %}
         </span>
         <span class="option">
             <i class="fa fa-user"></i> <a href="{{ path('user_show', {'username': link.user}) }}"> {{ link.user }}</a>

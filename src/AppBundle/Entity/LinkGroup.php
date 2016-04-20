@@ -73,6 +73,11 @@ class LinkGroup extends AbstractUniqueContent
      */
     private $subscribedUsers;
 
+    /**
+     * @ORM\Column(name="locked", type="boolean", options={"default" = 0})
+     */
+    private $locked;
+
     public function __construct()
     {
         parent::__construct();
@@ -299,5 +304,29 @@ class LinkGroup extends AbstractUniqueContent
     public function getSubscribedUsers()
     {
         return $this->subscribedUsers;
+    }
+
+    /**
+     * Set locked
+     *
+     * @param boolean $locked
+     *
+     * @return LinkGroup
+     */
+    public function setLocked($locked)
+    {
+        $this->locked = $locked;
+
+        return $this;
+    }
+
+    /**
+     * Get locked
+     *
+     * @return boolean
+     */
+    public function getLocked()
+    {
+        return $this->locked;
     }
 }

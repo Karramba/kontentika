@@ -71,7 +71,7 @@ $(document).ready(function() {
                 $form.trigger('reset');
                 $(".errors").html("").removeClass("alert alert-danger");
                 if ($form.attr('action') != undefined) {
-                    $('.reply-form').remove();
+                    $('.reply-form').empty();
                 }
             } else {
                 $(".errors").html(response.error);

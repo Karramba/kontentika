@@ -78,6 +78,7 @@ class LinkGroupRepository extends \Doctrine\ORM\EntityRepository
             ->select("lg.title, count(l) AS HIDDEN total_links ")
             ->leftJoin("lg.links", "l")
             ->where("lg.title LIKE :title")->setParameter("title", "%" . $title . "%")
+            ->andWhere("lg.locked = 0")
             ->groupBy("lg.id")
             ->orderBy("total_links", "DESC")
             ->setMaxResults(20)
