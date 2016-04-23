@@ -266,7 +266,7 @@ class LinkController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         if ($link->getUser() != $this->getUser()) {
-            $this->get('notification.service')->addReplyNotification($link, "link_deleted");
+            $this->get('notification.service')->addDeleteNotification($link);
         }
 
         $em->remove($link);

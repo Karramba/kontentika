@@ -88,9 +88,8 @@ class CommentController extends Controller
             $em->persist($comment);
             $em->flush();
 
-            $this->get('notification.service')->addMentionNotification($comment, "comment_edited");
-
-            $this->addFlash('success', 'comment.edited_and_saved');
+            // $this->get('notification.service')->addMentionNotification($comment, "comment_edited");
+            // $this->addFlash('success', 'comment.edited_and_saved');
 
             $link = $comment->getLink();
             return $this->redirectToRoute('link_show', array(
@@ -119,8 +118,8 @@ class CommentController extends Controller
         }
         $em = $this->getDoctrine()->getManager();
 
-        if ($entry->getUser() != $this->getUser()) {
-            $this->get('notification.service')->addReplyNotification($comment, "comment_deleted");
+        if ($comment->getUser() != $this->getUser()) {
+            $this->get('notification.service')->addDeleteNotification($comment);
         }
 
         $link = $comment->getLink();
@@ -169,13 +168,13 @@ class CommentController extends Controller
                 $em->flush();
 
                 if ($comment->getUser() != $this->getUser()) {
-                    $this->get('notification.service')->addReplyNotification($comment, "comment_replied");
+                    $this->get('notification.service')->addReplyNotification($comment);
                 }
-                $this->get('notification.service')->addMentionNotification($reply, "comment_mention");
+                $this->get('notification.service')->addMentionNotification($reply);
 
                 $this->addFlash('success', 'comment.added_successfully');
             } catch (\Exception $e) {
-                // var_dump($e->getMessage());exit;
+                var_dump($e->getMessage());exit;
                 $this->addFlash('danger', 'comment.error_adding');
             }
 

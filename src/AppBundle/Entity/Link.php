@@ -266,7 +266,6 @@ class Link extends AbstractUniqueContent
     public function setGroup(\AppBundle\Entity\LinkGroup $group = null)
     {
         $this->group = $group;
-        $this->isGroupLocked();
 
         return $this;
     }

@@ -142,8 +142,8 @@ class EntryController extends Controller
             $em->persist($entry);
             $em->flush();
 
-            $this->get('notification.service')->addMentionNotification($entry, "entry_edited");
-            $this->get('dev_pusher.service')->notifyChannel("entries", "entry_update", $entry->getUniqueId());
+            // $this->get('notification.service')->addMentionNotification($entry, "entry_edited");
+            // $this->get('dev_pusher.service')->notifyChannel("entries", "entry_update", $entry->getUniqueId());
 
             // if ($entry->getParent()) {
             //     $uniqueId = $entry->getParent()->getUniqueId();
@@ -182,7 +182,7 @@ class EntryController extends Controller
         }
 
         if ($entry->getUser() != $this->getUser()) {
-            $this->get('notification.service')->addReplyNotification($entry, "entry_deleted");
+            $this->get('notification.service')->addDeleteNotification($entry);
         }
 
         $em->remove($entry);

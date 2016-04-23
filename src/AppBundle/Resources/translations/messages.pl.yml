@@ -132,6 +132,13 @@ notification:
     entry_edited: wyedytował(a) swój wpis
     comment_mention: wspomiał(a) o Tobie w komentarzu
     comment_edited: wyedytował(a) swój komentarz
+    %sender%_mentioned_you_in_entry_%content%: %sender% wspomniał(a) o Tobie we wpisie (%content%)
+    %sender%_mentioned_you_in_comment_%content%: %sender% wspomniał(a) o Tobie w komentarzu (%content%)
+    %sender%_replied_to_your_comment_%content%: %sender% odpowiedział(a) na Twój komentarz (%content%)
+    %sender%_replied_to_your_entry_%content%: %sender% odpowiedział(a) na Twój wpis (%content%)
+    %sender%_deleted_your_link_%contentTitle%: %sender% usunął(ęła) Twój link (%contentTitle%)
+    %sender%_deleted_your_comment_%contentTitle%: %sender% usunął(ęła) Twój komentarz (%content%)
+    %sender%_deleted_your_entry_%contentTitle%: %sender% usunął(ęła) Twój komentarz (%content%)
 
 code:
     repository: Repozytorium

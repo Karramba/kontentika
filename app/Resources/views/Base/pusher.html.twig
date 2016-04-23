@@ -8,7 +8,7 @@
         var dev_pusher = dev_pusher("{{ config.app_key }}", "{{ config.cluster }}");
     </script>
     <script>
-        var privateChannel = dev_pusher.subscribe('notifications-' + {{ app.user.id }});
+        var privateChannel = dev_pusher.subscribe("{{ config.channel }}-{{ app.user.id }}");
         privateChannel.bind('notification', function(data) {
             $("span.notifications-number").html(data);
             if (parseInt(data) > 0) {
