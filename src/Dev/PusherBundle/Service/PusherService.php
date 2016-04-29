@@ -37,6 +37,7 @@ class PusherService
             'app_key' => $this->parameters['app_key'],
             'cluster' => $this->parameters['options']['cluster'],
             'debug' => ($this->parameters['debug'] == true) ? "true" : "false",
+            'channel' => $this->channel,
         );
         return $settings;
     }
