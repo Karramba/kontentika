@@ -9,10 +9,12 @@
                 <fieldset>
                     <legend>{% trans %}entry.add_new{% endtrans %}</legend>
                     {{ form_widget(form) }}
+                    <div class="errors col-md-offset-3"></div>
                     <div class="buttons">
                         {#<a href="{{ path('entry_index') }}" class="btn btn-primary">{% trans %}cancel{% endtrans %}</a>#}
                         <button type="submit" class="btn btn-primary">{% trans %}entry.add{% endtrans %}</button>
                     </div>
+                    
                     <div class="clearfix"></div>
                 </fieldset>
                 {{ form_end(form) }}

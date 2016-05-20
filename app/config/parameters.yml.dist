@@ -24,3 +24,4 @@ parameters:
 
     redis_host: 192.168.1.1
     repository_url: https://github.com/kontentika/kontentika
+    best_rated_range: 30 #days

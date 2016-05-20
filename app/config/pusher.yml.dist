@@ -1,14 +1,14 @@
-lopi_pusher:
-    app_id: <your_app_id>
-    key: <your_key>
-    secret: <your_secret>
-
-    # Default configuration
+dev_pusher:
+    app_id: ~
+    app_key: ~
+    secret: ~
     debug: false # true if you want use the debug of all requests
-    host: http://api.pusherapp.com
-    port: 80
-    timeout: 30
-
-    # optional if you want to use private or presence channels
-    # see the section about "Private and Presense channel auth" below
-    auth_service_id: channel_authenticator
+    channel: notifications
+    
+    options:
+        host: api-eu.pusher.com
+        cluster: eu
+        timeout: 30
+        encrypted: true
+    
+    

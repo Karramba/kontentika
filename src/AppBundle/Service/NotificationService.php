@@ -3,6 +3,9 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\Notification;
+use AppBundle\Factory\Notification\DeleteNotification;
+use AppBundle\Factory\Notification\MentionNotification;
+use AppBundle\Factory\Notification\ReplyNotification;
 use Dev\PusherBundle\Service\PusherService;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -54,17 +57,36 @@ class NotificationService
         }
     }
 
-    private function buildNotification($user, $content, $message, array $params = array())
+    public function createNotification($notificationType, $content, $receiver)
     {
-        $notification = new Notification();
-        $notification->setUser($user);
-        $notification->setContentType((new \ReflectionClass($content))->getShortName());
-        $notification->setContentUniqueId($content->getUniqueId());
+        try {
+            switch ($notificationType) {
+                case 'reply':
+                    $notification = new ReplyNotification();
+                    break;
+                case 'delete':
+                    $notification = new DeleteNotification();
+                    break;
+                case 'mention':
+                    $notification = new MentionNotification();
+                    break;
 
-        $message = $this->translator->trans("notification." . $message, array_merge($params, array('user' => $this->user)));
-        $notification->setMessage($this->user->getUsername() . " " . $message);
+                default:
+                    throw new \Exception("Error Processing Notification", 1);
+                    break;
+            }
 
-        return $notification;
+            $notification->setContent($content);
+            $notification->setSender($this->user);
+            $notification->setReceiver($receiver);
+            $notification->translate($this->translator);
+            $notificationEntity = $notification->getNotificationEntity();
+
+            return $notificationEntity;
+        } catch (\Exception $e) {
+            // var_dump($e);exit;
+        }
+
     }
 
     /**
@@ -74,39 +96,51 @@ class NotificationService
      * @param $message
      * @param array $params
      */
-    public function addReplyNotification($content, $message, array $params = array())
+    public function addReplyNotification($content)
     {
-        $notification = $this->buildNotification($content->getUser(), $content, $message, $params);
+        $notification = $this->createNotification("reply", $content, $content->getUser());
         $this->repliedTo = $content->getUser();
 
         $this->em->persist($notification);
         $this->em->flush();
 
         $user = $notification->getUser();
-        $this->pusherService->notify('notification', $user->getId(), $user->getUnreadNotificationsNumber());
+        $this->pusherService->notifyUser('notification', $user->getId(), $user->getUnreadNotificationsNumber());
     }
 
-    public function addMentionNotification($content, $message, array $params = array())
+    public function addDeleteNotification($content)
+    {
+        $notification = $this->createNotification("delete", $content, $content->getUser());
+
+        $this->em->persist($notification);
+        $this->em->flush();
+
+        $user = $notification->getUser();
+        $this->pusherService->notifyUser('notification', $user->getId(), $user->getUnreadNotificationsNumber());
+    }
+
+    public function addMentionNotification($content)
     {
         $mentions = $this->userService->findMentions($content->getContent());
         $users = $this->em->getRepository("UserBundle:User")->findByUsername($mentions);
 
-        foreach ($users as $user) {
+        foreach ($users as $receiver) {
             /**
              * We have to check that current user didn't mention himself.
              * Content owner is mentioned by addReplyNotification.
              */
-            if ($user != $this->user && $user != $content->getUser() && $user != $this->repliedTo) {
-                $notification = $this->buildNotification($user, $content, $message, $params);
+            if ($receiver != $this->user && $receiver != $content->getUser() && $receiver != $this->repliedTo) {
+                // $notification = $this->buildNotification($user, $content, $message, $params);
+                $notification = $this->createNotification("mention", $content, $receiver);
                 $this->em->persist($notification);
             }
         }
         $this->em->flush();
 
-        /* We need to send unread notifications number after doctrine flush */
-        foreach ($users as $user) {
-            if ($user != $this->user && $user != $content->getUser() && $user != $this->repliedTo) {
-                $this->pusherService->notify('notification', $user->getId(), $user->getUnreadNotificationsNumber());
+        /* We need to send an unread notifications number after doctrine flush */
+        foreach ($users as $receiver) {
+            if ($receiver != $this->user && $receiver != $content->getUser() && $receiver != $this->repliedTo) {
+                $this->pusherService->notifyUser('notification', $receiver->getId(), $receiver->getUnreadNotificationsNumber());
             }
         }
     }

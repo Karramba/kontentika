@@ -208,7 +208,7 @@ class KickExtension extends \Twig_Extension
      */
     public function autoConvertUrls($string)
     {
-        $pattern = '/(href="|src=")?([-a-zA-Zа-яёА-ЯЁ0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-zа-яё]{2,4}\b(\/?[-\p{L}0-9@:%_\+.~#?&\/\/=\(\),]*)?)/u';
+        $pattern = '/(^|[^"])(http|https|ftp|ftps)\:\/\/[-a-zA-Zа-яёА-ЯЁ0-9\-\.]+\.[a-zA-Z]{2,3}(\/[-a-zA-Zа-яёА-ЯЁ0-9\-\.\?\=\/\&\#\[\]\%\~\:\!\$\;\,\+\@\;\']*)?/u';
         $stringFiltered = preg_replace_callback($pattern, array($this, 'callbackReplace'), $string);
         return $stringFiltered;
     }
@@ -219,37 +219,14 @@ class KickExtension extends \Twig_Extension
      */
     public function callbackReplace($matches)
     {
-        if ($matches[1] !== '') {
-            return $matches[0]; // don't modify existing <a href="">links</a> and <img src="">
-        }
-        $url = $matches[2];
+        $url = substr($matches[0], 1);
 
         $video = $this->videoEmbedder->embedVideo($url);
-
         if (!is_null($video)) {
-            return $video;
+            return $matches[1] . $video;
         }
 
-        $urlWithPrefix = $matches[2];
-        if (strpos($url, '@') !== false) {
-            $urlWithPrefix = 'mailto:' . $url;
-        } elseif (strpos($url, 'https://') === 0) {
-            $urlWithPrefix = $url;
-        } elseif (strpos($url, 'http://') !== 0) {
-            $urlWithPrefix = 'http://' . $url;
-        }
-
-        // $style = ($this->debugMode) ? ' style="color:' . $this->debugColor . '"' : '';
-        // ignore tailing special characters
-        // TODO: likely this could be skipped entirely with some more tweakes to the regular expression
-        if (preg_match("/^(.*)(\.|\,|\?)$/", $urlWithPrefix, $matches)) {
-            $urlWithPrefix = $matches[1];
-            $url = substr($url, 0, -1);
-            $punctuation = $matches[2];
-        } else {
-            $punctuation = '';
-        }
-        return '<a href="' . $urlWithPrefix . '" class="' . $this->linkClass . '" target="' . $this->target . '">' . $url . '</a>' . $punctuation;
+        return $matches[1] . '<a href="' . $url . '" class="' . $this->linkClass . '" target="' . $this->target . '">' . $url . '</a>';
     }
 
     public function getName()

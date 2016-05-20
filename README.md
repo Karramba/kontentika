@@ -19,27 +19,24 @@ Things already done:
   * User avatar
   * Redis integrations - for doctrine/users 
   * Notifications
+  * Pusher for realtime notifications
+  * Related links
 
 Things they need to be finished:
   * Notifications:
     * user is notified when his content was deleted. TODO: More specific informations (e.g. content title, etc)
-  * Fix markdown parser - sometimes is making mess in entries, problematic with nl2br (KontentikaParser.php @transformMarkdown)
   * Groups autocompleter based on redis 
-  * Session stored in redis
   * User profile - show actions, unified templates 
 
 TODO:
   * Tests and code refactoring
   * API (perhaps rebuild website to RESTful oriented)
-  * Add related links 
   * User selected link thumbnails
   * Custom group styles by adding css file
   * Custom mainpage style 
   * Block (ban) user in owned (moderated) group(s) - blocked user can't add content to group(s)
   * Block (ban) user by other user - blocked user contnet is not visible(?)
   * Subscribe groups/users 
-  * Add pusher (or just websockets) for realtime notifications/content display
-  * Ranking
   * Custom contents 
   * Groups can have more than one admin
   * Mark adult content 
@@ -58,3 +55,4 @@ Install:
 
 - Install less (npm install -g less) and uglifyjs (npm install -g uglify-js)
 - Install redis 
+- Configure pusher settings (copy app/config/pusher.yml.dist to pusher.yml)

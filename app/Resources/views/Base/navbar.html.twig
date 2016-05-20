@@ -13,9 +13,16 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-default bg-faded">
                     <li class="{{ isGroupActive('linkgroup') }}">
-                        <a href="{{ path('linkgroup_index') }}">
-                            <i class="fa fa-hashtag"></i> {% trans %}menu.groups{% endtrans %}
-                        </a>
+                        {% if linkgroup is defined and linkgroup is not null %}
+                            <a href="{{ path('linkgroup_show', {'title': linkgroup.title}) }}">
+                                <i class="fa fa-hashtag"></i> g/{{ linkgroup.title }}
+                            </a>
+                        {% else %}
+                            <a href="{{ path('linkgroup_index') }}">
+                                <i class="fa fa-hashtag"></i> {% trans %}menu.groups{% endtrans %}
+                            </a>
+                        {% endif %}
+                        
                     </li>
                     <li class="{{ isGroupActive('entry') }}">
                         <a href="{{ path('entry_index') }}">

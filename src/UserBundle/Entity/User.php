@@ -58,6 +58,11 @@ class User extends BaseUser
     private $notifications;
 
     /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\LinkGroup", mappedBy="subscribedUsers")
+     */
+    private $subscribedGroups;
+
+    /**
      * @Assert\Image(maxSize="6000000")
      */
     private $file;
@@ -66,6 +71,11 @@ class User extends BaseUser
      * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
      */
     private $avatar;
+
+    /**
+     * @ORM\OneToMany(targetEntity="LoginHistory", mappedBy="user", cascade={"all"})
+     */
+    private $loginHistory;
 
     public function __construct()
     {
@@ -82,7 +92,7 @@ class User extends BaseUser
     {
         $this->file = $file;
         if (null !== $this->file) {
-            $this->avatar = $this->username . '.' . $this->file->guessExtension();
+            $this->avatar = hash('crc32b', uniqid()) . '.' . $this->file->guessExtension();
             $this->file->move($this->getUploadRootDir(), $this->avatar);
             $this->file = null;
         }
@@ -390,5 +400,74 @@ class User extends BaseUser
             }
         }
         return $notificationsNumber;
+    }
+
+    /**
+     * Add subscribedGroup
+     *
+     * @param \AppBundle\Entity\LinkGroup $subscribedGroup
+     *
+     * @return User
+     */
+    public function addSubscribedGroup(\AppBundle\Entity\LinkGroup $subscribedGroup)
+    {
+        $this->subscribedGroups[] = $subscribedGroup;
+
+        return $this;
+    }
+
+    /**
+     * Remove subscribedGroup
+     *
+     * @param \AppBundle\Entity\LinkGroup $subscribedGroup
+     */
+    public function removeSubscribedGroup(\AppBundle\Entity\LinkGroup $subscribedGroup)
+    {
+        $this->subscribedGroups->removeElement($subscribedGroup);
+    }
+
+    /**
+     * Get subscribedGroups
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSubscribedGroups()
+    {
+        return $this->subscribedGroups;
+    }
+
+    /**
+     * Add loginHistory
+     *
+     * @param \UserBundle\Entity\LoginHistory $loginHistory
+     *
+     * @return User
+     */
+    public function addLoginHistory(\UserBundle\Entity\LoginHistory $loginHistory)
+    {
+        $loginHistory->setUser($this);
+        $this->loginHistory[] = $loginHistory;
+
+        return $this;
+    }
+
+    /**
+     * Remove loginHistory
+     *
+     * @param \UserBundle\Entity\LoginHistory $loginHistory
+     */
+    public function removeLoginHistory(\UserBundle\Entity\LoginHistory $loginHistory)
+    {
+        $this->loginHistory->removeElement($loginHistory);
+    }
+
+    /**
+     * Get loginHistory
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLoginHistory()
+    {
+        return $this->loginHistory;
     }
 }

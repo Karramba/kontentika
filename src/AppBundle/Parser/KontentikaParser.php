@@ -30,8 +30,8 @@ class KontentikaParser extends MarkdownParser
         'code_block' => false,
         'auto_link' => true,
         'auto_mailto' => false,
-        'entities' => false,
-        'no_html' => false,
+        'entities' => true,
+        'no_html' => true,
     );
 
     /**
@@ -39,9 +39,7 @@ class KontentikaParser extends MarkdownParser
      */
     public function transformMarkdown($text)
     {
-        // var_dump($text);
-        // $text = preg_replace("/\r\n|\r|\n/", '<br/>', $text);
-        $text = nl2br($text);
+        $text = preg_replace("/\r\n|\n\r/", "\n\r\n\r", $text);
 
         return parent::transform($text);
     }

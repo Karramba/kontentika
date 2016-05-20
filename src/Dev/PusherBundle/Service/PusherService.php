@@ -37,6 +37,7 @@ class PusherService
             'app_key' => $this->parameters['app_key'],
             'cluster' => $this->parameters['options']['cluster'],
             'debug' => ($this->parameters['debug'] == true) ? "true" : "false",
+            'channel' => $this->channel,
         );
         return $settings;
     }
@@ -55,8 +56,13 @@ class PusherService
         }
     }
 
-    public function notify($event, $receiverId, $message)
+    public function notifyChannel($channel, $event, $content)
     {
-        $this->pusher->trigger($this->channel . "-" . $receiverId, $event, $message, $this->socketId);
+        $this->pusher->trigger($channel, $event, $content, $this->socketId);
+    }
+
+    public function notifyUser($event, $receiverId, $content)
+    {
+        $this->pusher->trigger($this->channel . "-" . $receiverId, $event, $content, $this->socketId);
     }
 }

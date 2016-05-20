@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\MappedSuperclass()
@@ -24,6 +25,12 @@ abstract class AbstractUniqueContent
      * @ORM\Column(name="added", type="datetime")
      */
     private $added;
+
+    /**
+     * @ORM\Column(name="ip", type="string", length=15)
+     * @Assert\Ip
+     */
+    private $ip;
 
     public function __toString()
     {
@@ -76,5 +83,29 @@ abstract class AbstractUniqueContent
     public function getAdded()
     {
         return $this->added;
+    }
+
+    /**
+     * Set ip
+     *
+     * @param string $ip
+     *
+     * @return AbstractUniqueContent
+     */
+    public function setIp($ip)
+    {
+        $this->ip = $ip;
+
+        return $this;
+    }
+
+    /**
+     * Get ip
+     *
+     * @return string
+     */
+    public function getIp()
+    {
+        return $this->ip;
     }
 }

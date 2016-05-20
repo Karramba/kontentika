@@ -47,6 +47,7 @@ twig:
     globals:
         site_name: "%site_name%"
         repository_url: "%repository_url%"
+        best_rated_range: "%best_rated_range%"
 
 # Doctrine Configuration
 doctrine:

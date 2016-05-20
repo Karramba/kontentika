@@ -67,6 +67,17 @@ class LinkGroup extends AbstractUniqueContent
      */
     private $moderators;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User", inversedBy="subscribedGroups")
+     * @ORM\JoinTable(name="linkgroup_user_subscriptions")
+     */
+    private $subscribedUsers;
+
+    /**
+     * @ORM\Column(name="locked", type="boolean", options={"default" = 0})
+     */
+    private $locked;
+
     public function __construct()
     {
         parent::__construct();
@@ -259,5 +270,63 @@ class LinkGroup extends AbstractUniqueContent
     public function getModerators()
     {
         return $this->moderators;
+    }
+
+    /**
+     * Add subscribedUser
+     *
+     * @param \UserBundle\Entity\User $subscribedUser
+     *
+     * @return LinkGroup
+     */
+    public function addSubscribedUser(\UserBundle\Entity\User $subscribedUser)
+    {
+        $this->subscribedUsers[] = $subscribedUser;
+
+        return $this;
+    }
+
+    /**
+     * Remove subscribedUser
+     *
+     * @param \UserBundle\Entity\User $subscribedUser
+     */
+    public function removeSubscribedUser(\UserBundle\Entity\User $subscribedUser)
+    {
+        $this->subscribedUsers->removeElement($subscribedUser);
+    }
+
+    /**
+     * Get subscribedUsers
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSubscribedUsers()
+    {
+        return $this->subscribedUsers;
+    }
+
+    /**
+     * Set locked
+     *
+     * @param boolean $locked
+     *
+     * @return LinkGroup
+     */
+    public function setLocked($locked)
+    {
+        $this->locked = $locked;
+
+        return $this;
+    }
+
+    /**
+     * Get locked
+     *
+     * @return boolean
+     */
+    public function getLocked()
+    {
+        return $this->locked;
     }
 }
